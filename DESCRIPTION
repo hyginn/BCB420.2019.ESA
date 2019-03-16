@@ -1,0 +1,29 @@
+Package: BCB420.2019.ESA
+Type: Package
+Title: Exploratory Systems Analysis Tools
+Version: 0.1.0
+Authors@R: c(
+             person("Boris", "Steipe", 
+                    email = "boris.steipe@utoronto.ca", 
+                    role = c("aut", "cre"), 
+                    comment = c(ORCID = "0000-0002-1134-6758"))
+    )
+Description: Student-built tools and data submitted for an ESA (Exploratory
+             Systems Analysis) task, in BCB420 (Computational Sytems
+             Biology), Winter 2019 - a required course in the Specialist
+             Program for Bioinformatics and Computational Biology at the
+             University of Toronto.
+URL: https://github.com/hyginn/BCB420.2019.ESA
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+biocViews: Software, Infrastructure
+Imports:
+    Biostrings
+Suggests:
+    testthat,
+    BiocStyle,
+    knitr,
+    rmarkdown
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

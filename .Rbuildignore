@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rprofile$
+^Meta$
+^doc$
+^dev$
+\.o$
+\.so$
