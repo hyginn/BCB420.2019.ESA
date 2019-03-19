@@ -1,6 +1,6 @@
 454f3f8475e6ceb7538478e798794e3b *data/rptGC.RData
 3eeb1792ff5e95a265455a57287e21e0 *DESCRIPTION
-efa0b27d0b1ef7ff3a4443b03bf0c608 *inst/CITATION
+c4cde74ffaa8fd2acffcac3327a61dee *inst/CITATION
 160a163683413423e0a0ca88cce46aa8 *inst/extdata/test_lseq.dat
 da677830774ab7ca8cc93e9974262a5d *inst/scripts/scriptTemplate.R
 e7170674cb8f400115523afc273b8037 *LICENSE
@@ -11,7 +11,7 @@ df82de5c4c180aa9beaeb6500b77f742 *NEWS
 f72b3084920890048662c2521fc8de03 *R/makeSeq.R
 8748656e391945907a00d01f4cd3a034 *R/rptGC.R
 4a541fe183c7476e7f2aa1cbf25689b3 *R/zzz.R
-2bc2eb54897d85b43cc04ef17709f033 *README.md
+428aa3965fe64051104f5b967ca0a889 *README.md
 fd7b07911e1129c28d56e65147c54f4c *tests/testthat.R
 327633ccd7250f7fcf8795b9d15d0d08 *tests/testthat/helper-functions.R
 c0315b290a16a031ea7a9e7f1e449b82 *tests/testthat/test_makeSeq.R
