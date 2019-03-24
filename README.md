@@ -123,6 +123,7 @@ To get a hypothesized network, call hypothesize():
 ```R
 hypothesize(mySys, from = "physical")
 ```
+![PPI-GGI](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
 &nbsp;
 
 ## 3. Notes

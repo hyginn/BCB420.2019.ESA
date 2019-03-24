@@ -23,14 +23,16 @@ require(biomaRt, quietly = TRUE)
 require(ggplot2, quietly = TRUE)
 require(biogridr, quietly = TRUE)
 
-my.name <- readline(prompt = "Enter full name separated by space(s): ")
+my.name <-
+  readline(prompt = "Enter full name separated by space(s): ")
 my.name <- unlist(strsplit(my.name, " "))
 my.email <- readline(prompt = "Enter email:")
 
 my.project <-
   readline(prompt = "Enter project name without spaces:")
 
-myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
+myKey <-
+  bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
 
 # ==============================================================================
 getSysInteractions <-
@@ -117,12 +119,21 @@ getGeneticInteractome <- function(mySys) {
   humInt$gene1 <- toupper(humInt$gene1)
   humInt$gene2 <- toupper(humInt$gene2)
 
-  ggi <-
-    filter(humInt,
-           (
-             match(gene1, mySys$interactions.protein1.sym) &
-               match(gene2, mySys$interactions.protein2.sym)
-           ))
+  if (criterion = "ppi-ggi") {
+    ggi <-
+      filter(humInt,
+             (
+               match(gene1, mySys$interactions.protein1.sym) &
+                 match(gene2, mySys$interactions.protein2.sym)
+             ))
+  } else {
+    ggi <-
+      filter(humInt,
+             (
+               match(gene1, mySys$interactions.protein1.sym) |
+                 match(gene2, mySys$interactions.protein2.sym)
+             ))
+  }
 
   ggi <- ggi[complete.cases(ggi), ]
   return(ggi)
@@ -188,38 +199,86 @@ makeEMAP <- function() {
 
 ##########################################
 ## Hypothesis Networks
-hypothesize <- function(mySys, from = "physical") {
-  EMAP <- makeEMAP()
+hypothesize <-
+  function(mySys,
+           from = "physical",
+           criterion = "ppi-ggi") {
+    EMAP <- makeEMAP()
 
-  if (from == "physical") {
-    visualizeInteractions(mySys, EMAP)
+    if (from == "physical") {
+      visualizeInteractions(mySys, EMAP, criterion)
+    }
   }
-}
 
 ##########################################
 ## Network Visualization
-visualizeInteractions <- function(network, emap) {
+visualizeInteractions <- function(network, emap, ppi_ggi = NULL) {
   require(visNetwork, quietly = TRUE)
-  network$gene1 <- as.factor(network$gene1)
-  network$gene2 <- as.factor(network$gene2)
-  allgenes <-
-    as.factor(unique(c(
-      as.character(network$gene1), as.character(network$gene2)
-    )))
-  nodes <-
-    data.frame(id = allgenes,
-               allgenes,
-               label = unique(c(
-                 as.character(network$gene1), as.character(network$gene2)
-               )),
-               shape = 'circle')
-  edges <-
-    data.frame(
-      from = network$gene1,
-      to = network$gene2,
-      label = emap$effect[match(network$interactionType, emap$geneticInt)],
-      arrows = "to"
-    )
+
+  if (is.null(ppi_ggi))
+  {
+    network$gene1 <- as.factor(network$gene1)
+    network$gene2 <- as.factor(network$gene2)
+    allgenes <-
+      as.factor(unique(c(
+        as.character(network$gene1),
+        as.character(network$gene2)
+      )))
+    nodes <-
+      data.frame(id = allgenes,
+                 allgenes,
+                 label = unique(c(
+                   as.character(network$gene1),
+                   as.character(network$gene2)
+                 )),
+                 shape = 'circle')
+    edges <-
+      data.frame(
+        from = network$gene1,
+        to = network$gene2,
+        label = emap$effect[match(network$interactionType, emap$geneticInt)],
+        arrows = "to"
+      )
+  } else {
+    network$gene1 <- as.factor(network$gene1)
+    network$gene2 <- as.factor(network$gene2)
+
+    ppi_ggi$gene1 <- as.factor(ppi_ggi$gene1)
+    ppi_ggi$gene2 <- as.factor(ppi_ggi$gene2)
+
+    allgenes <-
+      as.factor(unique(c(
+        as.character(network$gene1),
+        as.character(network$gene2)
+      )))
+    allgenes2 <-
+      as.factor(unique(c(
+        as.character(ppi_ggi$gene1),
+        as.character(ppi_ggi$gene2)
+      )))
+
+    nodes <-
+      data.frame(
+        id = allgenes2,
+        allgenes2,
+        label = unique(c(
+          as.character(ppi_ggi$gene1),
+          as.character(ppi_ggi$gene2)
+        )),
+        group = ifelse(allgenes2 %in% allgenes , "ppi-ggi", "ggi"),
+        shape = 'circle'
+      )
+
+    edges <-
+      data.frame(
+        from = ppi_ggi$gene1,
+        to = ppi_ggi$gene2,
+        label = EMAP$effect[match(ppi_ggi$interactionType, EMAP$geneticInt)],
+        arrows = "to"
+      )
+
+  }
+
   visNetwork(nodes, edges, width = "100%")
 }
 
