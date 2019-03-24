@@ -38,7 +38,8 @@ myKey <-
 getSysInteractions <-
   function(filename,
            intType = "genetic",
-           mart = myMart) {
+           mart = myMart,
+           criterion = "stringent") {
     geneComp <-
       read_excel(filename, sheet = "component", skip = 1)
     # get my system's genes and their ENSEMBL IDs
@@ -52,12 +53,12 @@ getSysInteractions <-
       filters = "hgnc_symbol",
       values = geneSym
     )
-    myGenes <- myGenes[(myGenes$ensembl_peptide_id != ""), ]
+    myGenes <- myGenes[(myGenes$ensembl_peptide_id != ""),]
 
     # get interactome of interest
 
     mySys <- convertToHGNC(myGenes, myMart)
-    mySys <- getGeneticInteractome(mySys)
+    mySys <- getGeneticInteractome(mySys, criterion)
 
     return(mySys)
 
@@ -75,7 +76,7 @@ convertToHGNC <- function(myGenes, mart) {
 
   interactions <-
     interactions[(interactions$protein1 %in% myGenes &
-                    interactions$protein2 %in% myGenes), ]
+                    interactions$protein2 %in% myGenes),]
   interactions <- unique(interactions)
 
   ##############
@@ -88,11 +89,11 @@ convertToHGNC <- function(myGenes, mart) {
 
   ppi <-
     data.frame(interactions$protein1$sym, interactions$protein2$sym)
-  ppi <- ppi[complete.cases(ppi), ]
+  ppi <- ppi[complete.cases(ppi),]
   return(ppi)
 }
 
-getGeneticInteractome <- function(mySys) {
+getGeneticInteractome <- function(mySys, criterion) {
   myGenes <-
     toString(unique(c(
       as.character(mySys$interactions.protein1.sym),
@@ -106,7 +107,7 @@ getGeneticInteractome <- function(mySys) {
     humInt[(
       humInt$experimental_system_type == "genetic" &
         humInt$organism_id_for_interactor_b == 9606
-    ),]
+    ), ]
 
   humInt <-
     data.frame(
@@ -119,14 +120,14 @@ getGeneticInteractome <- function(mySys) {
   humInt$gene1 <- toupper(humInt$gene1)
   humInt$gene2 <- toupper(humInt$gene2)
 
-  if (criterion = "ppi-ggi") {
+  if (criterion == "stringent") {
     ggi <-
       filter(humInt,
              (
                match(gene1, mySys$interactions.protein1.sym) &
                  match(gene2, mySys$interactions.protein2.sym)
              ))
-  } else {
+  } else if (criterion == "relaxed") {
     ggi <-
       filter(humInt,
              (
@@ -135,7 +136,7 @@ getGeneticInteractome <- function(mySys) {
              ))
   }
 
-  ggi <- ggi[complete.cases(ggi), ]
+  ggi <- ggi[complete.cases(ggi),]
   return(ggi)
 }
 
@@ -201,18 +202,15 @@ makeEMAP <- function() {
 ## Hypothesis Networks
 hypothesize <-
   function(mySys,
-           from = "physical",
-           criterion = "ppi-ggi") {
+           ppi_ggi = NULL) {
     EMAP <- makeEMAP()
-
-    if (from == "physical") {
-      visualizeInteractions(mySys, EMAP, criterion)
-    }
+    visualizeInteractions(mySys, EMAP, ppi_ggi)
   }
 
 ##########################################
 ## Network Visualization
-visualizeInteractions <- function(network, emap, ppi_ggi = NULL) {
+
+visualizeInteractions <- function(network, emap, ppi_ggi) {
   require(visNetwork, quietly = TRUE)
 
   if (is.null(ppi_ggi))
@@ -251,6 +249,7 @@ visualizeInteractions <- function(network, emap, ppi_ggi = NULL) {
         as.character(network$gene1),
         as.character(network$gene2)
       )))
+
     allgenes2 <-
       as.factor(unique(c(
         as.character(ppi_ggi$gene1),
@@ -259,27 +258,27 @@ visualizeInteractions <- function(network, emap, ppi_ggi = NULL) {
 
     nodes <-
       data.frame(
-        id = allgenes2,
-        allgenes2,
+        id = allgenes,
+        allgenes,
         label = unique(c(
-          as.character(ppi_ggi$gene1),
-          as.character(ppi_ggi$gene2)
+          as.character(network$gene1),
+          as.character(network$gene2)
         )),
-        group = ifelse(allgenes2 %in% allgenes , "ppi-ggi", "ggi"),
+        group = ifelse(allgenes %in% allgenes2 , "ppi-ggi", "ggi"),
         shape = 'circle'
       )
 
     edges <-
       data.frame(
-        from = ppi_ggi$gene1,
-        to = ppi_ggi$gene2,
-        label = EMAP$effect[match(ppi_ggi$interactionType, EMAP$geneticInt)],
+        from = network$gene1,
+        to = network$gene2,
+        label = emap$effect[match(ppi_ggi$interactionType, emap$geneticInt)],
         arrows = "to"
       )
 
   }
 
-  visNetwork(nodes, edges, width = "100%")
+  visNetwork(nodes, edges) %>% visGroups(groupname = "ppi-ggi", color = "salmon") %>% visOptions(selectedBy = "group") %>% visEdges(color = "darkgray")
 }
 
 ###########################################

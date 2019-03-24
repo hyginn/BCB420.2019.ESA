@@ -108,7 +108,7 @@ ensembl <- useMart(biomart = "ensembl")
 human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
 myMart <- useMart("ensembl", human$dataset)
 
-mySys <- getSysInteractions(filename, mart = myMart)
+mySys <- getSysInteractions(filename, mart = myMart, criterion = "stringent")
 head(mySys)
 
   gene1  gene2        interactionType
@@ -121,11 +121,18 @@ head(mySys)
 ```
 To get a hypothesized network, call hypothesize():
 ```R
-hypothesize(mySys, from = "physical")
+hypothesize(mySys)
 ```
 ![PPI-GGI](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
 &nbsp;
 
+If instead we wanted both genetic and physical interactors in the SLIGR system,
+
+```R
+mySys2 <- getSysInteractions(filename, mart = myMart, criterion = "relaxed")
+
+hypothesize(mySys2, mySys)
+```
 ## 3. Notes
 
 &nbsp;
