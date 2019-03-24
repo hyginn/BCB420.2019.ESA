@@ -27,7 +27,7 @@ package on GitHub and
 
 <!-- TOCbelow -->
 1. About this package:<br/>
-2. Data ...<br/>
+2. Data<br/>
 3. Notes<br/>
 4. References and Further reading<br/>
 5. Acknowledgements<br/>
@@ -44,7 +44,7 @@ This package is a joint development platform for student designed tools for Expl
 
 ----
 
-## 2 Data ...
+## 2 Data
 
 Suporting resources include curated systems data and other data resources:
 
