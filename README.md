@@ -133,7 +133,7 @@ mySys2 <- getSysInteractions(filename, mart = myMart, criterion = "relaxed")
 
 hypothesize(mySys2, mySys)
 ```
-![relaxed_networks](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
+![relaxed_networks](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/networks.png?raw=true)
 ## 3. Notes
 
 &nbsp;
