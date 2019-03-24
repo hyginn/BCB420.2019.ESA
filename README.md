@@ -133,7 +133,6 @@ mySys2 <- getSysInteractions(filename, mart = myMart, criterion = "relaxed")
 
 hypothesize(mySys2, mySys)
 ```
-## 3. Notes
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,11 +153,11 @@ hypothesize(mySys2, mySys)
 </html>
 &nbsp;
 
-## 4. References and Further Reading
+## 3. References and Further Reading
 
 &nbsp;
 
-## 5. Acknowledgements
+## 4. Acknowledgements
 
 &nbsp;
 
