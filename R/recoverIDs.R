@@ -1,4 +1,17 @@
 # recoverIDs.R
+#
+# Purpose: To annnotate ENSEMBL protein IDs with gene names through BioMart
+# Source: https://github.com/hyginn/BCB420.2019.STRING
+# Version: 1.0
+# Date: 2019-01-24
+# Author: Boris Steipe
+# License: MIT
+# ==============================================================================
+# NO SIDE EFFECTS:
+# This script can be safely source()'d to define the functions it contains and
+# install.packages()/run library() as required.
+# All other code will not be executed unless this is done interactively.
+# ==============================================================================
 
 recoverIDs <- function(ensp, mart) {
   # Purpose:
@@ -79,13 +92,5 @@ recoverIDs <- function(ensp, mart) {
 
   return(esMap)
 }
-
-
-# ====  TESTS  =================================================================
-if (FALSE) {
-  # Enter your function tests here...
-
-}
-
 
 # [END]

@@ -1,10 +1,29 @@
+# predictDirectedNetworks.R
+#
+# Purpose: To augment a system with genetic and physical interaction data in order to hypothesize regulatory relationshipd between components.
+# Version: 1.0
+# Date: 2019-03-21
+# Author: Nada Elnour
+# License: MIT
+#
+# Input: An excel spreadsheet of the system parsed using the BCB420-2019-resources scripts.
+# Output: Graph hypotheses of possible regulatry networks in the system
+# Dependencies: tibble 2.0.1; biomaRt 2.38.0; xlsx 0.6.1; readxl 1.3.1; dplyr 0.8.0.1; ggplot2 3.1.0; biogridr 0.0.0.9000; visNetwork 2.0.5
+# ==============================================================================
+
+# SIDE EFFECTS:
+# This script imports biogridr which uses the deprecated function xml2::xml_find_one().
+
+# ====  PACKAGES  ==============================================================
+# Load all required packages.
 require(xlsx, quietly = TRUE)
 require(readxl, quietly = TRUE)
 require(dplyr, quietly = TRUE)
 require(biomaRt, quietly = TRUE)
 require(ggplot2, quietly = TRUE)
 require(biogridr, quietly = TRUE)
-###################################################
+
+# ==============================================================================
 getSysInteractions <-
     function(filename,
              intType = "genetic",
