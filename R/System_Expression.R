@@ -1,12 +1,27 @@
+load_data <- function(){
+  myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                  "GEO-QN-profile-2019-03-24.rds")
+  myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
 
+  myURL <- paste0("https://github.com/hyginn/",
+                  "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
+  load(url(myURL))  # loads HGNC data frame
+}
 
-exProf <- function(sym, hgnc = HGNC, ncol = 20) {
-  # returns a set of numbers as a virtual expression profile, for
-  # development purposes only.
-  set.seed(which(hgnc$sym == sym))
-  p <- as.vector(scale(runif(ncol)))
-  set.seed(NULL)
-  return(p)
+exProf <- function(sym, myQNXP = myQNXP) {
+  # Returns a normalized gene expression profile
+  p <- myQNXP[sym,]
+  experiments <- names(p)
+  cLines <- substr(experiments, 1, regexpr("\\.", experiments))
+  controls <- which(cLines[-1] != cLines[-length(cLines)])
+  controls <- c(1, controls + 1, which(regexpr("ctrl", experiments) > 0))
+  controls <- sort(unique(controls))
+  groups <- as.numeric(cut(1:52, breaks = controls, include.lowest = T, right = F))
+  groups[is.na(groups)] <- length(controls)
+  groups[controls[length(controls)]] <- length(controls)
+  normalized <- log(p/p[controls[groups]])
+  normalized <- normalized[-controls]
+  return(normalized)
 }
 
 fetchComponents <- function(sys) {
@@ -32,23 +47,20 @@ fetchComponents <- function(sys) {
   return(s)
 }
 
-System_Expression(sysname){
-  myURL <- paste0("https://github.com/hyginn/",
-                  "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-  load(url(myURL))  # loads HGNC data frame
-
+System_Expression<- function(sysname, HGNC, myQNXP){
   components <- fetchComponents(sysname)
-  expressions <- sapply(components, exProf)
-  meanExpression <- rowMeans(expressions)
-  varExpression <- apply(expressions, 1, var)
+  expressions <- sapply(components, exProf, myQNXP)
+  meanExpression <- rowMeans(expressions, na.rm = T)
+  varExpression <- apply(expressions, 1, var, na.rm = T)
   p.values <- pnorm(meanExpression, sd = sqrt(varExpression))
   p.values[p.values > 0.5] <- 1 - p.values[p.values > 0.5]
-  UpConditions <- which(meanExpression > 0 & p.values < 0.5)
-  DownConditions <- which(meanExpression < 0 & p.values < 0.5)
+  UpConditions <- which(meanExpression > 0 & p.values < 0.05)
+  DownConditions <- which(meanExpression < 0 & p.values < 0.05)
 
+  experiments <- rownames(expressions)
   SysExpression <- list(`Mean Expression` = meanExpression,
-                        `Upregulated Conditions` = UpConditions,
-                        `Downregulated Conditions` = DownConditions)
+                        `Upregulated Conditions` = experiments[UpConditions],
+                        `Downregulated Conditions` = experiments[DownConditions])
 
   return(SysExpression)
 }
