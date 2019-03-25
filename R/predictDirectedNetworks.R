@@ -149,19 +149,16 @@ makeEMAP <- function() {
     "inhibited by",
     "inhibited by",
     "equivalent/activates",
-    "cis-regulates",
-    #negative genetic
+    "cis-regulates", #negative genetic
     "trans-regulates",
     "cis-regulates",
-    "trans-regulates",
-    #positive genetic
+    "trans-regulates", #positive genetic
     "equivalent/activates",
     "equivalent/activates",
     "equivalent/activates",
     "inhibited by"
   )
 
-  # In case no PPI data:
   notes <- c(
     "",
     "",
@@ -187,19 +184,56 @@ makeEMAP <- function() {
 
 }
 
+makeGMAP <- function(){
+    geneticInteractions <- c(
+      "Dosage Growth Defect",
+      "Dosage Lethality",
+      "Dosage Rescue",
+      "Negative Genetic",
+      "Phenotypic Enhancement",
+      "Phenotypic Suppression",
+      "Positive Genetic",
+      "Synthetic Growth Defect",
+      "Synthetic Haploinsufficiency",
+      "Synthetic Lethality",
+      "Synthetic Rescue"
+    )
+
+    effects <- c(
+      "negative-parallels",
+      "negative-parallels",
+      "positive-parallels",
+      "synergizes with", #negative genetic
+      "synergizes with",
+      "antagonizes",
+      "antagonizes", #positive genetic
+      "synergizes with",
+      "synergizes with",
+      "synergizes with",
+      "antagonizes"
+    )
+
+    GMAP <- data.frame(geneticInt = geneticInteractions,
+                       effect = effects)
+
+    return(GMAP)
+
+}
+
 ##########################################
 ## Hypothesis Networks
 hypothesize <-
   function(mySys,
            ppi_ggi = NULL) {
     EMAP <- makeEMAP()
-    visualizeInteractions(mySys, EMAP, ppi_ggi)
+    GMAP <- makeGMAP()
+    visualizeInteractions(mySys, EMAP, ppi_ggi, GMAP)
   }
 
 ##########################################
 ## Network Visualization
 
-visualizeInteractions <- function(network, emap, ppi_ggi) {
+visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
   require(visNetwork, quietly = TRUE)
 
   if (is.null(ppi_ggi))
@@ -257,11 +291,23 @@ visualizeInteractions <- function(network, emap, ppi_ggi) {
         shape = 'circle'
       )
 
+    edgeLabels <- c()
+
+    for (i in 1:(length(network$interactionType))) {
+      sel <- (as.character(network$gene1[i]) %in% as.character(ppi_ggi$gene1) & as.character(network$gene2[i]) %in% as.character(ppi_ggi$gene2))
+      if (sel) {
+        idx <- which(as.character(ppi_ggi$gene1) == as.character(network$gene1[i]) & as.character(ppi_ggi$gene2) == as.character(network$gene2[i]) )
+        edgeLabels <- c(edgeLabels, as.character(emap$effect[match(ppi_ggi$interactionType[idx], emap$geneticInt)]))
+      } else {
+        edgeLabels <- c(edgeLabels, as.character(gmap$effect[match(network$interactionType[i], gmap$geneticInt)]))
+      }
+    }
+
     edges <-
       data.frame(
         from = network$gene1,
         to = network$gene2,
-        label = emap$effect[match(ppi_ggi$interactionType, emap$geneticInt)],
+        label = edgeLabels,
         arrows = "to"
       )
 
@@ -278,4 +324,5 @@ getKey <- function(my.name, my.email, my.project) {
   my.name <- unlist(strsplit(my.name, " "))
 
   myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
+  return(myKey)
 }
