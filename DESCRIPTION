@@ -6,7 +6,11 @@ Authors@R: c(
              person("Boris", "Steipe", 
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
-                    comment = c(ORCID = "0000-0002-1134-6758"))
+                    comment = c(ORCID = "0000-0002-1134-6758"),
+              person("Denitsa", "Vasileva", 
+                    email = "denitsa.vasileva@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0002-8778-6442"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -19,7 +23,14 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings
+    Biostrings,
+    corrplot,
+    psych,
+    RColorBrewer,
+    ggplot2,
+    BiocManager,
+    GOSemSim,
+    org.Hs.eg.db
 Suggests:
     testthat,
     BiocStyle,
