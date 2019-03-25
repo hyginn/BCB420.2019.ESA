@@ -15,6 +15,14 @@
 # This script imports biogridr which uses the deprecated function xml2::xml_find_one().
 
 # ====  PACKAGES  ==============================================================
+if (requireNamespace("biogridr", quietly=TRUE)) {
+  library(biogridr)
+} else {
+  install.packages("devtools")
+  devtools::install_github("npjc/biogridr")
+  library(biogridr)
+}
+
 # Load all required packages.
 require(xlsx, quietly = TRUE)
 require(readxl, quietly = TRUE)
