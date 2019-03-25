@@ -124,26 +124,96 @@ str(STRINGedges)
 
 #### 2.4 Expression profiles:
 
-This is in progress. Here is a function stub that returns a random, repeatable, scaled expression profile for a HGNC gene symbol:
+Expression profiles were compiled from 52 microarray experiments downloaded from GEO, and quantile normalized. Details to follow. Here is code to load and use the profiles.
 
 ```R
 
-exProf <- function(sym, hgnc = HGNC, ncol = 20) {
-  # returns a set of numbers as a virtual expression profile, for 
-  # development purposes only.
-  set.seed(which(hgnc$sym == sym))
-  p <- as.vector(scale(runif(ncol)))
-  set.seed(NULL)
-  return(p)
-}
+# Load the expression profiles:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "GEO-QN-profile-2019-03-24.rds")
+myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
 
-exProf("ARF5")
-#   [1]  0.74593008  1.29119935  0.09176229  0.26580368  1.04807753
-#   [6]  0.99590563 -1.58896376 -1.45692057  0.68341688 -0.09393910
-#  [11]  0.72066664  0.60304597 -0.09448269  0.36606745 -1.58234271
-#  [16]  0.30937106 -0.88034475 -1.33628536  1.23931446 -1.32728207
+str(myQNXP)
+#  num [1:27087, 1:52] 29.4 199.9 34.3 947.4 2249.2 ...
+#  - attr(*, "dimnames")=List of 2
+#   ..$ : chr [1:27087] "A1BG" "A1BG-AS1" "A1CF" "A2M" ...
+#   ..$ : chr [1:52] "GSE35330.ctrl.4h" "GSE35330.cond.4h" "GSE35330.ctrl.16h" ...
+
+
+# Some statistics:
+sum( ! is.na(myQNXP)) # Number of measurements: 923361
+mean(  myQNXP, na.rm = TRUE) # 502.7972
+median(myQNXP, na.rm = TRUE) # 127.43
+hist(log10(myQNXP), breaks = 100)
+
+# how many HGNC genes have at least one measurement recorded?
+sum( ! is.na(rowMeans(myQNXP, na.rm = TRUE))) # 21063
+
+# how many HGNC genes have measurements recorded an all experiments?
+sum( ! is.na(rowMeans(myQNXP, na.rm = FALSE))) # 10812
+
+# colnames describe experiments (averaged over replicates)
+colnames(myQNXP)
+
+# how many unique experiments
+myExp <- gsub("^([^\\.]+).+", "\\1", colnames(myQNXP))
+length(unique(myExp)) # 15
+
+#Access one profile by name
+myQNXP["VAMP8", ]
+
+# plot expression values
+plot(myQNXP["VAMP8", ], ylab = "quantile normalized expression (AU)")
+
+# add lines that separate the experiments
+abline(v = cumsum(rle(myExp)$lengths) + 0.5, lwd = 0.5, col = "#0000CC44")
 
 ```
+
+Gene / Gene correlations
+```R
+corGenes <- function(A, B, prf) {
+  # Calculate pearson correlation between gene expression
+  # profiles A and B in prf identified by the gene symbol.
+  # A and B can be either gene symbol or index.
+  
+  r <- cor(prf[A, ], prf[B, ], use = "pairwise.complete.obs")
+  return(r)
+}
+
+corGenes("MRPL18", "RPF2", myQNXP)
+corGenes(100, 200, myQNXP)
+
+plotCorGenes <- function(A, B, prf) {
+  # Plot correlation between gene expression
+  # profiles A and B in prf identified by the gene symbol.
+  # A and B can be either gene symbol or index.
+  
+  xMin <- min(c(0, prf[A, ], prf[B, ]), na.rm = TRUE)
+  xMax <- max(c(   prf[A, ], prf[B, ]), na.rm = TRUE)
+  
+  plot(prf[A, ], prf[B, ],
+       xlim = c(xMin, xMax),
+       ylim = c(xMin, xMax),
+       main = sprintf("%s vs. %s (r = %5.2f)", A, B, corGenes(A, B, prf)),
+       xlab = (sprintf("%s expresion (AU)", A)),
+       ylab = (sprintf("%s expresion (AU)", B)),
+       asp = 1.0)
+  abline(lm(prf[B, ] ~ prf[A, ]), col = "#AA0000", lwd = 0.67)
+  
+  return(invisible(NULL))
+}
+
+plotCorGenes(A = "SLC9A4", B = "NLGN2", prf = myQNXP)
+
+```
+![](./inst/img/lowPairwiseCorrelation.svg?sanitize=true "uncorrelated genes") &nbsp; ![](./inst/img/highPairwiseCorrelation.svg?sanitize=true "highly correlated genes")<br/>
+Example plots for uncorrelated and highly correlated gene expression profiles.
+
+&nbsp;
+
+![](./inst/img/QN-GEOprofileCorrelations.svg?sanitize=true "distribution of expression correlations")<br/>
+Distribution of expression correlations between 10,000 randomly chosen gene pairs, compared to the distribution of shuffled expression values for the two genes. The correlations are not symmetric around zero. There are more negative correlations than expected, and more excess negative than positive correlations, but if two genes are positively correlated, the correlation trends to be higher.
 
 &nbsp;
 
