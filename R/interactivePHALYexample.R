@@ -50,27 +50,99 @@ fetchComponents <- function(sys) {
   return(s)
 }
 
+# looks up the edge (from, to) in the protActions dataset, returning
+# an HTML string of the related protein actions in the STRING data system subset
+getEdgeInteractions <- function(from, to, sysActions){
+
+  interactionSet <- sysActions[((sysActions$protein1==from & sysActions$protein2==to) |
+                               (sysActions$protein1==to & sysActions$protein2==from)),]
+  # # Create HTML
+  ndActions <- paste(interactionSet[interactionSet$is_directional == FALSE,]$mode, collapse = "; ")
+  if(ndActions == "") {
+    ndActions <- "none found"
+  }
+  nondirectional <- paste("nondirectional actions:", paste(ndActions, collapse = " "))
+
+
+  # #from-->to directional actions
+  ftActions <- paste(interactionSet[interactionSet$is_directional == TRUE &
+                                      interactionSet$a_is_acting == TRUE,]$mode, collapse = "; ")
+  if(ftActions == "") {
+    ftActions <- "none found"
+  }
+  fromTo <- paste("actions that", from, "performs on", to, ":", paste(ftActions, collapse = " "))
+
+  #to-->from directional actions
+
+  tfActions <- paste(interactionSet[interactionSet$is_directional == TRUE &
+                              interactionSet$a_is_acting == FALSE,]$mode, collapse = "; ")
+  if(tfActions == "") {
+    tfActions <- "none found"
+  }
+  toFrom <- paste("actions that", to, "performs on", from, ":", paste(tfActions, collapse = " "))
+
+  interactions <- paste(nondirectional, "<br />" , fromTo, "<br />", toFrom)
+  return(interactions)
+}
+getEdgeInteractions("VAMP3", "VAMP7", actionSet)
+
 # load data for analysis
+# alternate: expression data, find the edges w coexpression >60%, network those
 load("./data/STRINGedges.RData")
+
 load("./data/STRINGactions.RData")
 
+#### Load the expression profiles:####
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "GEO-QN-profile-2019-03-24.rds")
+myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
 
+corGenes <- function(A, B, prf) {
+  # Calculate pearson correlation between gene expression
+  # profiles A and B in prf identified by the gene symbol.
+  # A and B can be either gene symbol or index.
+
+  r <- cor(prf[A, ], prf[B, ], use = "pairwise.complete.obs")
+  return(r)
+}
+
+# Returns a matrix of coexpression scores for the given HGNC symbol list
+# and associated quantile-normalized expression dataset
+coexpressionMatrix <- function(geneList, prf) {
+  # TO DO: colnames, also, data frame is probably easiest here
+  coexMatrix <- matrix(0, nrow = length(testList),
+                       ncol = length(testList), dimnames = list(testList))
+  for(gene in geneList){
+  # TO DO: we want to add the results from this function to the coexpression matrix
+    lapply(geneList[geneList != gene], corGenes, A = gene, prf = prf)
+  }
+}
 
 #### Analysis ####
 # create adjacency matrix
 xSet <- fetchComponents("PHALY")
+actionSet <- STRINGactions[STRINGactions$protein1 %in% xSet &
+                             STRINGactions$protein2 %in% xSet,]
 sel <- (STRINGedges$protein1 %in% xSet) & (STRINGedges$protein2 %in% xSet)
 xSetEdges <- STRINGedges[sel, c("protein1", "protein2")]
 
-sXG <- igraph::graph_from_edgelist(matrix(c(xSetEdges$protein1,
-                                            xSetEdges$protein2),
-                                          ncol = 2,
-                                          byrow = FALSE),
-                                   directed = FALSE)
+# sXG <- igraph::graph_from_edgelist(matrix(c(xSetEdges$protein1,
+#                                             xSetEdges$protein2),
+#                                           ncol = 2,
+#                                           byrow = FALSE),
+#                                    directed = FALSE)
 
-# calculate betweeness centrality based on coexpression scores
+# calculate betweeness centrality based on STRING/coexpression scores
+bC <- centr_betw(sXG)
+nodeBetw <- bC$res
+nodeBetw <- round(log(nodeBetw + 1)) + 1
 
-# Plot the network
+sXG <- igraph::graph.data.frame(xSetEdges, directed = F)
+sXGgraph <- igraph::simplify(sXG)
+V(sXGgraph)$btwndegree <- nodeBetw
+
+
+#### Plot the network (igraph - from BCH441)####
 oPar <- par(mar= rep(0,4)) # Turn margins off
 set.seed(112358)
 plot(sXG,
@@ -85,7 +157,27 @@ plot(sXG,
 set.seed(NULL)
 par(oPar)
 
-# add Option for popup
 
-# add protein action data to popup
+#### visNetwork plot (from visNetwork code examples) ####
+# Nodes dataframe setup
+nodes <- get.data.frame(sXGgraph, what="vertices")
+nodes <- data.frame(id = nodes$name, title = nodes$name,
+                    group = nodes$btwndegree, betweeness = nodes$btwndegree)
+setNames(nodes, c("id", "title", "betweeness", "betweeness centrality"))
+nodes <- nodes[order(nodes$id, decreasing = F),]
+
+#### Edges dataframe setup ####
+edges <- get.data.frame(graph, what="edges")
+edges$interactions <- ""
+for(i in 1:nrow(edges)){
+  edges[i,]$interactions <- getEdgeInteractions(edges[i,]$from, edges[i,]$to, actionSet)
+}
+edges$title = paste("<p>",edges$from, "--",edges$to, ":", edges$interactions, "</p>")
+
+#### Plot visNetwork ####
+visNetwork(nodes, edges, height = "500px", width = "100%") %>%
+  visOptions(selectedBy = "betweeness", highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visPhysics(stabilization = FALSE)
+
+
 

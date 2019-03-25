@@ -13,11 +13,6 @@ if (! requireNamespace("biomaRt", quietly = TRUE)) {
   BiocManager::install("biomaRt")
 }
 
-# Not needed here
-# if (! requireNamespace("igraph")) {
-#   install.packages("igraph")
-# }
-
 if (! requireNamespace("devtools")) {
   install.packages("devtools")
 }
