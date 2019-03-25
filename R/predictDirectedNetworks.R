@@ -23,17 +23,6 @@ require(biomaRt, quietly = TRUE)
 require(ggplot2, quietly = TRUE)
 require(biogridr, quietly = TRUE)
 
-my.name <-
-  readline(prompt = "Enter full name separated by space(s): ")
-my.name <- unlist(strsplit(my.name, " "))
-my.email <- readline(prompt = "Enter email:")
-
-my.project <-
-  readline(prompt = "Enter project name without spaces:")
-
-myKey <-
-  bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
-
 # ==============================================================================
 getSysInteractions <-
   function(filename,
@@ -286,6 +275,17 @@ visualizeInteractions <- function(network, emap, ppi_ggi) {
 
 if (FALSE) {
   load("../BCB420-2019-resources/HGNC.RData")
+
+  my.name <-
+    readline(prompt = "Enter full name separated by space(s): ")
+  my.name <- unlist(strsplit(my.name, " "))
+  my.email <- readline(prompt = "Enter email:")
+
+  my.project <-
+    readline(prompt = "Enter project name without spaces:")
+
+  myKey <-
+    bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
 
   filename <- "./data/SLIGR.xlsx"
   ensembl <- useMart(biomart = "ensembl")
