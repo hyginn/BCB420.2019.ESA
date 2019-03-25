@@ -1,4 +1,4 @@
-#' Function semanticSimilarity().
+# semanticSimilarity.R
 # Function stub taken from https://github.com/hyginn/
 fetchComponents <- function(sys) {
   # returns a fixed set of symbols.
