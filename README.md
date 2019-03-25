@@ -4,7 +4,12 @@
 <!-- [![DOI](https://zenodo.org/badge/157482801.svg)](https://zenodo.org/badge/latestdoi/157482801) -->
 
 &nbsp;
-
+###### [Boris Steipe](https://orcid.org/0000-0002-1134-6758),
+###### Department of Biochemistry and Department of Molecular Genetics,
+###### University of Toronto
+###### Canada
+###### &lt; boris.steipe@utoronto.ca &gt;
+&nbsp;
 ###### [Nada Elnour](https://orcid.org/0000-0001-6165-1542),
 ###### University of Toronto, Canada
 ###### &lt; nada.elnour@mail.utoronto.ca &gt;
@@ -75,7 +80,31 @@ str(HGNC)
 
 &nbsp;
 
-#### 2.2 STRING edges: Protein-protein Interaction Data
+#### 2.2 Transcription factors from GTRD:
+
+`geneList` list contains transcription factors that have been found to bind to the upstream regulatory regions of genes in ChIP-seq experiments; the data is compiled by the GTRD database.
+Load `geneList` in the following way:
+
+```R
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "geneList-2019-03-13.RData")
+load(url(myURL))  # loads GTRD geneList object
+
+str(geneList)
+# List of 17864
+#  $ HES4        : chr [1:82] "AR" "ATF2" "ATF3" "ATF4" ...
+#  $ PUSL1       : chr [1:64] "AR" "BHLHE40" "CEBPA" "CEBPB" ...
+#  $ ACAP3       : chr [1:69] "BHLHE40" "CEBPA" "CEBPB" "CEBPD" ...
+#  $ ATAD3B      : chr [1:110] "AR" "ASCL2" "ATF2" "ATF3" ...
+#  $ ATAD3A      : chr [1:128] "ARID4B" "ASCL2" "ATF1" "ATF3" ...
+#   [list output truncated]
+
+```
+
+&nbsp;
+
+
+#### 2.3 STRING edges: Protein-protein Interaction Data
 
 `STRINGedges` contains edges of the STRING database mapped to HGNC symbols.
 Load `STRINGedges` into the data folder:
@@ -95,7 +124,73 @@ str(STRINGedges)
 
 &nbsp;
 
-#### 2.3 System Import
+### 2.4 Expression profiles:
+
+This is in progress. Here is a function stub that returns a random, repeatable, scaled expression profile for a HGNC gene symbol:
+
+```R
+
+exProf <- function(sym, hgnc = HGNC, ncol = 20) {
+  # returns a set of numbers as a virtual expression profile, for 
+  # development purposes only.
+  set.seed(which(hgnc$sym == sym))
+  p <- as.vector(scale(runif(ncol)))
+  set.seed(NULL)
+  return(p)
+}
+
+exProf("ARF5")
+#   [1]  0.74593008  1.29119935  0.09176229  0.26580368  1.04807753
+#   [6]  0.99590563 -1.58896376 -1.45692057  0.68341688 -0.09393910
+#  [11]  0.72066664  0.60304597 -0.09448269  0.36606745 -1.58234271
+#  [16]  0.30937106 -0.88034475 -1.33628536  1.23931446 -1.32728207
+
+```
+
+&nbsp;
+
+#### 2.5 Systems:
+
+This is in progress. Here is a function stub that returns a set of gene symbols for a system name:
+
+```R
+
+fetchComponents <- function(sys) {
+  # returns a fixed set of symbols.
+  # Function stub for development purposes only.
+ if (sys == "PHALY") {
+    s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2", 
+           "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7", 
+           "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP", 
+           "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM", 
+           "KXD1", "LAMP1", "LAMP2", "LAMP3", "LAMP5", "MAP1LC3A", "MAP1LC3B", 
+           "MAP1LC3C", "MGRN1", "MYO1C", "MYO6", "NAPA", "NSF", "OPTN", 
+           "OSBPL1A", "PI4K2A", "PIK3C3", "PLEKHM1", "PSEN1", "RAB20", "RAB21", 
+           "RAB29", "RAB34", "RAB39A", "RAB7A", "RAB7B", "RPTOR", "RUBCN", 
+           "RUBCNL", "SNAP29", "SNAP47", "SNAPIN", "SPG11", "STX17", "STX6", 
+           "SYT7", "TARDBP", "TFEB", "TGM2", "TIFA", "TMEM175", "TOM1", 
+           "TPCN1", "TPCN2", "TPPP", "TXNIP", "UVRAG", "VAMP3", "VAMP7", 
+           "VAMP8", "VAPA", "VPS11", "VPS16", "VPS18", "VPS33A", "VPS39", 
+           "VPS41", "VTI1B", "YKT6")
+ } else {
+   s <- ""
+ }
+  return(s)
+}
+
+fetchComponents("PHALY")
+#   [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"   
+#   [6] "BECN1"     "BECN2"     "BIRC6"     "BLOC1S1"   "BLOC1S2"  
+#  [11] "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"  
+
+fetchComponents("NONSUCH")
+#  [1] ""
+
+```
+
+&nbsp;
+
+#### 2.6 Sample Implementation --- Predicting Regulatory Networks from Undirected PPI
 To begin working with a system, we need the excel sheet containing the systems components as parsed by [BCB420-2019-resources](https://github.com/hyginn/BCB420-2019-resources) scripts. For example, for the SLIGR system, the excel sheet is placed in the data folder:
 
 ```R
@@ -134,6 +229,9 @@ mySys2 <- getSysInteractions(filename, mart = myMart, criterion = "relaxed")
 hypothesize(mySys2, mySys)
 ```
 ![relaxed_networks](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/networks.png?raw=true)
+
+&nbsp;
+
 ## 3. Notes
 
 &nbsp;
