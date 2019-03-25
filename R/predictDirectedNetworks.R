@@ -273,35 +273,9 @@ visualizeInteractions <- function(network, emap, ppi_ggi) {
 ###########################################
 ## Initialization
 
-if (FALSE) {
-  load("../BCB420-2019-resources/HGNC.RData")
+getKey <- function(my.name, my.email, my.project) {
 
-  my.name <-
-    readline(prompt = "Enter full name separated by space(s): ")
   my.name <- unlist(strsplit(my.name, " "))
-  my.email <- readline(prompt = "Enter email:")
 
-  my.project <-
-    readline(prompt = "Enter project name without spaces:")
-
-  myKey <-
-    bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
-
-  filename <- "./data/SLIGR.xlsx"
-  ensembl <- useMart(biomart = "ensembl")
-  human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-  myMart <- useMart("ensembl", human$dataset)
-  #######################################################################
-  #######################################################################
-
-  mySys <- getSysInteractions(filename)
-
-  hypothesize(mySys, from = "physical")
+  myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
 }
-#####################
-#####################
-# TODO:
-# quantiative epistasis tools
-
-# documentation
-# extended hypotheses tool where even if genes are both physically and genetically interacting, they would be included in the hypothesis per genetic interaction results.
