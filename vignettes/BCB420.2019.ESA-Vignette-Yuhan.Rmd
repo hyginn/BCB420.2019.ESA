@@ -1,5 +1,5 @@
 ---
-title: "BCB420.2019.ESA-Vignette_Yuhan.Rmd"
+title: "BCB420.2019.ESA-Vignette-Yuhan.Rmd"
 author: "Yuhan Zhang"
 date: "2019/3/25"
 - name: Yuhan Zhang
@@ -17,7 +17,7 @@ output:
     toc_float: true
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{BCB420.2019.ESA_Yuhan Vignette}
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette Yuhan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 references:
