@@ -57,9 +57,6 @@ fetchComponents <- function(sys) {
 #
 # Use non-standard libraries with  package::function() idiom if possible.
 
-if (! requireNamespace(seqinr, quietly=TRUE)) {
-  install.packages("seqinr")
-}
 if (!requireNamespace("BiocManager", quietly = TRUE)){
   install.packages("BiocManager")
 }
