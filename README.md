@@ -4,15 +4,12 @@
 <!-- [![DOI](https://zenodo.org/badge/157482801.svg)](https://zenodo.org/badge/latestdoi/157482801) -->
 
 &nbsp;
+
 ###### [Boris Steipe](https://orcid.org/0000-0002-1134-6758),
 ###### Department of Biochemistry and Department of Molecular Genetics,
 ###### University of Toronto
 ###### Canada
 ###### &lt; boris.steipe@utoronto.ca &gt;
-&nbsp;
-###### [Nada Elnour](https://orcid.org/0000-0001-6165-1542),
-###### University of Toronto, Canada
-###### &lt; nada.elnour@mail.utoronto.ca &gt;
 
 ----
 
@@ -27,17 +24,18 @@ package on GitHub and
 [file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues).**
 
 ----
+
 <!-- TOCbelow -->
-1. About this Package<br/>
-2. Data<br/>
+1. About this package:<br/>
+2. Data ...<br/>
 3. Notes<br/>
-4. References<br/>
+4. References and Further reading<br/>
 5. Acknowledgements<br/>
 <!-- TOCabove -->
 
 ----
 
-## 1. About this Package
+## 1 About this package:
 
 This package is a joint development platform for student designed tools for Exploratory Systems Analysis, part of the University of Toronto course BCB420H1S (Computational Systems Biology) in the 2018/2019 academic year.
 
@@ -46,13 +44,13 @@ This package is a joint development platform for student designed tools for Expl
 
 ----
 
-## 2. Data
+## 2 Data ...
 
 Suporting resources include curated systems data and other data resources:
 
 #### 2.1 The HGNC symbol reference
 
-Load the `HGNC` object into the data folder:
+Load the `HGNC` object in the following way:
 
 ```R
 myURL <- paste0("https://github.com/hyginn/",
@@ -103,11 +101,10 @@ str(geneList)
 
 &nbsp;
 
-
-#### 2.3 STRING edges: Protein-protein Interaction Data
+#### 2.3 STRING edges:
 
 `STRINGedges` contains edges of the STRING database mapped to HGNC symbols.
-Load `STRINGedges` into the data folder:
+Load `STRINGedges` in the following way:
 
 ```R
 
@@ -124,7 +121,8 @@ str(STRINGedges)
 
 &nbsp;
 
-### 2.4 Expression profiles:
+
+#### 2.4 Expression profiles:
 
 This is in progress. Here is a function stub that returns a random, repeatable, scaled expression profile for a HGNC gene symbol:
 
@@ -186,61 +184,20 @@ fetchComponents("PHALY")
 fetchComponents("NONSUCH")
 #  [1] ""
 
+
 ```
 
 &nbsp;
 
-#### 2.6 Sample Implementation --- Predicting Regulatory Networks from Undirected PPI
-To begin working with a system, we need the excel sheet containing the systems components as parsed by [BCB420-2019-resources](https://github.com/hyginn/BCB420-2019-resources) scripts. For example, for the SLIGR system, the excel sheet is placed in the data folder:
-
-```R
-filename <- "../data/SLIGR.xlsx"
-load("../data//HGNC.RData")
-
-source('~/Documents/BCB420/BCB420.2019.ESA/R/predictDirectedNetworks.R', echo=FALSE) #enter credentials to generate your key
-
-ensembl <- useMart(biomart = "ensembl")
-human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-myMart <- useMart("ensembl", human$dataset)
-
-mySys <- getSysInteractions(filename, mart = myMart, criterion = "stringent")
-head(mySys)
-
-  gene1  gene2        interactionType
-1   ATM   TP53 Phenotypic Enhancement
-2  RELA CREBBP Phenotypic Enhancement
-3  RELA CREBBP Phenotypic Suppression
-4  RELA CREBBP Phenotypic Enhancement
-5  RELA  EP300 Phenotypic Enhancement
-6  RELA    FOS Phenotypic Enhancement
-```
-To get a hypothesized network, call hypothesize():
-```R
-hypothesize(mySys)
-```
-![PPI-GGI](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
-&nbsp;
-
-If instead we wanted both genetic and physical interactors in the SLIGR system,
-
-```R
-mySys2 <- getSysInteractions(filename, mart = myMart, criterion = "relaxed")
-
-hypothesize(mySys2, mySys)
-```
-![relaxed_networks](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/networks.png?raw=true)
+## 3 Notes
 
 &nbsp;
 
-## 3. Notes
+## 4 References and Further Reading
 
 &nbsp;
 
-## 4. References and Further Reading
-
-&nbsp;
-
-## 5. Acknowledgements
+## 5 Acknowledgements
 
 &nbsp;
 
