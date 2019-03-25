@@ -22,6 +22,7 @@ require(dplyr, quietly = TRUE)
 require(biomaRt, quietly = TRUE)
 require(ggplot2, quietly = TRUE)
 require(biogridr, quietly = TRUE)
+require(visNetwork, quietly = TRUE)
 
 # ==============================================================================
 getSysInteractions <-
@@ -234,7 +235,6 @@ hypothesize <-
 ## Network Visualization
 
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
-  require(visNetwork, quietly = TRUE)
 
   if (is.null(ppi_ggi))
   {
@@ -323,6 +323,9 @@ getKey <- function(my.name, my.email, my.project) {
 
   my.name <- unlist(strsplit(my.name, " "))
 
+  options(warn = -1)
   myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
+  options(warn=0)
   return(myKey)
-}
+
+  }
