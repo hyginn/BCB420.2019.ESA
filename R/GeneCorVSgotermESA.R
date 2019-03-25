@@ -60,7 +60,7 @@ fetchComponents <- function(sys) {
 if (!requireNamespace("BiocManager", quietly = TRUE)){
   install.packages("BiocManager")
 }
-
+BiocManager::install("biomaRt", version = "3.8")
 BiocManager::install("GOSemSim", version = "3.8")
 BiocManager::install("org.Hs.eg.db", version = "3.8")
 # packages for calculating GO similarity
