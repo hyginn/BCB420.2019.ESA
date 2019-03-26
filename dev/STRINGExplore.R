@@ -1,7 +1,6 @@
 # STRINGExplore.R
 #### Helper functions ####
-load("./data/STRINGedges.RData") #STRINGedges
-load("./data/STRINGactions.RData") #STRINGactions
+
 fetchComponents <- function(sys) {
   # returns a fixed set of symbols.
   # Function stub for development purposes only.
@@ -86,12 +85,12 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'  user would like to build a high-confidence interaction network for.
 #' @param globalEdges (dataframe). The set of high-confidence edges available for
 #' querying for geneList members.Each column is an HGNC symbol.
-#' The expected characteristics can be found in R/mapSTRING.R.
-#' Defaults to \code{STRINGedges}, loaded from /data/.
+#' The expected characteristics can be found in R/mapSTRING.R for STRINGedges.
+
 #' @param globalActions (dataframe) <description>. The set of high-confidence protein
 #' actions available for querying for geneList members.Each column is an HGNC symbol.
-#' The expected characteristics can be found in R/mapSTRING.R.
-#' Defaults to \code{STRINGactions}, loaded from /data/.
+#' The expected characteristics can be found in R/mapSTRING.R for STRINGactions.
+
 #' @return A labeled list("nodes", "edges", "network") containing the visNetwork
 #' object and the edge and node dataframes resulting from the setup of the network.
 #' May be useful for downstream analysis by the end user.
@@ -108,7 +107,7 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'
 #' @export
 
-STRINGExplore <- function(geneList, globalEdges = STRINGedges, globalActions = STRINGactions) {
+STRINGExplore <- function(geneList, globalEdges, globalActions) {
   #### 1. Prepare / Load data:####
   # alternate / future route: add option to create edges from
   # high correlation scored expression data (Pearson rho >80%) and network thos

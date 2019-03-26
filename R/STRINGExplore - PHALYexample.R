@@ -33,7 +33,7 @@ load("./data/STRINGactions.RData") #STRINGactions
 # of exploring a subsystem or simply a list of known HGNC symbols of interest,
 # rather than one of the prepared curations
 # PHALYnetwork
-PHALYnetwork <- STRINGExplore(fetchComponents("PHALY"))
+PHALYnetwork <- STRINGExplore(fetchComponents("PHALY"), STRINGedges, STRINGactions)
 head(PHALYnetwork$nodes) # The dataframe of node information. Call to view the network nodes
 head(PHALYnetwork$edges) # The dataframe of edge information. Call to view the network edges and protein interaction info
 PHALYnetwork$network # The visNetwork object. Call to plot the network in your RStudio
