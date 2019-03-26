@@ -1,5 +1,7 @@
 # STRINGExplore.R
 #### Helper functions ####
+load("./data/STRINGedges.RData") #STRINGedges
+load("./data/STRINGactions.RData") #STRINGactions
 fetchComponents <- function(sys) {
   # returns a fixed set of symbols.
   # Function stub for development purposes only.

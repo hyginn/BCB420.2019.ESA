@@ -13,11 +13,6 @@ if (! require(igraph, quietly=TRUE)) {
   library(igraph)
 }
 
-if (!require(RColorBrewer, quietly=TRUE)) {
-  install.packages("RColorBrewer")
-  library(RColorBrewer)
-}
-
 if (!require(magrittr, quietly=TRUE)) {
   install.packages("magrittr")
   library(magrittr)
