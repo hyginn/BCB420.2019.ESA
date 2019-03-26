@@ -217,7 +217,46 @@ Distribution of expression correlations between 10,000 randomly chosen gene pair
 
 &nbsp;
 
-#### 2.5 Systems:
+#### 2.5 InterPro domain annotations:
+
+Interpro domain annotations were parsed from the 50 GB annotation source of InterPro v. 73.0 and mapped to HGNC symbols (details to follow).
+
+```R
+# load the gene-annotations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "genesIPR.rds")
+genesIPR <- readRDS(url(myURL))  # reads and assigns genesIPR list
+
+str(genesIPR, list.len = 5)
+# List of 19174
+#  $ NUDT4B     : chr [1:3] "IPR000086" "IPR015797" "IPR020084"
+#  $ IGLV4-69   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV8-61   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV4-60   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV10-54  : chr [1:4] "IPR007110" "IPR013106" "IPR013783" "IPR036179"
+#   [list output truncated]
+
+
+# load the IPR_domain-locations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "IPRgenes.rds")
+IPRgenes <- readRDS(url(myURL))  # reads and assigns IPRgenes list
+
+str(IPRgenes, list.len = 5)
+# List of 16178
+#  $ IPR000086: chr [1:27] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR015797: chr [1:28] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR020084: chr [1:13] "NUDT4B" "NUDT3" "NUDT1" "NUDT2" ...
+#  $ IPR003599: chr [1:456] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV7-46" ...
+#  $ IPR007110: chr [1:674] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV10-54" ...
+#   [list output truncated]
+
+```
+
+
+&nbsp;
+
+#### 2.6 Systems:
 
 This is in progress. Here is a function stub that returns a set of gene symbols for a system name:
 
