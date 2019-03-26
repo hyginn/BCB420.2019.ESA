@@ -64,13 +64,13 @@ findSTRINGKnodes <- function(sys, per=0.05) {
   geneSet <- fetchComponents(sys)
 
   # Find IDs of vertices that are part of geneSet
-  ids <- match(geneSet, V(geneGraph)$name)
+  ids <- match(geneSet, igraph::V(geneGraph)$name)
   ids <- ids[!is.na(ids)]
 
   # Create a vertex attribute called "annotated" that identifies if it was annotated as part of the
   # input system (sys)
-  geneGraph <- set_vertex_attr(geneGraph, name="annotated", value=0)
-  geneGraph <- set_vertex_attr(geneGraph, name="annotated", index=ids, value=1)
+  geneGraph <- igraph::set_vertex_attr(geneGraph, name="annotated", value=0)
+  geneGraph <- igraph::set_vertex_attr(geneGraph, name="annotated", index=ids, value=1)
 
   # Calculate Knodes (rank of vertex association to annotated vertices)
   # https://www.rdocumentation.org/packages/SANTA/versions/2.10.2/topics/Knode
