@@ -40,8 +40,7 @@ require(visNetwork, quietly = TRUE)
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#' @example
-#' NULL
+#'
 #' @export
 getSysInteractions <-
   function(filename,
@@ -73,7 +72,6 @@ getSysInteractions <-
 #' @param myGenes A list of system's ENSEMBL peptide IDs
 #' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
 #' @return The dataframe of physically interacting genes in \code{myGenes} according to \code{mart}
-#' @example
 #'
 #' @export
 convertToHGNC <- function(myGenes, mart) {
@@ -108,7 +106,6 @@ convertToHGNC <- function(myGenes, mart) {
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#' @example
 #'
 #' @export
 getGeneticInteractome <- function(mySys, criterion) {
@@ -161,8 +158,6 @@ getGeneticInteractome <- function(mySys, criterion) {
 #' Generate the genetic interpretation map of BioGrid GGI tags of system's physical interactions.
 #'
 #' @return The dataframe mapping BioGrid GGI tag to its interpretation assuming that the system's components also interact physically.
-#' @example
-#' EMAP <- makeEMAP()
 #'
 #' @export
 makeEMAP <- function() {
@@ -223,8 +218,6 @@ makeEMAP <- function() {
 #' Generate the genetic interpretation map of BioGrid GGI tags.
 #'
 #' @return The dataframe mapping BioGrid GGI tag to its interpretation.
-#' @example
-#' GMAP <- makeGMAP()
 #'
 #' @export
 makeGMAP <- function() {
@@ -269,7 +262,6 @@ makeGMAP <- function() {
 #'
 #' @param network A dataframe of physically-interacting system components with their genetic interactions and
 #' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
-#' @example
 #'
 #' @export
 hypothesize <-
@@ -384,7 +376,6 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @param my.email A string matching a valid user email
 #' @param my.project A string specifying a short project name (no spaces)
 #' @return The unique key for user and project for data retrieval from BioGrid
-#' @example
 #'
 #' @export
 getKey <- function(my.name, my.email, my.project) {
