@@ -82,11 +82,11 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'
 #' @param geneList (char set) HGNC symbols representing the desired list of genes
 #'  user would like to build a high-confidence interaction network for.
-#' @param edges (dataframe). The set of high-confidence edges available for
+#' @param globalEdges (dataframe). The set of high-confidence edges available for
 #' querying for geneList members.Each column is an HGNC symbol.
 #' The expected characteristics can be found in R/mapSTRING.R.
 #' Defaults to \code{STRINGedges}, loaded from /data/.
-#' @param actions (dataframe) <description>. The set of high-confidence protein
+#' @param globalActions (dataframe) <description>. The set of high-confidence protein
 #' actions available for querying for geneList members.Each column is an HGNC symbol.
 #' The expected characteristics can be found in R/mapSTRING.R.
 #' Defaults to \code{STRINGactions}, loaded from /data/.
@@ -106,15 +106,15 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'
 #' @export
 
-STRINGExplore <- function(geneList, edges = STRINGedges, actions = STRINGactions) {
+STRINGExplore <- function(geneList, globalEdges = STRINGedges, globalActions = STRINGactions) {
   #### 1. Prepare / Load data:####
   # alternate / future route: add option to create edges from
   # high correlation scored expression data (Pearson rho >80%) and network thos
   geneSys <- fetchComponents("PHALY")
-  actionSet <- STRINGactions[STRINGactions$protein1 %in% geneSys &
-                               STRINGactions$protein2 %in% geneSys,]
-  sel <- (STRINGedges$protein1 %in% geneSys) & (STRINGedges$protein2 %in% geneSys)
-  geneSysEdges <- STRINGedges[sel, c("protein1", "protein2")]
+  actionSet <- globalActions[globalActions$protein1 %in% geneSys &
+                               globalActions$protein2 %in% geneSys,]
+  sel <- (globalEdges$protein1 %in% geneSys) & (globalEdges$protein2 %in% geneSys)
+  geneSysEdges <- globalEdges[sel, c("protein1", "protein2")]
 
   #### 2. Calculate betweeness centrality of graph based on STRING scores ####
   bC <- centr_betw(sXG)

@@ -24,7 +24,6 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings,
-    igraph,
     magrittr,
     visNetwork
 Suggests:
