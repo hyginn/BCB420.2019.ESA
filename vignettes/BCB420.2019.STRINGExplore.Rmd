@@ -8,7 +8,7 @@ author:
   email: g.morgenshtern@mail.utoronto.ca
 date: "`r Sys.Date()`"
 abstract: >
-  This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network of STRING coexpression scores for a curated gene system, or generally any gene list. 
+  This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network from high confidence STRING scores of a curated gene system, or generally any gene list. 
 output:
   BiocStyle::html_document:
     toc: true
@@ -80,6 +80,7 @@ This sample Vignette explains the BCB420.2019.ESA package. See the `rptPlus` pac
 - https://datastorm-open.github.io/visNetwork/options.html
 - http://kateto.net/wp-content/uploads/2017/06/Polnet%202017%20R%20Network%20Visualization%20Workshop.pdf
 - https://github.com/hyginn/BCB420.2019.STRING
+- https://datastorm-open.github.io/visNetwork/options.html
 
 # Session Info
 
