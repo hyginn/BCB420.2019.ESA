@@ -36,7 +36,7 @@
 #' # with it's interacting genes
 #' hgnc <- "BECN1"
 #'
-#' # Call the getAlignments helper function to generate the dataframe
+#' # Call the sequenceAnalysis function to generate the dataframe
 #' result <- sequenceAnalysis(hgnc)
 #' # If the user would like, the resulting data frame can be stored
 #' # in a .tsv file which can be imported into the environment by the
