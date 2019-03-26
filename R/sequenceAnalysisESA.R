@@ -97,7 +97,7 @@ sequenceAnalysis <- function(hgnc) {
   ### ============= Setting up PDB-HGNC database ========================== ###
 
   # Install required packages
-  install_github("judyheewonlee/BCB420.2019.PDB")
+  devtools::install_github("judyheewonlee/BCB420.2019.PDB")
 
   if (!requireNamespace("devtools", quietly = TRUE)) {
     install.packages("devtools")
@@ -120,7 +120,7 @@ sequenceAnalysis <- function(hgnc) {
     BiocManager::install("rtracklayer")
   }
 
-  if (! requireNamespace("biomaRt", quietly = TRUE)) {
+  if (!requireNamespace("biomaRt", quietly = TRUE)) {
     BiocManager::install("biomaRt")
   }
 
@@ -129,7 +129,7 @@ sequenceAnalysis <- function(hgnc) {
   }
 
   if (!requireNamespace("Biostrings", quietly = TRUE)) {
-    BiocManager::install("Biostrings", version = "3.8")
+    BiocManager::install("Biostrings")
   }
 
   source(file.path(.libPaths(),
