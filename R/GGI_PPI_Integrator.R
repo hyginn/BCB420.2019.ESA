@@ -42,12 +42,12 @@ require(visNetwork, quietly = TRUE)
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 #' @import xlsx
 #' @import readxl
-#' @import dplyr
+#' @importFrom dplyr filter
 #' @import biomaRt
 #' @import ggplot2
 #' @import biogridr
 #' @import utils
-#' @import stats
+#' @importFrom stats complete.cases
 #' @export
 getSysInteractions <-
   function(filename,
@@ -81,12 +81,12 @@ getSysInteractions <-
 #' @return The dataframe of physically interacting genes in \code{myGenes} according to \code{mart}
 #' @import xlsx
 #' @import readxl
-#' @import dplyr
+#' @importFrom dplyr filter
 #' @import biomaRt
 #' @import ggplot2
 #' @import biogridr
 #' @import utils
-#' @import stats
+#' @importFrom stats complete.cases
 #' @export
 convertToHGNC <- function(myGenes, mart) {
   source("./R/recoverIDs.R")
@@ -122,12 +122,12 @@ convertToHGNC <- function(myGenes, mart) {
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 #' @import xlsx
 #' @import readxl
-#' @import dplyr
+#' @importFrom dplyr filter
 #' @import biomaRt
 #' @import ggplot2
 #' @import biogridr
 #' @import utils
-#' @import stats
+#' @importFrom stats complete.cases
 #' @export
 getGeneticInteractome <- function(mySys, criterion) {
   myGenes <-
