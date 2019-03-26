@@ -31,6 +31,8 @@ fetchComponents <- function(sys) {
 #' @param sys System Code
 #' @return (matrix) a matrix of enriched GO terms with semantic similarity values
 #'
+#' @author \href{https://orcid.org/0000-0002-1134-6758}{Boris Steipe} (aut)
+#'
 #' @examples
 #' semanticSimilarity("PHALY")
 #'
@@ -66,3 +68,5 @@ semanticSimilarity <- function(sys) {
   #returns of semantic similarity matrix of the enriched GO terms from our input geneset
   return(semSim)
 }
+
+# [END]
