@@ -25,7 +25,8 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     magrittr,
-    visNetwork
+    visNetwork,
+    biomaRt
 Suggests:
     testthat,
     BiocStyle,
