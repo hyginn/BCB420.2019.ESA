@@ -1,11 +1,11 @@
 # predictDirectedNetworks.R
-#
+
 # Purpose: To augment a system with genetic and physical interaction data in order to hypothesize regulatory relationshipd between components.
 # Version: 1.0
 # Date: 2019-03-21
 # Author: Nada Elnour
 # License: MIT
-#
+
 # Input: An excel spreadsheet of the system parsed using the BCB420-2019-resources scripts.
 # Output: Graph hypotheses of possible regulatry networks in the system
 # Dependencies: tibble 2.0.1; biomaRt 2.38.0; xlsx 0.6.1; readxl 1.3.1; dplyr 0.8.0.1; ggplot2 3.1.0; biogridr 0.0.0.9000; visNetwork 2.0.5
@@ -33,9 +33,21 @@ require(biogridr, quietly = TRUE)
 require(visNetwork, quietly = TRUE)
 
 # ==============================================================================
+#' Filter system by physically-interacting components and return their genetic interactions
+#'
+#' @param filename A string specifying the full path to the excel sheet containing the system's components
+#' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
+#' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
+#' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @examples
+#' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
+#' load("../data/HGNC.RData")
+#' ensembl <- useMart(biomart = "ensembl")
+#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
+#' myMart <- useMart("ensembl", human$dataset)
+#' mySys <- getSysInteractions("./data/SLIGR.xlsx", mart = myMart, criterion = "stringent")
 getSysInteractions <-
   function(filename,
-           intType = "genetic",
            mart = myMart,
            criterion = "stringent") {
     geneComp <-
@@ -53,15 +65,26 @@ getSysInteractions <-
     )
     myGenes <- myGenes[(myGenes$ensembl_peptide_id != ""),]
 
-    # get interactome of interest
-
     mySys <- convertToHGNC(myGenes, myMart)
     mySys <- getGeneticInteractome(mySys, criterion)
 
     return(mySys)
-
   }
 
+#' Convert a system's components to HGNC-annotated physical interactors
+#'
+#' @param myGenes A list of system's ENSEMBL peptide IDs
+#' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
+#' @return The dataframe of physically interacting genes in \code{myGenes} according to \code{mart}
+#' @examples
+#' ensembl <- useMart(biomart = "ensembl")
+#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
+#' myMart <- useMart("ensembl", human$dataset)
+#' PHALY <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
+#' "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
+#' "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
+#' "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM")
+#' mySys <- convertToHGNC(PHALY, myMart)
 convertToHGNC <- function(myGenes, mart) {
   source("./R/recoverIDs.R")
 
@@ -77,13 +100,10 @@ convertToHGNC <- function(myGenes, mart) {
                     interactions$protein2 %in% myGenes),]
   interactions <- unique(interactions)
 
-  ##############
   interactions$protein1 <-
     recoverIDs(interactions$protein1, mart = mart)
   interactions$protein2 <-
     recoverIDs(interactions$protein2, mart = mart)
-
-  #ggplot(interactions, aes(combined_score)) + geom_histogram() + theme_classic()
 
   ppi <-
     data.frame(interactions$protein1$sym, interactions$protein2$sym)
@@ -91,6 +111,20 @@ convertToHGNC <- function(myGenes, mart) {
   return(ppi)
 }
 
+#' Return BioGrid genetic interaction tags of physical interactors of the system
+#'
+#' @param mySys The dataframe output of \code{convertToHGNC}
+#' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
+#' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @examples
+#' ensembl <- useMart(biomart = "ensembl")
+#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
+#' myMart <- useMart("ensembl", human$dataset)
+#' PHALY <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
+#' "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
+#' "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
+#' "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM")
+#' mySys <- convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "stringent")
 getGeneticInteractome <- function(mySys, criterion) {
   myGenes <-
     toString(unique(c(
@@ -138,8 +172,12 @@ getGeneticInteractome <- function(mySys, criterion) {
   return(ggi)
 }
 
+#' Generate the genetic interpretation map of BioGrid GGI tags of system's physical interactions.
+#'
+#' @return The dataframe mapping BioGrid GGI tag to its interpretation assuming that the system's components also interact physically.
+#' @examples
+#' EMAP <- makeEMAP()
 makeEMAP <- function() {
-  ##make epistasis map
   geneticInteractions <- c(
     "Dosage Growth Defect",
     "Dosage Lethality",
@@ -172,18 +210,15 @@ makeEMAP <- function() {
     "",
     "",
     "in a redundant pathway",
-    "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2; potentially antagonistic",
-    #negative genetic
+    "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2; potentially antagonistic", #negative genetic
     "if protein 2 is inhibitor, protein 1 activates protein 2; protein 2 is an activator, protein 1 inhibits protein 2",
     "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2",
-    "potentially synergistic;",
-    #positive genetic
+    "potentially synergistic", #positive genetic
     "in a redundant pathway",
     "in a redundant pathway",
     "in a redundant pathway",
     ""
   )
-
 
   EMAP <- data.frame(geneticInt = geneticInteractions,
                      effect = effects,
@@ -193,6 +228,11 @@ makeEMAP <- function() {
 
 }
 
+#' Generate the genetic interpretation map of BioGrid GGI tags.
+#'
+#' @return The dataframe mapping BioGrid GGI tag to its interpretation.
+#' @examples
+#' GMAP <- makeGMAP()
 makeGMAP <- function(){
     geneticInteractions <- c(
       "Dosage Growth Defect",
@@ -229,19 +269,27 @@ makeGMAP <- function(){
 
 }
 
-##########################################
-## Hypothesis Networks
+#' Generates an annotated hypothesis graph whose nodes are components of \code{mySys} and edges are GGI interpretations in either \code{EMAP} or \code{GMAP}
+#'
+#' @param network A dataframe of physically-interacting system components with their genetic interactions and
+#' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
+#' @examples
+#' hypothesize(mySys)
+#' mySys2 <-  convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "relaxed") # mySys is a subset of mySys2
+#' hypothesize(mySys2, mySys)
 hypothesize <-
-  function(mySys,
+  function(network,
            ppi_ggi = NULL) {
     EMAP <- makeEMAP()
     GMAP <- makeGMAP()
-    visualizeInteractions(mySys, EMAP, ppi_ggi, GMAP)
+    visualizeInteractions(network, EMAP, ppi_ggi, GMAP)
   }
 
-##########################################
-## Network Visualization
-
+#' A helper function of \code{hypothesize} that plots the hypothesis graph
+#'
+#' @inheritParams hypothesize
+#' @param gmap The dataframe obtained from \code{makeGMAP}.
+#' @param emap The dataframe obtained from \code{makeEMAP}.
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 
   if (is.null(ppi_ggi))
@@ -324,9 +372,14 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
   visNetwork(nodes, edges) %>% visGroups(groupname = "ppi-ggi", color = "salmon") %>% visOptions(selectedBy = "group") %>% visEdges(color = "darkgray")
 }
 
-###########################################
-## Initialization
-
+#' Generates a unique key for BioGrid API access
+#'
+#' @param my.name A string of the user's full name separated by space(s)
+#' @param my.email A string matching a valid user email
+#' @param my.project A string specifying a short project name (no spaces)
+#' @return The unique key for user and project for data retrieval from BioGrid
+#' @examples
+#' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
 getKey <- function(my.name, my.email, my.project) {
 
   my.name <- unlist(strsplit(my.name, " "))
@@ -335,5 +388,4 @@ getKey <- function(my.name, my.email, my.project) {
   myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
   options(warn=0)
   return(myKey)
-
   }
