@@ -1,7 +1,30 @@
 # Script to load STRING coexpression data and map it
-# v1 - 20/03/19
+# v1 - 22/03/19
+# mapSTRING.R
+#
+#
+# A script that produces high-confidence, HGNC-symbol mapped datasets for both the
+# "9606.protein.links.detailed.v11.0.txt" and "9606.protein.actions.v11.0.txt"
+# data files available on the STRING consortium website
+#
+# Author: Boris Steipe (ORCID: 0000-0002-1134-6758)
+# Contributor: Gabriela Morgenshtern (ORCID:0000-0003-4762-8797)
+# License: (c) Author (2019) + MIT
+# Date: 2019-03-22
+#
+# ToDo:
+# Notes:
+#
+# ==============================================================================
 
-#### All code comes from Dr. Steipe's BCB420.2019.STRING package: ####
+# SIDE EFFECTS: RData file creation
+# This script can be source()'d to create the RData files needed for default
+# package function.
+# All other code is executed when source()'d and this REQUIRES the user to
+# have the "9606.protein.links.detailed.v11.0.txt" and
+# "9606.protein.actions.v11.0.txt" in their /data directory.
+
+#### Most code comes from Dr. Steipe's BCB420.2019.STRING package: ####
 #### 1. Dependencies ####
 if (! requireNamespace("readr")) {
   install.packages("readr")
