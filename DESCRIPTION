@@ -7,6 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758"))
+             person("Rachel", "Woo", 
+                    email = "woorachels@mail.utoronto.ca", 
+                    role = c("cbt"), 
+                    comment = c(ORCID = "0000-0002-1387-487X"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems

@@ -1,0 +1,44 @@
+---
+title: "quantifyTranscriptionFactorSimilarity"
+author: "Rachel Woo"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quantifyTranscriptionFactorSimilarity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is the vignette for the quantifyTranscriptionFactorSimilarity.R contribution to the ESA Package. This file explores TF presence and absence to hypothesize about similar trans-regulatory elements. quantifyTranscriptionFactorSimilarity() is the  only non-helper function and is what should be called from outside the package. 
+
+quantifyTranscriptionFactorSimilarity()
+- Input: filepath the system excelsheet
+- Output: ~/inst/img/TFOccuranceDendrogram.jpg. A dendrogram that shows the distance on the basis of common TFs. 
+
+## Helper Functions
+
+The file has several helper functions. Please see the Roxygen documentation for more detail 
+
+- getSysGenes(): Helper function to read in system data from excel
+- getSysTFdata(): Helper Function: get TF data only for genes in system
+- makeMatrix(): Helper function to make binary presence absence matrix
+- visualize(): Helper Visualization Function
+
+## Hidden Information 
+
+This information was not deemed to be signficant for display, but can still be access in the following functions by altering the return statement. 
+
+- List of genes without TF from database: quantifyTFSimilarity
+- Cluster: visualize
+- Distance Matrix: visualize
+
+
+
+
