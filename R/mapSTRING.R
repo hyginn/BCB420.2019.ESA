@@ -47,6 +47,12 @@
 #   devtools::install_github("hyginn/BCB420.2019.STRING")
 # }
 #
+# if (! requireNamespace("BiocCheck")) {
+#   BiocManager::install("BiocCheck")
+# }
+#
+#
+#
 # # Load raw STRING detailed dataset
 # tmp <- readr::read_delim(file.path("./data", "9606.protein.links.detailed.v11.0.txt"),
 #                          delim = " ",

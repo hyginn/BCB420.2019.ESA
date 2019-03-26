@@ -26,7 +26,9 @@ Imports:
     Biostrings,
     magrittr,
     visNetwork,
-    biomaRt
+    biomaRt,
+    BiocManager,
+    BiocCheck
 Suggests:
     testthat,
     BiocStyle,

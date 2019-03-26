@@ -1,6 +1,29 @@
 # STRINGExplore.R
 #### Helper functions ####
+if (! requireNamespace("readr")) {
+  install.packages("readr")
+}
+if (! requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+if (! requireNamespace("biomaRt", quietly = TRUE)) {
+  BiocManager::install("biomaRt")
+}
 
+if (! requireNamespace("devtools")) {
+  install.packages("devtools")
+}
+
+# Question for B Steipe: why didn't this download the mapping tool script into /inst?
+
+if (! requireNamespace("devtools")) {
+  install.packages("devtools")
+  devtools::install_github("hyginn/BCB420.2019.STRING")
+}
+
+if (! requireNamespace("BiocCheck")) {
+  BiocManager::install("BiocCheck")
+}
 fetchComponents <- function(sys) {
   # returns a fixed set of symbols.
   # Function stub for development purposes only.
