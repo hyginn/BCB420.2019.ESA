@@ -8,20 +8,10 @@
 #
 # #### Setup and Dependencies ####
 # # Package requirements
-# if (! require(igraph, quietly=TRUE)) {
-#   install.packages("igraph")
-#   library(igraph)
-# }
-#
-# if (!require(magrittr, quietly=TRUE)) {
-#   install.packages("magrittr")
-#   library(magrittr)
-# }
-#
-# if (!require(visNetwork, quietly=TRUE)) {
-#   install.packages("visNetwork")
-#   library(visNetwork)
-# }
+# # require(igraph, quietly = TRUE)
+# require(magrittr, quietly = TRUE)
+# require(igraph, quietly = TRUE)
+# require(visNetwork, quietly=TRUE)
 #
 # # Internal functions
 # source("./dev/STRINGExplore.R")

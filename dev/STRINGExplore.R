@@ -140,14 +140,14 @@ STRINGExplore <- function(geneList, globalEdges, globalActions) {
   sel <- (globalEdges$protein1 %in% geneSys) & (globalEdges$protein2 %in% geneSys)
   geneSysEdges <- globalEdges[sel, c("protein1", "protein2")]
 
-  #### 2. Calculate betweeness centrality of graph based on STRING scores ####
+  #### 2. igraph setup (visNetwork backbone)####
+  sXG <- igraph::graph.data.frame(geneSysEdges, directed = F)
+  sXGgraph <- igraph::simplify(sXG)
+
+  #### 3. Calculate betweeness centrality of graph based on STRING scores ####
   bC <- centr_betw(sXG)
   nodeBetw <- bC$res
   nodeBetw <- round(log(nodeBetw + 1)) + 1
-
-  #### 3. igraph setup (visNetwork backbone)####
-  sXG <- igraph::graph.data.frame(geneSysEdges, directed = F)
-  sXGgraph <- igraph::simplify(sXG)
   V(sXGgraph)$btwndegree <- nodeBetw
 
   #### 4. visNetwork setup from igraph object ####
