@@ -6,7 +6,13 @@ Authors@R: c(
              person("Boris", "Steipe", 
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
-                    comment = c(ORCID = "0000-0002-1134-6758"))
+                    comment = c(ORCID = "0000-0002-1134-6758")),
+                    
+             person("Edward", "Ho", 
+                    email = "emc.ho@mail.utoronto.ca", 
+                    role = c("aut"), 
+                    comment = c(ORCID = "0000-0002-1360-0086"))
+    
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -20,6 +26,8 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings
+    igraph
+    SANTA
 Suggests:
     testthat,
     BiocStyle,
