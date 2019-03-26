@@ -15,7 +15,7 @@
 # This script imports biogridr which uses the deprecated function xml2::xml_find_one().
 
 # ====  PACKAGES  ==============================================================
-if (requireNamespace("biogridr", quietly=TRUE)) {
+if (requireNamespace("biogridr", quietly = TRUE)) {
   library(biogridr)
 } else {
   install.packages("devtools")
@@ -38,7 +38,8 @@ require(visNetwork, quietly = TRUE)
 #' @param filename A string specifying the full path to the excel sheet containing the system's components
 #' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
-#' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+#' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 #' @examples
 #' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
 #' load("../data/HGNC.RData")
@@ -63,7 +64,7 @@ getSysInteractions <-
       filters = "hgnc_symbol",
       values = geneSym
     )
-    myGenes <- myGenes[(myGenes$ensembl_peptide_id != ""),]
+    myGenes <- myGenes[(myGenes$ensembl_peptide_id != ""), ]
 
     mySys <- convertToHGNC(myGenes, myMart)
     mySys <- getGeneticInteractome(mySys, criterion)
@@ -97,7 +98,7 @@ convertToHGNC <- function(myGenes, mart) {
 
   interactions <-
     interactions[(interactions$protein1 %in% myGenes &
-                    interactions$protein2 %in% myGenes),]
+                    interactions$protein2 %in% myGenes), ]
   interactions <- unique(interactions)
 
   interactions$protein1 <-
@@ -107,7 +108,7 @@ convertToHGNC <- function(myGenes, mart) {
 
   ppi <-
     data.frame(interactions$protein1$sym, interactions$protein2$sym)
-  ppi <- ppi[complete.cases(ppi),]
+  ppi <- ppi[complete.cases(ppi), ]
   return(ppi)
 }
 
@@ -115,7 +116,8 @@ convertToHGNC <- function(myGenes, mart) {
 #'
 #' @param mySys The dataframe output of \code{convertToHGNC}
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
-#' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+#' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 #' @examples
 #' ensembl <- useMart(biomart = "ensembl")
 #' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
@@ -139,7 +141,7 @@ getGeneticInteractome <- function(mySys, criterion) {
     humInt[(
       humInt$experimental_system_type == "genetic" &
         humInt$organism_id_for_interactor_b == 9606
-    ), ]
+    ),]
 
   humInt <-
     data.frame(
@@ -168,7 +170,7 @@ getGeneticInteractome <- function(mySys, criterion) {
              ))
   }
 
-  ggi <- ggi[complete.cases(ggi),]
+  ggi <- ggi[complete.cases(ggi), ]
   return(ggi)
 }
 
@@ -196,10 +198,12 @@ makeEMAP <- function() {
     "inhibited by",
     "inhibited by",
     "equivalent/activates",
-    "cis-regulates", #negative genetic
+    "cis-regulates",
+    #negative genetic
     "trans-regulates",
     "cis-regulates",
-    "trans-regulates", #positive genetic
+    "trans-regulates",
+    #positive genetic
     "equivalent/activates",
     "equivalent/activates",
     "equivalent/activates",
@@ -210,10 +214,12 @@ makeEMAP <- function() {
     "",
     "",
     "in a redundant pathway",
-    "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2; potentially antagonistic", #negative genetic
+    "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2; potentially antagonistic",
+    #negative genetic
     "if protein 2 is inhibitor, protein 1 activates protein 2; protein 2 is an activator, protein 1 inhibits protein 2",
     "if protein 2 is inhibitor, protein 1 inhibits protein 2; protein 2 is an activator, protein 1 activates protein 2",
-    "potentially synergistic", #positive genetic
+    "potentially synergistic",
+    #positive genetic
     "in a redundant pathway",
     "in a redundant pathway",
     "in a redundant pathway",
@@ -233,39 +239,41 @@ makeEMAP <- function() {
 #' @return The dataframe mapping BioGrid GGI tag to its interpretation.
 #' @examples
 #' GMAP <- makeGMAP()
-makeGMAP <- function(){
-    geneticInteractions <- c(
-      "Dosage Growth Defect",
-      "Dosage Lethality",
-      "Dosage Rescue",
-      "Negative Genetic",
-      "Phenotypic Enhancement",
-      "Phenotypic Suppression",
-      "Positive Genetic",
-      "Synthetic Growth Defect",
-      "Synthetic Haploinsufficiency",
-      "Synthetic Lethality",
-      "Synthetic Rescue"
-    )
+makeGMAP <- function() {
+  geneticInteractions <- c(
+    "Dosage Growth Defect",
+    "Dosage Lethality",
+    "Dosage Rescue",
+    "Negative Genetic",
+    "Phenotypic Enhancement",
+    "Phenotypic Suppression",
+    "Positive Genetic",
+    "Synthetic Growth Defect",
+    "Synthetic Haploinsufficiency",
+    "Synthetic Lethality",
+    "Synthetic Rescue"
+  )
 
-    effects <- c(
-      "negative-parallels",
-      "negative-parallels",
-      "positive-parallels",
-      "synergizes with", #negative genetic
-      "synergizes with",
-      "antagonizes",
-      "antagonizes", #positive genetic
-      "synergizes with",
-      "synergizes with",
-      "synergizes with",
-      "antagonizes"
-    )
+  effects <- c(
+    "negative-parallels",
+    "negative-parallels",
+    "positive-parallels",
+    "synergizes with",
+    #negative genetic
+    "synergizes with",
+    "antagonizes",
+    "antagonizes",
+    #positive genetic
+    "synergizes with",
+    "synergizes with",
+    "synergizes with",
+    "antagonizes"
+  )
 
-    GMAP <- data.frame(geneticInt = geneticInteractions,
-                       effect = effects)
+  GMAP <- data.frame(geneticInt = geneticInteractions,
+                     effect = effects)
 
-    return(GMAP)
+  return(GMAP)
 
 }
 
@@ -275,8 +283,8 @@ makeGMAP <- function(){
 #' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
 #' @examples
 #' hypothesize(mySys)
-#' mySys2 <-  convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "relaxed") # mySys is a subset of mySys2
-#' hypothesize(mySys2, mySys)
+#' mySys2 <-  convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "relaxed")
+#' hypothesize(mySys2, mySys) # mySys is a subset of mySys2
 hypothesize <-
   function(network,
            ppi_ggi = NULL) {
@@ -291,7 +299,6 @@ hypothesize <-
 #' @param gmap The dataframe obtained from \code{makeGMAP}.
 #' @param emap The dataframe obtained from \code{makeEMAP}.
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
-
   if (is.null(ppi_ggi))
   {
     network$gene1 <- as.factor(network$gene1)
@@ -350,12 +357,22 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
     edgeLabels <- c()
 
     for (i in 1:(length(network$interactionType))) {
-      sel <- (as.character(network$gene1[i]) %in% as.character(ppi_ggi$gene1) & as.character(network$gene2[i]) %in% as.character(ppi_ggi$gene2))
+      sel <-
+        (
+          as.character(network$gene1[i]) %in% as.character(ppi_ggi$gene1) &
+            as.character(network$gene2[i]) %in% as.character(ppi_ggi$gene2)
+        )
       if (sel) {
-        idx <- which(as.character(ppi_ggi$gene1) == as.character(network$gene1[i]) & as.character(ppi_ggi$gene2) == as.character(network$gene2[i]) )
-        edgeLabels <- c(edgeLabels, as.character(emap$effect[match(ppi_ggi$interactionType[idx], emap$geneticInt)]))
+        idx <-
+          which(
+            as.character(ppi_ggi$gene1) == as.character(network$gene1[i]) &
+              as.character(ppi_ggi$gene2) == as.character(network$gene2[i])
+          )
+        edgeLabels <-
+          c(edgeLabels, as.character(emap$effect[match(ppi_ggi$interactionType[idx], emap$geneticInt)]))
       } else {
-        edgeLabels <- c(edgeLabels, as.character(gmap$effect[match(network$interactionType[i], gmap$geneticInt)]))
+        edgeLabels <-
+          c(edgeLabels, as.character(gmap$effect[match(network$interactionType[i], gmap$geneticInt)]))
       }
     }
 
@@ -381,11 +398,11 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @examples
 #' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
 getKey <- function(my.name, my.email, my.project) {
-
   my.name <- unlist(strsplit(my.name, " "))
 
   options(warn = -1)
-  myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
-  options(warn=0)
+  myKey <-
+    bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
+  options(warn = 0)
   return(myKey)
-  }
+}

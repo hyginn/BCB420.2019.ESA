@@ -16,6 +16,6 @@ Generates an annotated hypothesis graph whose nodes are components of \code{mySy
 }
 \examples{
 hypothesize(mySys)
-mySys2 <-  convertToHGNC(PHALY, myMart) \%>\% getGeneticInteractome(criterion = "relaxed") # mySys is a subset of mySys2
-hypothesize(mySys2, mySys)
+mySys2 <-  convertToHGNC(PHALY, myMart) \%>\% getGeneticInteractome(criterion = "relaxed")
+hypothesize(mySys2, mySys) # mySys is a subset of mySys2
 }

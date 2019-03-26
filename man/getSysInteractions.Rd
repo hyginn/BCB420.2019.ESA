@@ -14,7 +14,8 @@ getSysInteractions(filename, mart = myMart, criterion = "stringent")
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
 }
 \value{
-A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 }
 \description{
 Filter system by physically-interacting components and return their genetic interactions

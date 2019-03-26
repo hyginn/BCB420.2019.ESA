@@ -12,7 +12,8 @@ getGeneticInteractome(mySys, criterion)
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
 }
 \value{
-The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent") or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 }
 \description{
 Return BioGrid genetic interaction tags of physical interactors of the system
