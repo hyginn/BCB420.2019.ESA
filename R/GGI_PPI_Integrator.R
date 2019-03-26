@@ -40,7 +40,14 @@ require(visNetwork, quietly = TRUE)
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#'
+#' @import xlsx
+#' @import readxl
+#' @import dplyr
+#' @import biomaRt
+#' @import ggplot2
+#' @import biogridr
+#' @import utils
+#' @import stats
 #' @export
 getSysInteractions <-
   function(filename,
@@ -72,7 +79,14 @@ getSysInteractions <-
 #' @param myGenes A list of system's ENSEMBL peptide IDs
 #' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
 #' @return The dataframe of physically interacting genes in \code{myGenes} according to \code{mart}
-#'
+#' @import xlsx
+#' @import readxl
+#' @import dplyr
+#' @import biomaRt
+#' @import ggplot2
+#' @import biogridr
+#' @import utils
+#' @import stats
 #' @export
 convertToHGNC <- function(myGenes, mart) {
   source("./R/recoverIDs.R")
@@ -106,7 +120,14 @@ convertToHGNC <- function(myGenes, mart) {
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#'
+#' @import xlsx
+#' @import readxl
+#' @import dplyr
+#' @import biomaRt
+#' @import ggplot2
+#' @import biogridr
+#' @import utils
+#' @import stats
 #' @export
 getGeneticInteractome <- function(mySys, criterion) {
   myGenes <-
@@ -262,7 +283,7 @@ makeGMAP <- function() {
 #'
 #' @param network A dataframe of physically-interacting system components with their genetic interactions and
 #' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
-#'
+#' @import visNetwork
 #' @export
 hypothesize <-
   function(network,
@@ -277,7 +298,7 @@ hypothesize <-
 #' @inheritParams hypothesize
 #' @param gmap The dataframe obtained from \code{makeGMAP}.
 #' @param emap The dataframe obtained from \code{makeEMAP}.
-#'
+#' @import visNetwork
 #' @export
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
   if (is.null(ppi_ggi))
@@ -376,6 +397,9 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @param my.email A string matching a valid user email
 #' @param my.project A string specifying a short project name (no spaces)
 #' @return The unique key for user and project for data retrieval from BioGrid
+#' @import biogridr
+#' @examples
+#' myKey <- getKey("Tophie McGophie", "tmc@@hammertime.com", "SheTouchedThis")
 #'
 #' @export
 getKey <- function(my.name, my.email, my.project) {

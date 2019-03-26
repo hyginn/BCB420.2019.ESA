@@ -31,7 +31,8 @@ Imports:
     visNetwork,
     dplyr,
     biomaRt,
-    ggplot2
+    ggplot2,
+    biogridr
 Suggests:
     testthat,
     BiocStyle,
