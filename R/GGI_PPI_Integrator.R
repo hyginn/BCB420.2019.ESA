@@ -40,13 +40,9 @@ require(visNetwork, quietly = TRUE)
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#' @examples
-#' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
-#' load("../data/HGNC.RData")
-#' ensembl <- useMart(biomart = "ensembl")
-#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-#' myMart <- useMart("ensembl", human$dataset)
-#' mySys <- getSysInteractions("./data/SLIGR.xlsx", mart = myMart, criterion = "stringent")
+#' @example
+#' NULL
+#' @export
 getSysInteractions <-
   function(filename,
            mart = myMart,
@@ -77,15 +73,9 @@ getSysInteractions <-
 #' @param myGenes A list of system's ENSEMBL peptide IDs
 #' @param mart A biomaRt mart to be queried for ENSEMBL ID conversion
 #' @return The dataframe of physically interacting genes in \code{myGenes} according to \code{mart}
-#' @examples
-#' ensembl <- useMart(biomart = "ensembl")
-#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-#' myMart <- useMart("ensembl", human$dataset)
-#' PHALY <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
-#' "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
-#' "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
-#' "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM")
-#' mySys <- convertToHGNC(PHALY, myMart)
+#' @example
+#'
+#' @export
 convertToHGNC <- function(myGenes, mart) {
   source("./R/recoverIDs.R")
 
@@ -118,15 +108,9 @@ convertToHGNC <- function(myGenes, mart) {
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#' @examples
-#' ensembl <- useMart(biomart = "ensembl")
-#' human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-#' myMart <- useMart("ensembl", human$dataset)
-#' PHALY <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
-#' "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
-#' "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
-#' "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM")
-#' mySys <- convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "stringent")
+#' @example
+#'
+#' @export
 getGeneticInteractome <- function(mySys, criterion) {
   myGenes <-
     toString(unique(c(
@@ -177,8 +161,10 @@ getGeneticInteractome <- function(mySys, criterion) {
 #' Generate the genetic interpretation map of BioGrid GGI tags of system's physical interactions.
 #'
 #' @return The dataframe mapping BioGrid GGI tag to its interpretation assuming that the system's components also interact physically.
-#' @examples
+#' @example
 #' EMAP <- makeEMAP()
+#'
+#' @export
 makeEMAP <- function() {
   geneticInteractions <- c(
     "Dosage Growth Defect",
@@ -237,8 +223,10 @@ makeEMAP <- function() {
 #' Generate the genetic interpretation map of BioGrid GGI tags.
 #'
 #' @return The dataframe mapping BioGrid GGI tag to its interpretation.
-#' @examples
+#' @example
 #' GMAP <- makeGMAP()
+#'
+#' @export
 makeGMAP <- function() {
   geneticInteractions <- c(
     "Dosage Growth Defect",
@@ -281,10 +269,9 @@ makeGMAP <- function() {
 #'
 #' @param network A dataframe of physically-interacting system components with their genetic interactions and
 #' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
-#' @examples
-#' hypothesize(mySys)
-#' mySys2 <-  convertToHGNC(PHALY, myMart) %>% getGeneticInteractome(criterion = "relaxed")
-#' hypothesize(mySys2, mySys) # mySys is a subset of mySys2
+#' @example
+#'
+#' @export
 hypothesize <-
   function(network,
            ppi_ggi = NULL) {
@@ -298,6 +285,8 @@ hypothesize <-
 #' @inheritParams hypothesize
 #' @param gmap The dataframe obtained from \code{makeGMAP}.
 #' @param emap The dataframe obtained from \code{makeEMAP}.
+#'
+#' @export
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
   if (is.null(ppi_ggi))
   {
@@ -395,8 +384,9 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @param my.email A string matching a valid user email
 #' @param my.project A string specifying a short project name (no spaces)
 #' @return The unique key for user and project for data retrieval from BioGrid
-#' @examples
-#' myKey <- get_key("Tophie McGophie", "tmc\code{at}hammertime.com", "myProj")
+#' @example
+#'
+#' @export
 getKey <- function(my.name, my.email, my.project) {
   my.name <- unlist(strsplit(my.name, " "))
 
@@ -406,3 +396,111 @@ getKey <- function(my.name, my.email, my.project) {
   options(warn = 0)
   return(myKey)
 }
+
+# The following function is copied from Dr. Boris Steipe's STRING tool
+# recoverIDs.R
+#
+# Purpose: To annnotate ENSEMBL protein IDs with gene names through BioMart
+# Source: https://github.com/hyginn/BCB420.2019.STRING
+# Version: 1.0
+# Date: 2019-01-24
+# Author: Boris Steipe
+# License: MIT
+# ==============================================================================
+# NO SIDE EFFECTS:
+# This script can be safely source()'d to define the functions it contains and
+# install.packages()/run library() as required.
+# All other code will not be executed unless this is done interactively.
+# ==============================================================================
+
+#' Try to recover IDs for ensp to sym mapping from biomart
+#' @param  ensp (character) a vector of ensemble peptide IDs
+#' @param mart (Mart)      an ensemble mart object
+#' "HGNC" must exist in the global namespace
+#' @return a dataframe with columns "ensp" containing the ensemble
+#' peptide IDs of the input that could be mapped, and "sym",
+#'  which contains the corresponding HGNC symbols, and rownames ensp.
+#'
+#' @export
+recoverIDs <- function(ensp, mart) {
+  # Purpose:
+  #     Try to recover IDs for ensp to sym mapping from biomart
+  # Parameters:
+  #     ensp: (character) a vector of ensemble peptide IDs
+  #     mart: (Mart)      an ensemble mart object
+  #     "HGNC" must exist in the global namespace
+  # Value:
+  #     result: a dataframe with columns "ensp" containing the ensemble
+  #             peptide IDs of the input that could be mapped, and "sym",
+  #             which contains the corresponding HGNC symbols, and rownames
+  #             ensp.
+
+  # Note: to figure out the correct filters and attributes to use in
+  #       querying a biomart, first fetch the filters and attributes with
+  #       code like:
+  #         filt <- biomaRt::listFilters(myMart)
+  #         attr <- biomaRt::listAttributes(myMart)
+  #       ... and then query:
+  #         attr$name[grep("RefSeq", attr$description, ignore.case = TRUE)]
+
+  # Define which attributes we want to fetch from biomart, and which columns
+  # those match to in "HGNC":
+  myAtt <- data.frame(biomart = c("uniprotswissprot",
+                                  "refseq_mrna",
+                                  "ucsc"),
+                      HGNC =    c("UniProtID",
+                                  "RefSeqID",
+                                  "UCSCID"),
+                      stringsAsFactors = FALSE)
+
+  # Send off biomart query
+  bm <- biomaRt::getBM(filters    =   "ensembl_peptide_id",
+                       attributes = c("ensembl_peptide_id",
+                                      myAtt$biomart),
+                       values     = ensp,
+                       mart       = mart)
+
+  if (nrow(bm) > 0) {                   # at least one match was returned
+    bm$sym <- rep(NA, nrow(bm))         # add a column to hold map results
+    for (iCol in seq_len(ncol(bm))) {   # replace all "" with NA
+      # Careful: combining logical vectors that can include NA is tricky.
+      # Select elements that are neither already NA nor not-empty
+      sel <- ( ! is.na(bm[ , iCol])) & (bm[ , iCol] == "")
+      bm[sel, iCol] <- NA               # replace
+    }
+  }
+
+  for (iAtt in seq_len(nrow(myAtt))) { # iterate over all requested attributes
+    thisBmAtt <- myAtt$biomart[iAtt]
+    thisHuAtt <- myAtt$HGNC[iAtt]
+    if ( ! all(is.na(bm[ , thisBmAtt]))) {
+      # some IDs were returned
+      IDs <- bm[ , thisBmAtt]
+      # get the symbol for a match, NA otherwise
+      syms <- HGNC$sym[match(IDs, HGNC[ , thisHuAtt], incomparables = NA)]
+      sel <- ( ! is.na(syms))
+      bm$sym[sel] <- syms[sel] # Overwrite those that are not NA.
+      # If there are multiple IDs returned for one row
+      # in effect we return the last one that was
+      # matched.
+    }
+  }
+  # Post-process. Careful: ensemble_peptide_ids are not necessarily
+  # unique in biomart output.
+  bm <- bm[! is.na(bm$sym), c("ensembl_peptide_id", "sym")]
+  bm <- bm[! duplicated(bm$ensembl_peptide_id), ]
+  matchedIDs <- match(ensp, bm$ensembl_peptide_id)
+
+  esMap <- data.frame(ensp = ensp,
+                      sym = bm$sym[matchedIDs],
+                      stringsAsFactors = FALSE)
+  #rownames(esMap) <- esMap$ensp
+
+  # drop NAs
+  #esMap <- esMap[ ! is.na(esMap$sym), ]
+
+  return(esMap)
+}
+
+# [END]
+
