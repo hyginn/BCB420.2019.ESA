@@ -37,7 +37,7 @@
 #' hgnc <- "BECN1"
 #'
 #' # Call the getAlignments helper function to generate the dataframe
-#' result <- getAlignments(hgnc)
+#' result <- sequenceAnalysis(hgnc)
 #' # If the user would like, the resulting data frame can be stored
 #' # in a .tsv file which can be imported into the environment by the
 #' # user
@@ -47,12 +47,6 @@
 sequenceAnalysis <- function(hgnc) {
 
   # Load all required packages.
-  #
-  # Use non-standard libraries with  package::function() idiom if possible.
-  library(devtools)
-
-  install_github("judyheewonlee/BCB420.2019.PDB")
-  library(BCB420.2019.PDB)
 
   # Import geneList, HGNC, STRINGedges, and fetchComponents() from git repo
   # from https://github.com/judyheewonlee/BCB420.2019.ESA made
@@ -103,6 +97,12 @@ sequenceAnalysis <- function(hgnc) {
   ### ============= Setting up PDB-HGNC database ========================== ###
 
   # Install required packages
+  install_github("judyheewonlee/BCB420.2019.PDB")
+
+  if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")
+    library(devtools)
+  }
 
   if (!requireNamespace("data.table", quietly = TRUE)) {
     install.packages("data.table")
