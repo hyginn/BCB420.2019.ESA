@@ -328,13 +328,13 @@ head(mySys)
  
 hypothesize(mySys)
 ```
-[!ppi_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
+![ppi_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
 
 ```R
 mySys2 <- getSysInteractions(filename = filename, mart = myMart, criterion = "relaxed" )
 hypothesize(mySys2, mySys)
 ```
-[!all_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/network.png?raw=true)
+![all_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/network.png?raw=true)
 &nbsp;
 
 ## 4 References and Further Reading
