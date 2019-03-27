@@ -45,7 +45,7 @@ fetchComponents <- function(sys) {
 #' @author {Tina Lee} (aut)
 #' @examples
 #' # Picking sample system1 and system2 to get intersect domains of the
-#' two systems
+#' # two systems
 #' # Call the symComp helper function to generate list
 #' result <- symComp("ANPRC", "ANPRC2")
 #'
