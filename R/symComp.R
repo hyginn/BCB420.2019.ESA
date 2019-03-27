@@ -100,14 +100,15 @@ symComp <- function(system1, system2) {
   # Plot horixontal graph of results
   res <- sort(unlist(lapply(dom, function(x) length(x))))
 
-  barplot(res,
-          main = "Overlapping Domains",
-          xlab = "Counts",
-          horiz = TRUE,
-          names.arg = names(res),
-          cex.names = 0.6,
-          col = colorRampPalette(c("#FF6655", "#8888A6"), bias = 1.3)(length(dom)),
-          las = 1)
+  graphics::barplot(res,
+                    main = "Overlapping Domains",
+                    xlab = "Counts",
+                    horiz = TRUE,
+                    names.arg = names(res),
+                    cex.names = 0.6,
+                    col = grDevices::colorRampPalette(c("#FF6655", "#8888A6"),
+                                                      bias = 1.3)(length(dom)),
+                    las = 1)
 
   # return a list of overlapped domains along with genes that maps to the
   # domains
