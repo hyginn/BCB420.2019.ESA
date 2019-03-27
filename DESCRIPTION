@@ -28,7 +28,10 @@ Imports:
     visNetwork,
     biomaRt,
     BiocManager,
-    BiocCheck
+    BiocCheck,
+    readr,
+    stats,
+    igraph
 Suggests:
     testthat,
     BiocStyle,
