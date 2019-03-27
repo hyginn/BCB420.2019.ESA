@@ -37,7 +37,11 @@ tf_sim <- function(gene1, gene2, GTRD=geneList) {
   len2 <- length(tfs2)
   int <- intersect(tfs1, tfs2)
   similarity <- length(int)/max(c(len1, len2))
-  return(similarity)
+  if (is.na(similarity)) {
+    return(0)
+  } else {
+    return(similarity)
+  }
 }
 
 # [END]

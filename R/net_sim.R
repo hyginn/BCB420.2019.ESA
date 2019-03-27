@@ -2,7 +2,7 @@
 
 #' Network Similarity.
 #'
-#' \code{expr_sim.R} Calculate the pairwise similarity of genes in an interaction network.
+#' \code{net_sim} Calculate the pairwise similarity of genes in an interaction network.
 #'
 #' Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes.
 #' Note that this functions requires the igraph package to previously be loaded.
