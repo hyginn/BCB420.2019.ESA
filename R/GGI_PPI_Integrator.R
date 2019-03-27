@@ -89,7 +89,6 @@ getSysInteractions <-
 #' @importFrom stats complete.cases
 #' @export
 convertToHGNC <- function(myGenes, mart) {
-  source("./R/recoverIDs.R")
 
   interactions <-
     read.delim("../data/9606.protein.links.v11.0.txt", sep = " ")
