@@ -313,12 +313,7 @@ ensembl <- useMart(biomart = "ensembl")
 human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
 myMart <- useMart("ensembl", human$dataset)
  
-my.name <- readline(prompt = "Enter full name separated by space(s): ")
-my.name <- unlist(strsplit(my.name, " "))
-my.email <- readline(prompt = "Enter email:")
-my.project <- readline(prompt = "Enter project name without spaces:")
- 
-myKey <- bg_get_key(my.name[1], my.name[length(my.name)], my.email, my.project)
+myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
  
 mySys <- getSysInteractions(filename = filename, mart = myMart, criterion = "stringent" )
 head(mySys)
