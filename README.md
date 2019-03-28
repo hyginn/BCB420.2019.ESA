@@ -328,7 +328,7 @@ mySys <- getSysInteractions(systems, key = myKey)
 mySys2 <- getSysInteractions(systems, key = myKey, criterion = "relaxed")
 
 hypothesize(mySys)
-hypothesize(mySys2)
+hypothesize(mySys2, mySys)
 ```
 
 ![.](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/multiSystemPPIGGI.png?raw=true)
