@@ -36,6 +36,7 @@ require(visNetwork, quietly = TRUE)
 #' Filter system by physically-interacting components and return their genetic interactions
 #'
 #' @param sysName A string specifying the full path to the excel sheet containing the system's components
+#' @param key a unique string key
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
@@ -51,15 +52,18 @@ require(visNetwork, quietly = TRUE)
 #' @examples
 #' \dontrun{
 #' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SLIGRESA")
-#' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
+#' mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
 #' }
 #'
 #' @export
 getSysInteractions <-
   function(sysName,
+           key,
            criterion = "stringent") {
     if (is.null(sysName)) {
       stop("System not provided.\n")
+    } else if (is.null(key)){
+      stop("Provide valid key for biogrid ratification")
     }
 
     myURL <-
@@ -78,7 +82,7 @@ getSysInteractions <-
     interactions <-
       unique(interactions[complete.cases(interactions),])
 
-    mySys <- getGeneticInteractome(interactions, criterion)
+    mySys <- getGeneticInteractome(mySys = interactions, criterion = criterion, key = key)
 
     return(mySys)
   }
@@ -86,6 +90,7 @@ getSysInteractions <-
 #' Return BioGrid genetic interaction tags of physical interactors of the system
 #'
 #' @param mySys The dataframe of PPI between system's components
+#' @param key  a unique string key
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
@@ -98,7 +103,7 @@ getSysInteractions <-
 #' @import utils
 #' @importFrom stats complete.cases
 #' @export
-getGeneticInteractome <- function(mySys, criterion) {
+getGeneticInteractome <- function(mySys, criterion, key) {
   myGenes <-
     toString(unique(c(
       as.character(mySys$gene1),
@@ -107,7 +112,7 @@ getGeneticInteractome <- function(mySys, criterion) {
 
   myGenes <- gsub(", ", "|", myGenes)
   humInt <-
-    bg("interactions") %>% bg_constrain(geneList = myGenes) %>% bg_get_results()
+    bg(access_point = "interactions", key = key) %>% bg_constrain(geneList = myGenes) %>% bg_get_results(.request = TRUE)
   humInt <-
     humInt[(
       humInt$experimental_system_type == "genetic" &
@@ -264,7 +269,10 @@ makeGMAP <- function() {
 #' @importFrom stats complete.cases
 #' @examples
 #' \dontrun{
-#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SLIGRESA")
+#' name <- readline("Name?")
+#' email <- readline("email?")
+#' project <- readline("project?")
+#' myKey <- getKey(name, email, project)
 #' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 #' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
 #' hypothesize(mySys)
@@ -386,7 +394,10 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @return The unique key for user and project for data retrieval from BioGrid
 #' @import biogridr
 #' @examples
-#' myKey <- getKey("Tophie McGophie", "tmc@@hammertime.com", "ESA")
+#' name <- readline("Name?")
+#' email <- readline("email?")
+#' project <- readline("project?")
+#' myKey <- getKey(name, email, project)
 #'
 #' @export
 getKey <- function(my.name, my.email, my.project) {

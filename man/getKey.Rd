@@ -20,6 +20,9 @@ The unique key for user and project for data retrieval from BioGrid
 Generates a unique key for BioGrid API access
 }
 \examples{
-myKey <- getKey("Tophie McGophie", "tmc@hammertime.com", "ESA")
+name <- readline("Name?")
+email <- readline("email?")
+project <- readline("project?")
+myKey <- getKey(name, email, project)
 
 }

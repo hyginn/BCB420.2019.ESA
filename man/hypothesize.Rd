@@ -16,7 +16,10 @@ Generates an annotated hypothesis graph whose nodes are components of \code{mySy
 }
 \examples{
 \dontrun{
-myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
+name <- readline("Name?")
+email <- readline("email?")
+project <- readline("project?")
+myKey <- getKey(name, email, project)
 mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
 hypothesize(mySys)
