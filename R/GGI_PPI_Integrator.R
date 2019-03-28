@@ -16,10 +16,9 @@
 
 # ====  PACKAGES  ==============================================================
 if (requireNamespace("biogridr", quietly = TRUE)) {
+  devtools::install_github("NElnour/biogridr")
   library(biogridr)
 } else {
-  install.packages("devtools")
-  devtools::install_github("npjc/biogridr")
   library(biogridr)
 }
 
@@ -51,6 +50,9 @@ require(visNetwork, quietly = TRUE)
 #' @importFrom stats complete.cases
 #' @examples
 #' \dontrun{
+#' name <- readline("name? ")
+#' email <- readline("email? ")
+#' project <- readline("project? ")
 #' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SLIGRESA")
 #' mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
 #' }
@@ -77,8 +79,8 @@ getSysInteractions <-
 
     geneComp <- SyDBgetSysSymbols(myDB, sysName)[[sysName]]
 
-    interactions <- STRINGedges[(STRINGedges$a %in% geneComp &
-                                   STRINGedges$b %in% geneComp),]
+    interactions <- as.data.frame(STRINGedges[(STRINGedges$a %in% geneComp &
+                                   STRINGedges$b %in% geneComp),])
     interactions <-
       unique(interactions[complete.cases(interactions),])
 
@@ -112,7 +114,7 @@ getGeneticInteractome <- function(mySys, criterion, key) {
 
   myGenes <- gsub(", ", "|", myGenes)
   humInt <-
-    bg(access_point = "interactions", key = key) %>% bg_constrain(geneList = myGenes) %>% bg_get_results(.request = TRUE)
+    bg(access_point = "interactions", key = key) %>% bg_constrain(geneList = myGenes) %>% bg_get_results()
   humInt <-
     humInt[(
       humInt$experimental_system_type == "genetic" &

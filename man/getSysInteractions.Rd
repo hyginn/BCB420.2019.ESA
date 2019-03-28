@@ -25,7 +25,7 @@ Filter system by physically-interacting components and return their genetic inte
 name <- readline("name? ")
 email <- readline("email? ")
 project <- readline("project? ")
-myKey <- getKey(name, email, project)
+myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
 mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
 }
 
