@@ -8,7 +8,7 @@ author:
   email: g.morgenshtern@mail.utoronto.ca
 date: "`r Sys.Date()`"
 abstract: >
-  This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network from high confidence STRING scores of a curated gene system, or generally any gene list. 
+  This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network from high confidence STRING scores of a curated gene system.
 output:
   BiocStyle::html_document:
     toc: true
@@ -69,12 +69,31 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 # About this Vignette
 
-This sample Vignette explains the BCB420.2019.ESA package. See the `rptPlus` package vignette for details of using .Rmd for vignettes and vignette formatting.
+This sample Vignette explains the BCB420.2019.STRINGExplore package. It aims to provide an instructive tutorial on the practical uses of the STRINGExplore tool and discuss applications and the interpretation of results.
 
+The purpose of STRINGExplore is in the name-- it is exploratory. It aims to coordinate information available on disparate parts of the STRING database in a way that is visually pleasing and descriptive. These aims are achieved through the generation of a high-confidence gene interaction network and the leveraging of this visualization's tooltip system.
 
-# Further reading
+At its core, the aims of the descriptiveness of the system are as follows:
+1. To inspire interaction
+2. To develop the end-user's intuition for future hypotheses 
+3. To be easy to understand and navigate
+4. To ameliorate the current state of publication images (FIND EX)
+
+## What's wrong with igraph?
+
+STRINGExplore was created out of frustration about the complicated nature of setting up an igraph network in a visually pleasing and easy-to-analyze way. In regards to explorations of gene-gene interaction, igraph requires the user to be aware of the nature of their data before plotting it. With STRINGExplore, the nature of discovering the existence and strength of gene-gene interactions 
+
+# Example usage
+- add functionality for grouping by type of interaction: currently limited by the capabilities of grouping nodes in visNetwork ( Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.) Would require multiples of a single node to exist for you to be able to select by a "Protein Action". Thus the tooltip with sentence-based protein action information
+
+# Saving and publishing your network
+- add functionality for STRINGExplore.save() using https://rdrr.io/cran/visNetwork/man/visSave.html
+- this saves the HTML of the network and all the dependencies of this analysis. Use this HTML on your research site for some snazzy interactive visualization axn
+
+# On input data and preparation
+# Further reading (maybe move to references?)
 <a name="a1"></a>
-
+- http://kbroman.org/pkg_primer/pages/vignettes.html
 - https://rstudio-pubs-static.s3.amazonaws.com/157501_93a72a58ec614946901e10edf78c1384.html
 - https://github.com/gabmorg/bch411-2018/blob/master/2018-10-17_Graphs-and-Networks_v01.R
 - https://datastorm-open.github.io/visNetwork/options.html
@@ -84,7 +103,7 @@ This sample Vignette explains the BCB420.2019.ESA package. See the `rptPlus` pac
 
 # Session Info
 
-This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+This release of the `BCB420.2019.STRINGExplore` package was produced in the following context of supporting packages:
 
 ```{r, echo=TRUE}
 sessionInfo()

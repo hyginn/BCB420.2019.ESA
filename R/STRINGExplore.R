@@ -86,7 +86,7 @@ STRINGExplore <- function(geneSys) {
   #### 1. Prepare / Load data:####
   # alternate / future route: add option to create edges from
   # high correlation scored expression data (Pearson rho >80%) and network thos
-  geneSys <- fetchComponents(geneSys)
+  geneSys <- SyDBgetSysSymbols(fetchData("SysDB"), geneSys)
   STRINGactions <- fetchData("STRINGactions")
   STRINGedges <- fetchData("STRINGedges0.8")
 
