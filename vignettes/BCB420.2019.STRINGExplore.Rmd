@@ -86,6 +86,7 @@ STRINGExplore was created out of frustration about the complicated nature of set
 # Example usage
 - add functionality for grouping by type of interaction: currently limited by the capabilities of grouping nodes in visNetwork ( Custom option. Character or a named list. Add a multiple selection based on column of node data.frame creating an HTML select element. Not available for DOT and Gephi.) Would require multiples of a single node to exist for you to be able to select by a "Protein Action". Thus the tooltip with sentence-based protein action information
 - ref to above: https://www.rdocumentation.org/packages/visNetwork/versions/2.0.5/topics/visOptions
+=======
 
 # Saving and publishing your network
 - add functionality for STRINGExplore.save() using https://rdrr.io/cran/visNetwork/man/visSave.html
