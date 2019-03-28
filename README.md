@@ -304,29 +304,18 @@ fetchComponents("NONSUCH")
 ## 3 Sample Data Analysis
 
 ```R
-load("../data/HGNC.RData")
-filename <- "../data/SLIGR.xlsx"
-
 source('./R/GGI_PPI_Integrator.R', echo=TRUE)
- 
-ensembl <- useMart(biomart = "ensembl")
-human <- searchDatasets(mart = ensembl, pattern = "hsapiens")
-myMart <- useMart("ensembl", human$dataset)
  
 myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
  
-mySys <- getSysInteractions(filename = filename, mart = myMart, criterion = "stringent" )
-head(mySys)
- 
-   gene1  gene2  interactionType
-1 EXOSC6 EXOSC6 Negative Genetic
- 
+mySys <- getSysInteractions(sysName = "SLIGR", key = myKey, criterion = "stringent")
+
 hypothesize(mySys)
 ```
 ![ppi_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
 
 ```R
-mySys2 <- getSysInteractions(filename = filename, mart = myMart, criterion = "relaxed" )
+mySys <- getSysInteractions(sysName = "SLIGR", key = myKey, criterion = "relaxed")
 hypothesize(mySys2, mySys)
 ```
 ![all_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/network.png?raw=true)
