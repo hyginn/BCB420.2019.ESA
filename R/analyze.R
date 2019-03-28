@@ -1,4 +1,4 @@
-#' Function analyze().
+#' Function corrGraphs().
 # stub function taken from Dr. Steipe's BCB420.2019.ESA package
 # Taken from https://github.com/hyginn/
 exProf <- function(sym, hgnc, ncol = 20) {
@@ -36,24 +36,26 @@ fetchComponents <- function(sys) {
 
 
 #'
-#' \code{analyze()} Calculates Semantic similarity and Correlation
+#' \code{corrGraphs()} Calculates Semantic similarity and Correlation
 #' between expression profiles of pairwise
-#' genes and plots two heat maps representing the two correlation levels and
-#' one plot to charcaterize the orthogonal relationship between genes in the system.
+#' genes and returns a list of two heat maps representing the two correlation
+#' levels and one plot to charcaterize the orthogonal relationship
+#' between genes in the system.
 #'
 #'
 #' @param bio.sys Biological system symbol.
-#' @return does not return value but plots 3 diagrams
-#'
-#' @family
+#' @return A list of 3 diagrams:
+#' l["co-exp"] - Co-expression correlations heatmap;
+#' l["semsim"] - Semantic similarity correlations heatmap and
+#' l["func"] - Functional similarities
 #'
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 #'
 #' @examples
-#' analyze("PHALY")
+#' corrGraphs("PHALY")
 #'
 #' @export
-analyze <- function(bio.sys) {
+corrGraphs <- function(bio.sys) {
   # following segment is adapted from Dr. Steipe's BCB420.2019.ESA package
   myURL <- paste0("https://github.com/hyginn/",
                   "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
@@ -72,6 +74,10 @@ analyze <- function(bio.sys) {
   myURL <- paste0("https://github.com/hyginn/",
                   "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
   load(url(myURL))  # loads HGNC data frame
+
+  myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                  "GEO-QN-profile-2019-03-24.rds")
+  myQNXP <- readRDS(url(myURL))
   #end of adapted segment
 
   cat(sprintf("Fetching components for %s...\n",bio.sys))
@@ -99,33 +105,32 @@ analyze <- function(bio.sys) {
 
   cat(sprintf("Calculating correlations..."))
   for (component1 in 1:num_components) {
-    gene.prof1 <- as.matrix(exProf(system.components[component1], HGNC))
-    for (component2 in 1:num_components) { # this should in fact be component1:
-      gene.prof2 <- as.matrix(exProf(system.components[component2], HGNC))
-      cr1 <- psych::corr.test(gene.prof1,
-                              gene.prof2,
-                              use = "pairwise",
-                              method = "pearson")$r[1]
+    for (component2 in component1:num_components) {
+      prf1 <- myQNXP[system.components[component1],]
+      prf1[is.na(prf1)] <- 0
+      prf2 <- myQNXP[system.components[component2],]
+      prf2[is.na(prf2)] <- 0
+      myQNXP[system.components[component1],]
+      cr1 <- cor(prf1, prf2, use = "pairwise.complete.obs")
       cr2 <- GOSemSim::geneSim(system.components[component1],
                                system.components[component2],
                                semData = hsGO,
                                measure = "Wang",
                                combine = "BMA")[[1]]
-
       gene1 <- c(gene1, system.components[component1])
       gene2 <- c(gene2, system.components[component2])
       correlation <- c(correlation, cr1)
       go_correlation <- c(go_correlation, cr2)
       corrM[component1, component2] <- cr1
-      goM[component1, component2] <- cr2
-
+      corrM[component2, component1] <- cr1
+      goM[component1, component2]   <- cr2
+      goM[component2, component1]   <- cr2
     }
     cat(sprintf("."))
   }
   cat(sprintf("\n"))
 
-  cat(sprintf("Co-expression correlation diagram...\n"))
-  corrplot::corrplot(corrM,
+  g.corr <- corrplot::corrplot(corrM,
                      type = "upper",
                      order = "original",
                      tl.cex = 0.5,
@@ -133,12 +138,7 @@ analyze <- function(bio.sys) {
                      title = "Functional Correlation",
                      col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu")
   )
-
-  message("Press enter to continue...")
-  readline()
-
-  cat(sprintf("Semantic similarity correlation diagram...\n"))
-  corrplot::corrplot(goM,
+  g.semsim <- corrplot::corrplot(goM,
                      type = "upper",
                      order = "original",
                      tl.cex = 0.5,
@@ -148,17 +148,31 @@ analyze <- function(bio.sys) {
                      title = "Semantic similarity correlation",
                      col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu")
   )
-  message("Press enter to continue...")
-  readline()
-
 
   df <-  data.frame(gene1, gene2, correlation, go_correlation)
   df <- na.omit(df)
+  gpl <- ggplot2::ggplot(df, ggplot2::aes(gene1, gene2 )) +
+    ggplot2::geom_tile(ggplot2::aes(fill = correlation), , color = "white") +
+    ggplot2::scale_fill_gradient(low = "red", high = "green") +
+    #ggplot2::ylab("List of genes") +
+    #ggplot2::xlab("List of genes") +
+    ggplot2::theme(legend.title = ggplot2::element_text(size = 10),
+          legend.text = ggplot2::element_text(size = 12),
+          plot.title = ggplot2::element_text(size=16),
+          axis.title = ggplot2::element_text(size=14,face="bold"),
+          axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) +
+    ggplot2::labs(fill = "Correlation")
+
   cat(sprintf("Functional and co-expression correlation diagram\n"))
-  ggplot2::ggplot(data = df, ggplot2::aes(x = go_correlation, y = correlation)) +
-    ggplot2::geom_point(shape = 22, size = 2.5, colour = "Red") +
-    ggplot2::ggtitle("Functional and co-expression correlation") +
-    ggplot2::scale_x_continuous(name = "Semantic similarity") +
-    ggplot2::scale_y_continuous(name = "Co-expression correlation")
+  g.func <- ggplot2::ggplot(data = df,
+                ggplot2::aes(x = go_correlation, y = correlation)) +
+                ggplot2::geom_point(shape = 22, size = 2.5, colour = "Red") +
+                ggplot2::ggtitle("Functional and co-expression correlation") +
+                ggplot2::scale_x_continuous(name = "Semantic similarity") +
+                ggplot2::scale_y_continuous(name = "Co-expression correlation")
   ## + geom_text(aes(label = title)) # should you need labels
+
+  return(list("co-exp" = g.corr,
+              "semsim" = g.semsim,
+              "func"   = g.func))
 }
