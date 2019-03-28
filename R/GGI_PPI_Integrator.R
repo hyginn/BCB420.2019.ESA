@@ -32,6 +32,9 @@ require(ggplot2, quietly = TRUE)
 require(biogridr, quietly = TRUE)
 require(visNetwork, quietly = TRUE)
 
+source('./R/fetchData.R', echo=TRUE)
+source('./R/fetchComponents.R', echo=TRUE)
+source('./R/SyDButils.R', echo=TRUE)
 # ==============================================================================
 #' Filter system by physically-interacting components and return their genetic interactions
 #'
@@ -73,7 +76,16 @@ getSysInteractions <-
 
     myDB <- fetchData("SysDB")
 
-    geneComp <- SyDBgetSysSymbols(myDB, sysName)[[sysName]]
+    systems <- SyDBgetSysSymbols(myDB, sysName)
+    geneComp <- character()
+
+    if (length(sysName) == 1) {
+      geneComp <- SyDBgetSysSymbols(myDB, sysName)[[sysName]]
+    } else {
+      for (system in sysName) {
+        geneComp <- c(geneComp, systems[[system]])
+      }
+    }
 
     interactions <- as.data.frame(STRINGedges[(STRINGedges$a %in% geneComp &
                                    STRINGedges$b %in% geneComp),])
