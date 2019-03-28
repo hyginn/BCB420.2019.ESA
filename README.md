@@ -331,7 +331,8 @@ hypothesize(mySys)
 hypothesize(mySys2)
 ```
 
-![.]
+![.](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/multiSystemPPIGGI.png?raw=true)
+![..](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/multiSystemAllGGI.png?raw=true)
 ## 4 References and Further Reading
 
 &nbsp;
