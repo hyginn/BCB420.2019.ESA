@@ -15,8 +15,9 @@
 # This script imports biogridr which uses the deprecated function xml2::xml_find_one().
 
 # ====  PACKAGES  ==============================================================
+#' @import devtools
 if (requireNamespace("biogridr", quietly = TRUE)) {
-  devtools::install_github("NElnour/biogridr")
+  devtools::install_github("NElnour/biogridr", force = TRUE)
   library(biogridr)
 } else {
   library(biogridr)
@@ -49,13 +50,8 @@ require(visNetwork, quietly = TRUE)
 #' @include SyDButils.R fetchComponents.R fetchData.R
 #' @importFrom stats complete.cases
 #' @examples
-#' \dontrun{
-#' name <- readline("name? ")
-#' email <- readline("email? ")
-#' project <- readline("project? ")
-#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SLIGRESA")
+#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SILGRESA")
 #' mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
-#' }
 #'
 #' @export
 getSysInteractions <-
@@ -108,8 +104,8 @@ getSysInteractions <-
 getGeneticInteractome <- function(mySys, criterion, key) {
   myGenes <-
     toString(unique(c(
-      as.character(mySys$gene1),
-      as.character(mySys$gene2)
+      as.character(mySys$a),
+      as.character(mySys$b)
     )))
 
   myGenes <- gsub(", ", "|", myGenes)
@@ -135,13 +131,13 @@ getGeneticInteractome <- function(mySys, criterion, key) {
   if (criterion == "stringent") {
     ggi <-
       filter(humInt,
-             (match(gene1, mySys$gene1) &
-                match(gene2, mySys$gene2)))
+             (match(gene1, mySys$a) &
+                match(gene2, mySys$b)))
   } else if (criterion == "relaxed") {
     ggi <-
       filter(humInt,
-             (match(gene1, mySys$gene1) |
-                match(gene2, mySys$gene2)))
+             (match(gene1, mySys$a) |
+                match(gene2, mySys$b)))
   }
 
   ggi <- ggi[complete.cases(ggi),]
@@ -270,16 +266,11 @@ makeGMAP <- function() {
 #' @include SyDButils.R fetchComponents.R fetchData.R
 #' @importFrom stats complete.cases
 #' @examples
-#' \dontrun{
-#' name <- readline("Name?")
-#' email <- readline("email?")
-#' project <- readline("project?")
-#' myKey <- getKey(name, email, project)
-#' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
-#' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
+#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SILGRESA")
+#' mySys <- getSysInteractions("SLIGR", criterion = "stringent", key = myKey)
+#' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed", key = myKey)
 #' hypothesize(mySys)
 #' hypothesize(mySys2, mySys)
-#' }
 #'
 #' @export
 hypothesize <-
@@ -396,10 +387,7 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
 #' @return The unique key for user and project for data retrieval from BioGrid
 #' @import biogridr
 #' @examples
-#' name <- readline("Name?")
-#' email <- readline("email?")
-#' project <- readline("project?")
-#' myKey <- getKey(name, email, project)
+#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SILGRESA")
 #'
 #' @export
 getKey <- function(my.name, my.email, my.project) {

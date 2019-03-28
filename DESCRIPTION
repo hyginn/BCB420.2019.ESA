@@ -32,7 +32,8 @@ Imports:
     dplyr,
     biomaRt,
     ggplot2,
-    biogridr
+    biogridr,
+    devtools
 Suggests:
     testthat,
     BiocStyle,

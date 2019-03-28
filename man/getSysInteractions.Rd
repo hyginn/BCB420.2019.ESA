@@ -21,12 +21,7 @@ or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 Filter system by physically-interacting components and return their genetic interactions
 }
 \examples{
-\dontrun{
-name <- readline("name? ")
-email <- readline("email? ")
-project <- readline("project? ")
-myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
+myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SILGRESA")
 mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
-}
 
 }
