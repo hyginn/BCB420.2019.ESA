@@ -4,28 +4,24 @@
 \alias{domainEnrichment}
 \title{Domain enrichment in a system.}
 \usage{
-domainEnrichment(system = "PHALY")
+domainEnrichment(system = "PHALY", numEnrichment = 40)
 }
 \arguments{
-\item{system}{The shortehand notation of selected system, five-letter code as discussed in class.}
+\item{system}{The shortehand notation of selected system, five-letter code as discussed in class. Default is PHALY.}
+
+\item{numEnrichment}{The number of enriched domain ploted. Default is 40.}
 }
 \value{
-<description>.
+A data frame that include domains in the system with its counts and frequency of exist in system and in random genes; p-value, odd ratio, adjust p-value and enrichment; interpro descriptions.
 }
 \description{
 \code{domainEnrichment} Find the enriched domains in selected system and interpret enrichment by plot.
 }
-\details{
-Details.
-}
-\section{<title>}{
- Additional explanation.
-}
-
 \examples{
+# Plot 50 enrichend domains in PHALY system orderd by rich factor(counts in system/counts in random)
+# User can hover around the point on plot to get more info (i.e counts, p-value)
 system <- "PHALY"
 domainEnrichment(system)
-
 }
 \author{
 \href{https://orcid.org/0000-0001-8720-5874}{Fan Shen} (aut)
