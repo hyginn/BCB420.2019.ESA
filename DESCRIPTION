@@ -24,7 +24,10 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings,
-    biomaRt
+    biomaRt,
+    stats,
+    ggplot2,
+    ggiraph
 Suggests:
     testthat,
     BiocStyle,
