@@ -41,3 +41,11 @@ Suggests:
 Remotes: npjc/biogridr
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Collate: 
+    'fetchData.R'
+    'fetchComponents.R'
+    'SyDButils.R'
+    'GGI_PPI_Integrator.R'
+    'makeSeq.R'
+    'rptGC.R'
+    'zzz.R'

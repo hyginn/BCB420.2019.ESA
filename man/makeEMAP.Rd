@@ -12,3 +12,7 @@ The dataframe mapping BioGrid GGI tag to its interpretation assuming that the sy
 \description{
 Generate the genetic interpretation map of BioGrid GGI tags of system's physical interactions.
 }
+\examples{
+EMAP <- makeEMAP()
+
+}

@@ -12,3 +12,7 @@ The dataframe mapping BioGrid GGI tag to its interpretation.
 \description{
 Generate the genetic interpretation map of BioGrid GGI tags.
 }
+\examples{
+GMAP <- makeGMAP()
+
+}

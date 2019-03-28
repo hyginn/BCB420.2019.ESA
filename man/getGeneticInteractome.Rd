@@ -7,7 +7,7 @@
 getGeneticInteractome(mySys, criterion)
 }
 \arguments{
-\item{mySys}{The dataframe output of \code{convertToHGNC}}
+\item{mySys}{The dataframe of PPI between system's components}
 
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
 }

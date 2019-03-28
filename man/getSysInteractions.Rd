@@ -4,12 +4,10 @@
 \alias{getSysInteractions}
 \title{Filter system by physically-interacting components and return their genetic interactions}
 \usage{
-getSysInteractions(filename, mart = myMart, criterion = "stringent")
+getSysInteractions(sysName, criterion = "stringent")
 }
 \arguments{
-\item{filename}{A string specifying the full path to the excel sheet containing the system's components}
-
-\item{mart}{A biomaRt mart to be queried for ENSEMBL ID conversion}
+\item{sysName}{A string specifying the full path to the excel sheet containing the system's components}
 
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
 }
@@ -19,4 +17,11 @@ or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 }
 \description{
 Filter system by physically-interacting components and return their genetic interactions
+}
+\examples{
+\dontrun{
+myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
+mySys <- getSysInteractions("SLIGR", criterion = "stringent")
+}
+
 }
