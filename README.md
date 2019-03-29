@@ -184,6 +184,59 @@ corGenes <- function(A, B, prf) {
   return(r)
 }
 
+# Load the expression profiles:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "GEO-QN-profile-2019-03-24.rds")
+myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
+
+str(myQNXP)
+#  num [1:27087, 1:52] 29.4 199.9 34.3 947.4 2249.2 ...
+#  - attr(*, "dimnames")=List of 2
+#   ..$ : chr [1:27087] "A1BG" "A1BG-AS1" "A1CF" "A2M" ...
+#   ..$ : chr [1:52] "GSE35330.ctrl.4h" "GSE35330.cond.4h" "GSE35330.ctrl.16h" ...
+
+
+# Some statistics:
+sum( ! is.na(myQNXP)) # Number of measurements: 923361
+mean(  myQNXP, na.rm = TRUE) # 502.7972
+median(myQNXP, na.rm = TRUE) # 127.43
+hist(log10(myQNXP), breaks = 100)
+
+# how many HGNC genes have at least one measurement recorded?
+sum( ! is.na(rowMeans(myQNXP, na.rm = TRUE))) # 21063
+
+# how many HGNC genes have measurements recorded an all experiments?
+sum( ! is.na(rowMeans(myQNXP, na.rm = FALSE))) # 10812
+
+# colnames describe experiments (averaged over replicates)
+colnames(myQNXP)
+
+# how many unique experiments
+myExp <- gsub("^([^\\.]+).+", "\\1", colnames(myQNXP))
+length(unique(myExp)) # 15
+
+#Access one profile by name
+myQNXP["VAMP8", ]
+
+# plot expression values
+plot(myQNXP["VAMP8", ], ylab = "quantile normalized expression (AU)")
+
+# add lines that separate the experiments
+abline(v = cumsum(rle(myExp)$lengths) + 0.5, lwd = 0.5, col = "#0000CC44")
+
+```
+
+Gene / Gene correlations
+```R
+corGenes <- function(A, B, prf) {
+  # Calculate pearson correlation between gene expression
+  # profiles A and B in prf identified by the gene symbol.
+  # A and B can be either gene symbol or index.
+  
+  r <- cor(prf[A, ], prf[B, ], use = "pairwise.complete.obs")
+  return(r)
+}
+
 corGenes("MRPL18", "RPF2", myQNXP)
 corGenes(100, 200, myQNXP)
 
@@ -255,6 +308,52 @@ str(IPRgenes, list.len = 5)
 #   [list output truncated]
 
 ```
+![](./inst/img/lowPairwiseCorrelation.svg?sanitize=true "uncorrelated genes") &nbsp; ![](./inst/img/highPairwiseCorrelation.svg?sanitize=true "highly correlated genes")<br/>
+Example plots for uncorrelated and highly correlated gene expression profiles.
+
+&nbsp;
+
+![](./inst/img/QN-GEOprofileCorrelations.svg?sanitize=true "distribution of expression correlations")<br/>
+Distribution of expression correlations between 10,000 randomly chosen gene pairs, compared to the distribution of shuffled expression values for the two genes. The correlations are not symmetric around zero. There are more negative correlations than expected, and more excess negative than positive correlations, but if two genes are positively correlated, the correlation trends to be higher.
+
+
+&nbsp;
+
+#### 2.5 InterPro domain annotations:
+
+Interpro domain annotations were parsed from the 50 GB annotation source of InterPro v. 73.0 and mapped to HGNC symbols (details to follow).
+
+```R
+# load the gene-annotations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "genesIPR.rds")
+genesIPR <- readRDS(url(myURL))  # reads and assigns genesIPR list
+
+str(genesIPR, list.len = 5)
+# List of 19174
+#  $ NUDT4B     : chr [1:3] "IPR000086" "IPR015797" "IPR020084"
+#  $ IGLV4-69   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV8-61   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV4-60   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV10-54  : chr [1:4] "IPR007110" "IPR013106" "IPR013783" "IPR036179"
+#   [list output truncated]
+
+
+# load the IPR_domain-locations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "IPRgenes.rds")
+IPRgenes <- readRDS(url(myURL))  # reads and assigns IPRgenes list
+
+str(IPRgenes, list.len = 5)
+# List of 16178
+#  $ IPR000086: chr [1:27] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR015797: chr [1:28] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR020084: chr [1:13] "NUDT4B" "NUDT3" "NUDT1" "NUDT2" ...
+#  $ IPR003599: chr [1:456] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV7-46" ...
+#  $ IPR007110: chr [1:674] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV10-54" ...
+#   [list output truncated]
+
+```
 
 
 &nbsp;
@@ -265,7 +364,13 @@ A systems database (of currently four systems) can be loaded with `fetchData()`.
 
 ```R
 myDB <- fetchData("SysDB")
+```
+#### 2.6 Systems:
 
+A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <sys>)[[1]]` to access all gene symbols for a single system (or subsystem). Use `unlist(SyDBgetSysSymbols(myDB, SyDBgetRootSysIDs(myDB)), use.names = FALSE)` to access all genes in the database.
+
+```R
+myDB <- fetchData("SysDB")
 
 SyDBgetRootSysIDs(myDB)
 #                                        PHALY                                       SLIGR 
@@ -277,6 +382,16 @@ SyDBgetRootSysIDs(myDB)
 names(SyDBgetRootSysIDs(myDB))
 # [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
 
+SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
+# $HVGCR
+#  [1] "ADCY9"    "ADRB2"    "AKAP7"    "CACNA1C"  "CACNA2D1" "CACNA2D3" "CACNB1"   "CACNB3"  
+#  [9] "CACNB4"   "CACNG1"   "CACNG6"   "CALM1"    "CALM2"    "CALM3"    "GNAS"     "PRKACA"  
+# [17] "PRKACB"   "PRKAR1A"  "PRKAR1B"  "PRKAR2A"  "PRKAR2B" 
+
+```
+&nbsp;
+
+```R
 
 SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
 # $HVGCR

@@ -19,7 +19,11 @@ fetchComponents <- function(sys) {
           "Use SyDBgetSysSymbols(<database>, <system code>) instead.",
           sep = "\n")
 
+<<<<<<< HEAD
   if (sys == "PHALY") {
+=======
+    if (sys == "PHALY") {
+>>>>>>> fba11f7609182991780dc7e6c48d387ca623b626
     s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
            "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
            "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
