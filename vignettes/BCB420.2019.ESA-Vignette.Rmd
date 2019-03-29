@@ -84,14 +84,17 @@ In a systems analysis, conservation analysis of interacting genes and proteins c
 # Example usage
 
 '''
-# Pick a HGNC symbol in the PHALY system as an example for this case.
-> hgnc <- "BECN1"
+# Retrieve system database using functions provided from the master package
+myDB <- fetchData("SysDB")
+
+# See which genes the "PHALY" systems contains
+(SyDBgetSysSymbols(myDB, "PHALY"))
+
+# Pick a sample HGNC symbol within the PHALY system
+hgnc <- "BECN1"
 
 # Call the SeqComparisonTable function to generate the dataframe
-# The datafram will contain the corresponding protein alignments
-# with it's interacting genes
-> seqComparisonDF <- SeqComparisonTable(hgnc)
-> (seqComparisonDF)
+seqComparisonDF <- SeqComparisonTable(hgnc)
 
 '''
 
