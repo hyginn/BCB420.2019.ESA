@@ -23,7 +23,6 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings,
     corrplot,
     psych,
     RColorBrewer,
