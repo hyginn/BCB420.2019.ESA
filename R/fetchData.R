@@ -24,7 +24,8 @@ fetchData <- function(set) {
                                   "STRINGactions",
                                   "genesIPR",
                                   "IPRgenes",
-                                  "GEOprofiles"),
+                                  "GEOprofiles",
+                                  "SysDB"),
                          desc = c("HGNC symbols and crossreferences",
                                   "Genes and their TFs by ChIP-seq from GTRD",
                                   "TFs and their genes by ChIP-seq from GTRD",
@@ -33,7 +34,8 @@ fetchData <- function(set) {
                                   "STRING actions mapped to HGNC symbols",
                                   "genes and the InterPro domains they contain",
                                   "InterPro domains and the genes they are found in",
-                                  "GEO expression profiles, quantile normalized"),
+                                  "GEO expression profiles, quantile normalized",
+                                  "A systems database"),
                          FN   = c("HGNCreference.rds",
                                   "GTRDgeneTFs-2019-03-13.rds",
                                   "GTRDTFgenes-2019-03-13.rds",
@@ -42,7 +44,8 @@ fetchData <- function(set) {
                                   "STRINGactions-2019-03-26.rds",
                                   "genesIPR-V.73.rds",
                                   "IPRgenes-V.73.rds",
-                                  "GEO-QN-profile-2019-03-24.rds"),
+                                  "GEO-QN-profile-2019-03-24.rds",
+                                  "systemsDB-2018-03-28.rds"),
                          stringsAsFactors = FALSE)
   rownames(availDat) <- availDat$sets
 

@@ -13,7 +13,7 @@ fetchComponents(sys)
 (character) a vector of HGNC symbols
 }
 \description{
-\code{fetchComponents} is currently only a stub.
+\code{fetchComponents} is deprecated. Use \code{SyDBgetSysSymbols()} instead.
 }
 \examples{
 fetchComponents("PHALY")  # all PHALY system proteins

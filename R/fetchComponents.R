@@ -2,7 +2,7 @@
 
 #' \code{fetchComponents} get all gene symbols in a system.
 #'
-#' \code{fetchComponents} is currently only a stub.
+#' \code{fetchComponents} is deprecated. Use \code{SyDBgetSysSymbols()} instead.
 #'
 #' @param sys (character)  Name of a system
 #'
@@ -14,7 +14,12 @@
 fetchComponents <- function(sys) {
   # returns a fixed set of symbols.
   # Function stub for development purposes only.
-  if (sys == "PHALY") {
+
+  message("Note: fetchComponents(...) is deprecated.",
+          "Use SyDBgetSysSymbols(<database>, <system code>) instead.",
+          sep = "\n")
+
+    if (sys == "PHALY") {
     s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
            "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
            "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
@@ -31,6 +36,7 @@ fetchComponents <- function(sys) {
   } else {
     s <- ""
   }
+
   return(s)
 }
 
