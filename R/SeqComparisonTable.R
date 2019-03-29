@@ -64,13 +64,13 @@ SeqComparisonTable <- function(hgnc) {
                   "STRINGedges-2019-03-14.RData")
   load(url(myURL))  # loads STRING edges object
 
-  phaly <- BCB420.2019.ESA::fetchComponents("PHALY")
+  phaly <- fetchComponents("PHALY")
 
-  if (!requireNamespace("msa", quietly = TRUE)) {
+  if (! requireNamespace("msa", quietly = TRUE)) {
     BiocManager::install("msa")
   }
 
-  if (!requireNamespace("Biostrings", quietly = TRUE)) {
+  if (! requireNamespace("Biostrings", quietly = TRUE)) {
     BiocManager::install("Biostrings")
   }
 
@@ -139,11 +139,11 @@ SeqComparisonTable <- function(hgnc) {
       # import BLOSUM62 scoring matrix from Biostrings package from
       # Bioconductor
 
-      data("BLOSUM62")
+      data("BLOSUM62", package = "Biostrings")
 
       myMSA <- msa::msaClustalW(c(seqA, seqB), type="protein")
-      myConsensus <- msa::msaConsensusSequence(msa)
-      myScore <- msa::msaConservationScore(msa, BLOSUM62)
+      myConsensus <- msa::msaConsensusSequence(myMSA)
+      myScore <- msa::msaConservationScore(myMSA, BLOSUM62)
 
       tempDF$Consensus <- myConsensus
       tempDF$Score <- as.list(as.data.frame(myScore))

@@ -32,10 +32,7 @@ A data frame including the hgnc gene of interest,
 hgnc <- "BECN1"
 
 # Call the SeqComparisonTable function to generate the dataframe
-result <- SeqComparisonTable(hgnc)
-# If the user would like, the resulting data frame can be stored
-# in a .tsv file which can be imported into the environment by the
-# user
+seqComparisonDF <- SeqComparisonTable(hgnc)
 
 }
 \author{

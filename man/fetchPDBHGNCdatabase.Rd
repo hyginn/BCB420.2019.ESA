@@ -29,7 +29,6 @@ https://github.com/judyheewonlee/BCB420.2019.PDB
 # containing the annotated PDB-HGNC database from the
 # BCB420.2019.PDB package
 pdbHGNCdata <- fetchPDBHGNCdatabase()
-
 }
 \author{
 {Heewon Lee} (aut)

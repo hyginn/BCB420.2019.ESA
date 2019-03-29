@@ -37,25 +37,23 @@
 #' # containing the annotated PDB-HGNC database from the
 #' # BCB420.2019.PDB package
 #' pdbHGNCdata <- fetchPDBHGNCdatabase()
-#'
+#' @export
 
 fetchPDBHGNCdatabase <- function() {
 
   ### =========== Load all required packages and data ================= ###
 
-  if (!requireNamespace("devtools", quietly = TRUE)) {
+  if (! requireNamespace("devtools", quietly = TRUE)) {
     install.packages("devtools")
   }
 
-  if (!requireNamespace("BCB420.2019.PDB", quietly = TRUE)) {
-    devtools::install_github("judyheewonlee/BCB420.2019.PDB")
-  }
+  devtools::install_github("judyheewonlee/BCB420.2019.PDB", quiet = TRUE)
 
-  if (!requireNamespace("data.table", quietly = TRUE)) {
+  if (! requireNamespace("data.table", quietly = TRUE)) {
     install.packages("data.table")
   }
 
-  if (!requireNamespace("xml2", quietly = TRUE)) {
+  if (! requireNamespace("xml2", quietly = TRUE)) {
     install.packages("xml2")
   }
 
@@ -63,11 +61,11 @@ fetchPDBHGNCdatabase <- function() {
     install.packages("BiocManager")
   }
 
-  if (!requireNamespace("rtracklayer", quietly = TRUE)) {
+  if (! requireNamespace("rtracklayer", quietly = TRUE)) {
     BiocManager::install("rtracklayer")
   }
 
-  if (!requireNamespace("biomaRt", quietly = TRUE)) {
+  if (! requireNamespace("biomaRt", quietly = TRUE)) {
     BiocManager::install("biomaRt")
   }
 

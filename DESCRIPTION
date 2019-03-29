@@ -31,7 +31,6 @@ Imports:
     rtracklayer,
     biomaRt,
     msa,
-    BCB420.2019.PDB,
     devtools
 Suggests:
     testthat,
