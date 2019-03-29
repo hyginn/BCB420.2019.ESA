@@ -32,8 +32,13 @@
 #'     off a ClustalW multiple Sequence Alignment.
 #' @author {Heewon Lee} (aut)
 #' @examples
-#' # Picking a sample hgnc symbol to get the corresponding protein alignments
-#' # with it's interacting genes
+#' # Retrieve system database using functions provided from the master package
+#' myDB <- fetchData("SysDB")
+#'
+#' # See which genes the "PHALY" systems contains
+#' (SyDBgetSysSymbols(myDB, "PHALY"))
+#'
+#' # Pick a sample HGNC symbol within the PHALY system
 #' hgnc <- "BECN1"
 #'
 #' # Call the SeqComparisonTable function to generate the dataframe
@@ -45,26 +50,15 @@ SeqComparisonTable <- function(hgnc) {
 
   ### =========== Load all required packages and data ================= ###
 
-  # Import geneList, HGNC, STRINGedges, and fetchComponents() from git repo
+  # Import STRINGedges and fetchComponents() from git repo
   # from https://github.com/judyheewonlee/BCB420.2019.ESA made
   # by Professor Boris Steipe (forked directory, master repo
   # can be accessed from https://github.com/hyginn/BCB420.2019.ESA)
-
-  myURL <- paste0("https://github.com/hyginn/",
-                  "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-  load(url(myURL))  # loads HGNC data frame
-
-  # Load geneList
-  myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                  "geneList-2019-03-13.RData")
-  load(url(myURL))  # loads GTRD geneList object
 
   # Load STRINGedges
   myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
                   "STRINGedges-2019-03-14.RData")
   load(url(myURL))  # loads STRING edges object
-
-  phaly <- fetchComponents("PHALY")
 
   if (! requireNamespace("msa", quietly = TRUE)) {
     BiocManager::install("msa")
