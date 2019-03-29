@@ -69,31 +69,11 @@ fetchPDBHGNCdatabase <- function() {
     BiocManager::install("biomaRt")
   }
 
-  # Source the functions from the database
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/PDBdataset.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/getData.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addHGNC.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addTranscripts.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addpdbChain.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addPDB.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addPDBData.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/fetchPDBXML.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/readXML.R"))
-
   # Call PDBdataset() function from the BCB420.2019.PDB
   # package to assign pdbHGNC as the dataframe containing
   # the annotated database
 
-  pdbHGNC <- PDBdataset()
+  pdbHGNC <- BCB420.2019.PDB::PDBdataset()
 
   # Return the generated database
   return(pdbHGNC)
