@@ -22,7 +22,11 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     shiny,
-    Rcpp
+    Rcpp,
+    network,
+    igrpah,
+    GEOquery,
+    Biobase
 LinkingTo: Rcpp
 Suggests:
     testthat,
