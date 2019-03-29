@@ -1,4 +1,4 @@
-# sequenceAnalysisESA.R
+# SeqComparisonTable.R
 #
 # Purpose: Exploratory System Analysis tool project for BCB420 2019
 # Version: 1.0.0
@@ -12,12 +12,12 @@
 # genes according to the STRING database
 # Output: A dataframe or a .tsv file containing the multiple sequence alignment data
 # of each pairwise alignment
-# Dependencies: devtools, BCB420.2019.PDB, BiocManager, Biostrings, msa
+# Dependencies: BCB420.2019.PDB, BiocManager, Biostrings, msa
 
 # ====  FUNCTION  =============================================================
-# sequenceAnalysisESA.R
+# SeqComparisonTableESA.R
 #'
-#' \code{sequenceAnalysisESA} Return a data frame containing the alignment data
+#' \code{SeqComparisonTable} Return a data frame containing the alignment data
 #'    between the provided hgnc gene and it's corresponding genes based
 #'    on the STRING database..
 #'
@@ -36,24 +36,20 @@
 #' # with it's interacting genes
 #' hgnc <- "BECN1"
 #'
-#' # Call the sequenceAnalysis function to generate the dataframe
-#' result <- sequenceAnalysis(hgnc)
-#' # If the user would like, the resulting data frame can be stored
-#' # in a .tsv file which can be imported into the environment by the
-#' # user
+#' # Call the SeqComparisonTable function to generate the dataframe
+#' seqComparisonDF <- SeqComparisonTable(hgnc)
 #'
 #' @export
 
-sequenceAnalysis <- function(hgnc) {
+SeqComparisonTable <- function(hgnc) {
 
-  # Load all required packages.
+  ### =========== Load all required packages and data ================= ###
 
   # Import geneList, HGNC, STRINGedges, and fetchComponents() from git repo
   # from https://github.com/judyheewonlee/BCB420.2019.ESA made
   # by Professor Boris Steipe (forked directory, master repo
   # can be accessed from https://github.com/hyginn/BCB420.2019.ESA)
 
-  # Load HGNC data
   myURL <- paste0("https://github.com/hyginn/",
                   "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
   load(url(myURL))  # loads HGNC data frame
@@ -68,90 +64,22 @@ sequenceAnalysis <- function(hgnc) {
                   "STRINGedges-2019-03-14.RData")
   load(url(myURL))  # loads STRING edges object
 
-  # Source fetchComponents
-  fetchComponents <- function(sys) {
-    # returns a fixed set of symbols.
-    # Function stub for development purposes only.
-    if (sys == "PHALY") {
-      s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
-             "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
-             "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
-             "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM",
-             "KXD1", "LAMP1", "LAMP2", "LAMP3", "LAMP5", "MAP1LC3A", "MAP1LC3B",
-             "MAP1LC3C", "MGRN1", "MYO1C", "MYO6", "NAPA", "NSF", "OPTN",
-             "OSBPL1A", "PI4K2A", "PIK3C3", "PLEKHM1", "PSEN1", "RAB20", "RAB21",
-             "RAB29", "RAB34", "RAB39A", "RAB7A", "RAB7B", "RPTOR", "RUBCN",
-             "RUBCNL", "SNAP29", "SNAP47", "SNAPIN", "SPG11", "STX17", "STX6",
-             "SYT7", "TARDBP", "TFEB", "TGM2", "TIFA", "TMEM175", "TOM1",
-             "TPCN1", "TPCN2", "TPPP", "TXNIP", "UVRAG", "VAMP3", "VAMP7",
-             "VAMP8", "VAPA", "VPS11", "VPS16", "VPS18", "VPS33A", "VPS39",
-             "VPS41", "VTI1B", "YKT6")
-    } else {
-      s <- ""
-    }
-    return(s)
-  }
-
-  phaly <- fetchComponents("PHALY")
-
-  ### ============= Setting up PDB-HGNC database ========================== ###
-
-  # Install required packages
-  devtools::install_github("judyheewonlee/BCB420.2019.PDB")
-
-  if (!requireNamespace("devtools", quietly = TRUE)) {
-    install.packages("devtools")
-    library(devtools)
-  }
-
-  if (!requireNamespace("data.table", quietly = TRUE)) {
-    install.packages("data.table")
-  }
-
-  if (!requireNamespace("xml2", quietly = TRUE)) {
-    install.packages("xml2")
-  }
-
-  if (! requireNamespace("BiocManager", quietly = TRUE)) {
-    install.packages("BiocManager")
-  }
-
-  if (!requireNamespace("rtracklayer", quietly = TRUE)) {
-    BiocManager::install("rtracklayer")
-  }
-
-  if (!requireNamespace("biomaRt", quietly = TRUE)) {
-    BiocManager::install("biomaRt")
-  }
+  phaly <- BCB420.2019.ESA::fetchComponents("PHALY")
 
   if (!requireNamespace("msa", quietly = TRUE)) {
-    BiocManager::install("msa", version = "3.8")
+    BiocManager::install("msa")
   }
 
   if (!requireNamespace("Biostrings", quietly = TRUE)) {
     BiocManager::install("Biostrings")
   }
 
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/PDBdataset.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/getData.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addHGNC.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addTranscripts.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addpdbChain.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addPDB.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/addPDBData.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/fetchPDBXML.R"))
-  source(file.path(.libPaths(),
-                   "BCB420.2019.PDB", "scripts/readXML.R"))
+  ### ============ Setting up PDB-HGNC database ==================== ###
 
-  pdbHGNC <- PDBdataset()
+  # Call helper function
+  pdbHGNC <- BCB420.2019.ESA::fetchPDBHGNCdatabase()
+
+  ### ========== Generate the PDB Sequence comparison Table ======== ###
 
   # Get the hgnc symbols that interact with the provided hgnc gene
   # using the STRING database
@@ -182,7 +110,7 @@ sequenceAnalysis <- function(hgnc) {
   # the sequence alignments between the provided hgnc protein and
   # all protein chain sequences it interacts with according to the
   # STRING database
-  result <- data.frame()
+  seqComparisonDF <- data.frame()
 
   tempDF <- data.frame(a = NA,
                        b = NA,
@@ -220,13 +148,13 @@ sequenceAnalysis <- function(hgnc) {
       tempDF$Consensus <- myConsensus
       tempDF$Score <- as.list(as.data.frame(myScore))
 
-      result <- rbind(result, tempDF)
+      seqComparisonDF <- rbind(seqComparisonDF, tempDF)
 
     }
 
   }
 
-  return(result)
+  return(seqComparisonDF)
 }
 
 

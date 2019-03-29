@@ -6,6 +6,10 @@ Authors@R: c(
              person("Boris", "Steipe", 
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
+                    comment = c(ORCID = "0000-0002-1134-6758")),
+             person("Judy Heewon", "Lee",
+                    email = "heewon.lee@mail.utoronto.ca",
+                    role = c("aut"),
                     comment = c(ORCID = "0000-0002-1134-6758"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
@@ -19,7 +23,16 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings
+    Biostrings,
+    BiocManager,
+    devtools,
+    data.table,
+    xml2,
+    rtracklayer,
+    biomaRt,
+    msa,
+    BCB420.2019.PDB,
+    devtools
 Suggests:
     testthat,
     BiocStyle,
