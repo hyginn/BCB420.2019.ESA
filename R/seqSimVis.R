@@ -35,8 +35,7 @@ fetchComponents <- function(sys) {
 #'
 #' @export
 seqSimVis <- function(gene_of_int, system) {
-  # gene_of_int <- "BRCA1"
-  # system <- "TEST"
+
   # set mart
   ensembl <- biomaRt::useMart("ensembl",
                         dataset = "hsapiens_gene_ensembl",
