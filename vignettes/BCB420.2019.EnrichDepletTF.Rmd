@@ -1,0 +1,92 @@
+---
+title: "The BCB420.2019.ESA Vignette"
+author:
+- name: Boris Steipe
+  affiliation: 
+  - http://orcid.org/0000-0002-1134-6758
+  - University of Toronto
+  email: boris.steipe@utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette is a placeholder for global package documentation.
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'EnrichDepletTF'
+  author:
+  - family: Sapir
+    given: Labes
+    orcid: 0000-0002-9478-5974
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This Vignette the EnrichDepletTF function of BCB420.2019.ESA package. See the `BCB420.2019.ESA` for more options and related functions.
+
+
+# Further reading
+<a name="a1"></a>
+
+- TBD
+
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+
+
+<!-- End -->

@@ -181,7 +181,9 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
+#' @seealso \code{\link{cor.test}} Test for association between paired samples, using one
+#'                                 of Pearson's product moment correlation coefficient,
+#'                                 Kendall's tau or Spearman's rho.
 #'
 #' @examples
 #' # Vector of the 12 up most positively correlated pairs of genes of "SLIGR"
@@ -209,11 +211,11 @@ sysCorGenes <- function(exProfS,
                                 function (x) GeneSym[(which(GeneSym == x)) : length(GeneSym)]))
 
   expCor$Correlation <- #Calculating the correlation between expression profiles.
-    apply(expCor, 1, function(x) cor.test(exProfS[x["Gene1"], ],
-                                          exProfS[x["Gene2"], ])$estimate)
+    apply(expCor, 1, function(x) stats::cor.test(exProfS[x["Gene1"], ],
+                                                 exProfS[x["Gene2"], ])$estimate)
   expCor$Pvalue <- #Calculating the P values.
-    apply(expCor, 1, function(x) cor.test(exProfS[x["Gene1"], ],
-                                          exProfS[x["Gene2"], ])$p.value)
+    apply(expCor, 1, function(x) stats::cor.test(exProfS[x["Gene1"], ],
+                                                 exProfS[x["Gene2"], ])$p.value)
 
   expCor$BH <- (order(expCor$Pvalue, decreasing = FALSE) / nPairs) * alpha #Cutoff value
                                                                       #for BH correction
@@ -240,37 +242,83 @@ sysCorGenes <- function(exProfS,
   return(unique(c(MostCor$Gene1, MostCor$Gene2)))
 }
 
-# ===== 3 Finding systems' enriched TFs and plotting the results =============================
+# ===== 3 Enrichement and depletion of TF binding sites =============================
 
-#' EnrichedTF.
+#' EnrichDepletTF.
 #'
-#' \code{EnrichedTF} description.
+#' \code{EnrichDepletTF} Calculating the p values for enrichment and depletion of
+#'                       transcription factor binding sites within a system.
 #'
 #'
-#' @section Details: Additional explanation.
+#' @section Details: The systems were curated as part of BCB420H1 winter 2019 course. The
+#'                   TF binding datasets were curated by the GTRD database and edited
+#'                   by Boris Steipe. The expression profiles database was obtained from
+#'                   GEO and edited by Boris Steipe.
+#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R}{fetchData Github}
+#'                   Enrichment and depletion calculation were inspired by Boris Steipe's
+#'                   guidance and by "Pathway Guide"
+#'\href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
 #'
-#' @param <p> <description>.
-#' @param <q> <description>.
-#' @return <description>.
+#' @param sys (char)           A character vector of 1L length of 5 uppercase lettered word
+#'                             that corresponds to a biological system curated during the
+#'                             BCB420H1 winter 2019 course. The list of available systems
+#'                             can be retrieved by:
+#'                             names(SyDBgetRootSysIDs(fetchData("SysDB")))
+#' @param nUpMost (numeric / boolean) Either "FALSE" or numeric. Use "FALSE" for calculating
+#'                                    one sided enrichment and one sided depletion for all
+#'                                    significantly correlated genes. Use a a number (vector
+#'                                    of 1L length) to choose an amount of upmost
+#'                                    significantly correlated pairs of genes to calculate
+#'                                    their enrichment / depletion. The default is "FALSE".
+#' @param CorDirection (char)  Either "Positive" or "Negative". "Positive" uses pairs of
+#'                             genes that are significantly positively correlated to
+#'                             calculate their enrichment / depletion of TF binding.
+#'                             "Negative" uses pairs of genes that are significantly
+#'                             negatively correlated for the enrichment / depletion
+#'                             analysis. The default is "Positive".
+#' @param multipleTests (char) Either "Bonferroni" or "BH" (Benjamini-Hochberg). Sets the
+#'                             multiple tests correction mathematical approach for the
+#'                             calculation of correlation. The default is set to
+#'                             "Bonferroni". Note: this parameter does not influence the
+#'                             correction approach for the depletion / enrichment
+#'                             calculations, for the returned argument presents both
+#'                             approaches as default.
+#' @param alpha (numeric)      A numeric vector of 1L length. Sets the value of alpha
+#'                             as the cutoff for significant results. The same alpha is
+#'                             used for both choosing significantly correlated genes and
+#'                             for significantly enrichement / depletetion. The default
+#'                             value is 0.05.
+#' @return (data frame)        A data frame with 8 columns and rows number that is equal
+#'                             to the amnout of unique TF that can bind the genes of the
+#'                             chosen system. For each TF, provides: Enrichment magnitude
+#'                             among the systems' correlated genes; P value for one sided
+#'                             fishers exact test for enrichment; Depletion magnitude
+#'                             among the systems' correlated genes; P value for one sided
+#'                             fishers exact test for depletion; The BH cutoff according
+#'                             to the p value for enrichment; The BH cutoff according to
+#'                             the p value for depletion; The Bonferroni cutoff. Returns
+#'                             all values for both significantly enriched / depleted TFs
+#'                             and not-enriched / not-depleted TFs.
 #'
 #' @family <optional description of family>
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
+#' @seealso \code{\link{fisher.test}} Performs Fisher's exact test for testing the null of
+#'                                    independence of rows and columns in a contingency table with fixed marginals.
 #'
 #' @examples
-#' # <explain what the example does>
-#' EnrichedTF(1i, 1i)
+#' # Creating the enrichment and depletion p values for TF binding by the positively
+#' # correlated genes of HVGCR system.
+#' EnrichDepletTF(sys = "HVGCR")
 #'
 #' @export
 
 
-EnrichedTF <- function(sys,
+EnrichDepletTF <- function(sys,
                        nUpMost = FALSE,
-                       Enriched = TRUE,
                        CorDirection = "Positive",
-                       multipleTests = "BH",
+                       multipleTests = "Bonferroni",
                        alpha = 0.05){
 
   GeneSym <- SyDBgetSysSymbols(fetchData("SysDB"), sys)[[1]] #Fetching the genes
@@ -290,63 +338,57 @@ EnrichedTF <- function(sys,
                             multipleTests = multipleTests,
                             alpha = alpha)
 
-  corEnrichment <- as.data.frame(matrix(data = NA, nrow = length(TfSym), ncol = 7),
-                                 stringsAsFactors = F)
-  colnames(corEnrichment) <- c("TF", "Enrichment", "Enrichment_P_value",
-                               "Depletion_P_value", "BH_enrichment",
-                               "BH_depletion", "Bonferroni")
-  corEnrichment$TF <- TfSym
+  if (sum( ! is.na(upCorGenes)) >= 3) {
+    #calculating enrichment and depletion:
+    corEnrichDep <- as.data.frame(matrix(data = NA, nrow = length(TfSym), ncol = 8),
+                                   stringsAsFactors = F)
+    colnames(corEnrichDep) <- c("TF", "Enrichment", "Enrichment_P_value",
+                                "Depletion", "Depletion_P_value",
+                                "BH_enrichment","BH_depletion",
+                                "Bonferroni")
+    corEnrichDep$TF <- TfSym
 
-  i <- 1
-  for (i in seq_along(TfSym)){
-    #Calculating enrichment
-    GenesBindTf <- GTRDtf[[TfSym[i]]]
-    CorGenesBindTf <- upCorGenes[which(upCorGenes %in% GenesBindTf)]
-    ExpectedBinding <- length(GenesBindTf) / length(GeneSym)
-    ObservedBinding <- length(CorGenesBindTf) / length(upCorGenes)
-    corEnrichment$Enrichment[i] <- ObservedBinding / ExpectedBinding
+    for (i in seq_along(TfSym)){
+      #Calculating enrichment and p value
+      GenesBindTf <- GTRDtf[[TfSym[i]]]
+      CorGenesBindTf <- upCorGenes[which(upCorGenes %in% GenesBindTf)]
+      a <- length(CorGenesBindTf) #Correlates and binds TF
+      b <- length(GenesBindTf) - a #not correlates and binds TF
+      c <- length(upCorGenes) - a #Correlates and don't bind
+      d <- (length(GeneSym) - length(upCorGenes)) - b #Not correlates and not binds
 
-    #Calculating P value for enrichment
-    m <- length(GenesBindTf) # Number of Genes that bind the TF
-    n <- length(GeneSym) - length(GenesBindTf) #number of Genes that don't bind the TF
-    k <- length(upCorGenes)   #number of Gene hits, that is, correlated
-    x <- length(CorGenesBindTf) : length(GeneSym)  # an array of the range between the
-                                                     # number of observed genes that both
-                                                    # bind TF and correlate positively,
-                                                    # and the total amount of genes (i.e.,
-                                                    # in order to calculate the p value for
-                                                    # the observed + more extreme cases)
-    probabilities <- dhyper(x = x, m = m, n = m, k = k, log = FALSE)
-    corEnrichment$Enrichment_P_value[i] <- sum(probabilities)
+      tmpFisher <- stats::fisher.test(matrix(c(a, b, c, d), nrow = 2),
+                                      alternative = "greater")
+      corEnrichDep$Enrichment[i] <- tmpFisher$estimate
+      corEnrichDep$Enrichment_P_value[i] <- tmpFisher$p.value
 
-    #Calculating P value for depletion. m and n are switched, k stays the same, and x
-    # is the amount of correlated genes that do not bind the TF.
-    x <- sum(upCorGenes %in% GenesBindTf == FALSE) : length(GeneSym)
-    probabilities <- dhyper(x = x, m = n, n = m, k = k, log = FALSE)
-    corEnrichment$Depletion_P_value[i] <- sum(probabilities)
+      #Calculating depletion. and p value
+      tmpFisher <- stats::fisher.test(matrix(c(c, d, a, b), nrow = 2),
+                                      alternative = "greater")
+      corEnrichDep$Depletion[i] <- tmpFisher$estimate
+      corEnrichDep$Depletion_P_value[i] <- tmpFisher$p.value
+    }
+
+    #Calculating the cutoffs for each multi-test correction approach
+    nExperiments <- length(TfSym)
+    corEnrichDep <- corEnrichDep[order(corEnrichDep$Enrichment_P_value,
+                                         decreasing = FALSE),] #order according to
+                                                               #increasing p values
+    corEnrichDep$BH_enrichment <- (order(corEnrichDep$Enrichment_P_value,
+                                          decreasing = FALSE) / nExperiments) * alpha
+    corEnrichDep <- corEnrichDep[order(corEnrichDep$Depletion_P_value,
+                                         decreasing = FALSE),] #order according to
+                                                               #increasing P values
+    corEnrichDep$BH_depletion <- (order(corEnrichDep$Depletion_P_value,
+                                         decreasing = FALSE) / nExperiments) * alpha
+    corEnrichDep$Bonferroni <- alpha / nExperiments #Bonferroni cutoff value.
+
+    return(corEnrichDep)
+
+  } else {
+    return (print("Error: less then 3 significantly correlated genes"))
   }
-
-  #Calculating the cutoff for each multi test correction approach
-  nExperiments <- length(TfSym)
-  corEnrichment <- corEnrichment[order(corEnrichment$Enrichment_P_value,
-                                       decreasing = FALSE),] #order according to increasing
-                                                             #P values
-  corEnrichment$BH_enrichment <- (order(corEnrichment$Enrichment_P_value,
-                                        decreasing = FALSE) / nExperiments) * alpha
-
-  corEnrichment <- corEnrichment[order(corEnrichment$Depletion_P_value,
-                                       decreasing = FALSE),] #order according to increasing
-                                                             #P values
-  corEnrichment$BH_depletion <- (order(corEnrichment$Depletion_P_value,
-                                       decreasing = FALSE) / nExperiments) * alpha
-
-  corEnrichment$Bonferroni <- alpha / nExperiments #Cutoff value for Bonferroni correction
-
-
-  return(corEnrichment)
 }
-
-
 
 
 ##Tests that I used during the process of writing the code:
@@ -355,6 +397,15 @@ EnrichedTF <- function(sys,
 #if (sum(duplicated(expCor[,1:2])) != 0){
 #  print("Error! Duplicated pairs of genes")
 #}
+
+##Testing whether the genes that appears in the output list of sysGTRDtf are
+##the exact same genes that were given as the input in GeneSym
+#if (identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
+#  return(GTRDtf)
+#}else{
+#  return(print("Error: input genes are not equal to output genes"))
+#}
+
 
 
 # [END]
