@@ -38,13 +38,10 @@
 #' \dontrun{
 #' # Retrieve system database using functions provided from the master package
 #' myDB <- fetchData("SysDB")
-#'
 #' # See which genes the "PHALY" systems contains
 #' (SyDBgetSysSymbols(myDB, "PHALY"))
-#'
 #' # Pick a sample HGNC symbol within the PHALY system
 #' hgnc <- "BECN1"
-#'
 #' # Call the SeqComparisonTable function to generate the dataframe
 #' seqComparisonDF <- SeqComparisonTable(hgnc)
 #' }
