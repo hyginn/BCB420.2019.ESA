@@ -26,10 +26,6 @@ Imports:
     Biostrings,
     BiocManager,
     devtools,
-    data.table,
-    xml2,
-    rtracklayer,
-    biomaRt,
     msa
 Suggests:
     testthat,
