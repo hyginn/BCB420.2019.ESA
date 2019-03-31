@@ -258,15 +258,25 @@ str(IPRgenes, list.len = 5)
 
 #### 2.6 Systems:
 
-A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <systemCode>)` to access all gene symbols for a system (or subsystem).
+A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <sys>)[[1]]` to access all gene symbols for a single system (or subsystem). Use `unlist(SyDBgetSysSymbols(myDB, SyDBgetRootSysIDs(myDB)), use.names = FALSE)` to access all genes in the database.
 
 ```R
 myDB <- fetchData("SysDB")
 
+
+SyDBgetRootSysIDs(myDB)
+#                                        PHALY                                       SLIGR 
+#  "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                        NLRIN                                       HVGCR 
+#  "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
 names(SyDBgetRootSysIDs(myDB))
 # [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
 
-SyDBgetSysSymbols(myDB, "HVGCR")
+
+SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
+# $HVGCR
 #  [1] "ADCY9"    "ADRB2"    "AKAP7"    "CACNA1C"  "CACNA2D1" "CACNA2D3" "CACNB1"   "CACNB3"  
 #  [9] "CACNB4"   "CACNG1"   "CACNG6"   "CALM1"    "CALM2"    "CALM3"    "GNAS"     "PRKACA"  
 # [17] "PRKACB"   "PRKAR1A"  "PRKAR1B"  "PRKAR2A"  "PRKAR2B" 
@@ -278,7 +288,7 @@ The old function stub `fetchComponents()` still works but is deprecated:
 
 ```R
 > fetchComponents("PHALY")
-Note: fetchComponents(...) is deprecated.Use SyDBgetSysSymbols(<database>, <system code>) instead.
+Note: fetchComponents(...) is deprecated. Use SyDBgetSysSymbols(<database>, <system code>) instead.
 
  [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"    "BECN1"     "BECN2"     "BIRC6"    
  [9] "BLOC1S1"   "BLOC1S2"   "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"   "CALCOCO2" 

@@ -4,7 +4,7 @@
 \alias{SyDBgetIDforKey}
 \title{\code{SyDBgetIDforKey} fetch an ID from a systems database.}
 \usage{
-SyDBgetIDforKey(val, att, tbl, db, v = "2.1.1")
+SyDBgetIDforKey(val, att, tbl, db)
 }
 \arguments{
 \item{val}{(character)  match value "val" ...}
@@ -14,8 +14,6 @@ SyDBgetIDforKey(val, att, tbl, db, v = "2.1.1")
 \item{tbl}{(character)  ... of table "tbl" ...}
 
 \item{db}{(character)  in database "db".}
-
-\item{v}{(character)   database version. Defaults to 2.1.1}
 }
 \value{
 (character) a vector of HGNC symbols or a zero-length vector if
