@@ -30,8 +30,7 @@ Imports:
     xml2,
     rtracklayer,
     biomaRt,
-    msa,
-    devtools
+    msa
 Suggests:
     testthat,
     BiocStyle,

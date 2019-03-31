@@ -70,8 +70,10 @@ SeqComparisonTable <- function(hgnc) {
 
   ### ============ Setting up PDB-HGNC database ==================== ###
 
-  # Call helper function
-  pdbHGNC <- BCB420.2019.ESA::fetchPDBHGNCdatabase()
+  # Load PDBHGNC data
+  PDBHGNCpath <- system.file("extdata", "PDBHGNC.RData",
+                             package = "BCB420.2019.ESA")
+  load(PDBHGNCpath)
 
   ### ========== Generate the PDB Sequence comparison Table ======== ###
 
@@ -79,10 +81,10 @@ SeqComparisonTable <- function(hgnc) {
   # using the STRING database
   edges <- STRINGedges[STRINGedges$a == hgnc,]
 
-  hgncTable <- pdbHGNC$Transcripts[pdbHGNC$Transcripts$hgncID
+  hgncTable <- PDBHGNC$Transcripts[PDBHGNC$Transcripts$hgncID
                                    %in% edges$b,c("ID", "hgncID")]
 
-  hgncTable <- rbind(hgncTable, pdbHGNC$Transcripts[pdbHGNC$Transcripts$hgncID
+  hgncTable <- rbind(hgncTable, PDBHGNC$Transcripts[PDBHGNC$Transcripts$hgncID
                                               == hgnc, c("ID", "hgncID")])
 
   hgncTable$Sequence <- NA
@@ -92,7 +94,7 @@ SeqComparisonTable <- function(hgnc) {
   # Pick the chain with the best resolution if there are overlapping
   # PDB protein structures
   for (transcript in hgncTable$ID) {
-    sel <- pdbHGNC$pdbChains[pdbHGNC$pdbChains$transcriptHGNC == transcript,]
+    sel <- PDBHGNC$pdbChains[PDBHGNC$pdbChains$transcriptHGNC == transcript,]
     edgeSeq <- sel[sel$Resolution == min(sel$Resolution),
                    ][1,c("Resolution", "Sequences")]
     hgncTable[hgncTable$ID == transcript,]$Sequence <- edgeSeq$Sequences
