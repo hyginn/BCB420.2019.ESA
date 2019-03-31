@@ -43,10 +43,14 @@ Remotes: NElnour/biogridr
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Collate: 
-    'fetchData.R'
-    'fetchComponents.R'
     'SyDButils.R'
-    'GGI_PPI_Integrator.R'
+    'fetchComponents.R'
+    'fetchData.R'
+    'getGeneticInteractome.R'
+    'getKey.R'
+    'hypothesize.R'
+    'makeMaps.R'
     'makeSeq.R'
+    'predictDirectedNetworks.R'
     'rptGC.R'
     'zzz.R'
