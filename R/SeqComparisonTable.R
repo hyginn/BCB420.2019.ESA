@@ -35,7 +35,6 @@
 #'     off a ClustalW multiple Sequence Alignment.
 #' @author {Heewon Lee} (aut)
 #' @examples
-#' \dontrun{
 #' # Retrieve system database using functions provided from the master package
 #' myDB <- fetchData("SysDB")
 #' # See which genes the "PHALY" systems contains
@@ -44,7 +43,7 @@
 #' hgnc <- "BECN1"
 #' # Call the SeqComparisonTable function to generate the dataframe
 #' seqComparisonDF <- SeqComparisonTable(hgnc)
-#' }
+#'
 #' @export
 
 SeqComparisonTable <- function(hgnc) {

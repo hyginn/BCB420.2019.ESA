@@ -32,12 +32,12 @@
 #'
 #' @author {Heewon Lee} (aut)
 #' @examples
-#' \dontrun{
+#'
 #' # Call the fetchPDBHGNCdatabase function to generate a dataframe
 #' # containing the annotated PDB-HGNC database from the
 #' # BCB420.2019.PDB package
 #' pdbHGNCdata <- fetchPDBHGNCdatabase()
-#' }
+#'
 #' @export
 
 fetchPDBHGNCdatabase <- function() {
