@@ -13,7 +13,7 @@ Authors@R: c(
 Description: This is a tool to cluster a set of gene that have good correlation genes. It use igraph 
 or network package to generate the graph
 
-URL: https://github.com/KevinJianLin/explorenewbio
+URL: https://github.com/KevinJianLin/BCB420.2019.ESA-1
 
 License: file LICENSE
 Encoding: UTF-8

@@ -1,10 +1,10 @@
-#=============================================TOC====================================================
-#======================================Section 1: Dataset I choose from GENE POLR1A profile==========
-#======================================Section 2: Dataset Provided by professor======================
-
-
-#============Section 1 is the dataset I from POLR1A profile==========================================
-# This partial code was obtained from BCB410 Course.
+# Find cluster of genes
+# Purpose: To find a sets of genes that across different sample but in the same platform
+# Date: 2019-03-20
+# Author: Kevin Lin
+# License: MIT
+#=====================================================================================================
+#' @import devtools
 source("https://bioconductor.org/biocLite.R")
 if (!require(Biobase, quietly=TRUE)) {
   biocLite("Biobase")
@@ -38,7 +38,7 @@ library("network")
 install.packages("rgl")
 library("rgl")
 
-
+#=================================================================================
 # Load series and platform data from GEO
 raw_dataset_1 <- getGEO("GSE34512", GSEMatrix =TRUE, getGPL=FALSE)
 if (length(raw_dataset_1) > 1) {
@@ -81,7 +81,8 @@ ncol(expression_dataset_1_Matrix)
 nrow(expression_dataset_1_Matrix)
 
 # omit the rows that has na value;
-
+#===============================================================
+#' @export
 positively_correlated_genes <- function(expressionmatrix,identifiernames,threshold)
 {
 
@@ -293,6 +294,6 @@ plotCorGenes(A = "SLC9A4", B = "NLGN2", prf = myQNXP)
 
 
 
-
+# [END]
 
 
