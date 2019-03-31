@@ -53,9 +53,8 @@ save(GSE34512, file="./data/GSE34512.RData")
 load(file="./data/GSE34512.RData")
 raw_dataset_1  <-GSE34512
 raw_dataset_1
-# Access contents via methods:
-identifiername <- featureNames(raw_dataset_1 )
-featureNames(raw_dataset_1 )[1:nrow(raw_dataset_1)]
+# Access the name of identifier
+(identifiername <- featureNames(raw_dataset_1 ))
 
 sampleNames(raw_dataset_1 )
 exprs(raw_dataset_1)
@@ -65,11 +64,17 @@ number_of_genes <- nrow(raw_dataset_1)
  #I tried to process of all of sampples and crashed
 
 # assign all of features and columns into an object;
-expression_dataset_1 <- raw_dataset_1[1:row_2,1:ncol(raw_dataset_1)]
+expression_dataset_1 <- raw_dataset_1[1:nrow(raw_dataset_1),1:ncol(raw_dataset_1)]
 
 # assign above object into a matrix using "exprs" function
 expression_dataset_1_Matrix <- matrix(exprs(expression_dataset_1), nrow=nrow(raw_dataset_1),
                                       ncol=ncol(raw_dataset_1))
+
+expression_dataset_1_Matrix <- matrix(exprs(expression_dataset_1), nrow=7,ncol=5)
+(expression_dataset_1_Matrix_transpose <- t(expression_dataset_1_Matrix))
+
+(cor(expression_dataset_1_Matrix_transpose))
+
 
 na.omit(expression_dataset_1_Matrix)
 ncol(expression_dataset_1_Matrix)
@@ -77,11 +82,12 @@ nrow(expression_dataset_1_Matrix)
 
 # omit the rows that has na value;
 
-positively_correlated_genes <- function(expressionmatrix,identifiernames)
+positively_correlated_genes <- function(expressionmatrix,identifiernames,threshold)
 {
 
-matrix_portion <- expressionmatrix[1:50,]
-identifiername_portion <- identifiernames[1:50]
+matrix_portion <- expressionmatrix[1:10,]
+identifiername_portion <- identifiernames[1:10]
+threshold <- threshold
 
 #lets transpose the matrix
 expression_dataset_1_Matrix_transpose <- t(matrix_portion)
@@ -101,7 +107,7 @@ for (c in 1:nrow(expression_dataset_1_Matrix_transpose_cor))
 {
   for (d in 1:ncol(expression_dataset_1_Matrix_transpose_cor))
   {
-    if(expression_dataset_1_Matrix_transpose_cor[c,d] >= 0.9)
+    if(expression_dataset_1_Matrix_transpose_cor[c,d] >= threshold)
     {
       positively_correlated_matrix[c,d] <-1
     }
@@ -114,12 +120,13 @@ for (c in 1:nrow(expression_dataset_1_Matrix_transpose_cor))
 coexpressed_genes<-graph_from_adjacency_matrix(positively_correlated_matrix
                                                , mode="undirected",weighted=NULL)
 igraph_1 <- simplify(coexpressed_genes)
+V(igraph_1)$name<-identifiername_portion
 return(largest_cliques(igraph_1))
 plot.igraph(igraph_1,vertex.color="red", vertex.size = 10,directed=FALSE)
 }
 
 
-positively_correlated_genes(expression_dataset_1_Matrix,identifiername)
+positively_correlated_genes(expression_dataset_1_Matrix,identifiername,0.85)
 
 
 
