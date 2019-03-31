@@ -1,8 +1,8 @@
-# net_sim.R
+# jaccard_dist.R
 
-#' Network Similarity.
+#' Jaccard Distance.
 #'
-#' \code{net_sim} Calculate the pairwise similarity of genes in an interaction network.
+#' \code{jaccard_dist} Calculate the pairwise similarity of genes in an interaction network.
 #'
 #' Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes.
 #' Note that this functions requires the igraph package to previously be loaded.
@@ -30,14 +30,15 @@
 #'
 #' @export
 
-net_sim <- function(gene1, gene2, graph = STRINGgraph) {
+jaccard_dist <- function(gene1, gene2, graph) {
   # if the 2 genes are the same and they are unconnected, Jaccard similarity will be 0 but we want it to be 1
   if (gene1==gene2) {
     return(1)
   } else { # compute Jaccard similarity normally
     sim <- similarity(graph, vids = c(gene1, gene2) , method = "jaccard")
     sim <- sim[1, 2]
-    return(sim)
+    distance <- 1 - sim
+    return(distance)
   }
 }
 
