@@ -228,15 +228,20 @@ sysCorGenes <- function(exProfS,
                                                            #correction approach.
   if (direction == "Positive") { #Choosing positively correlated genes
     signifCor <- signifCor[signifCor$Correlation > 0, ]
+    if (nUpMost == FALSE){ #returning all the genes that are correlated
+      MostCor <- signifCor
+    } else { #returning only the "nUpMost" correlated genes
+      MostCor <-
+        signifCor[order(signifCor$Correlation, decreasing = TRUE), ][1 : nUpMost, ]
+    }
   } else if (direction == "Negative") { #Choosing negatively correlated genes
     signifCor <- signifCor[signifCor$Correlation < 0, ]
-  }
-
-  if (nUpMost == FALSE){ #returning all the genes that are correlated
-    MostCor <- signifCor[order(signifCor$Correlation, decreasing = TRUE), ]
-  } else { #returning only the "nUpMost" correlated genes
-  MostCor <-
-    signifCor[order(signifCor$Correlation, decreasing = TRUE), ][1 : nUpMost, ]
+    if (nUpMost == FALSE){ #returning all the genes that are correlated
+      MostCor <- signifCor
+    } else { #returning only the "nUpMost" correlated genes
+      MostCor <-
+        signifCor[order(signifCor$Correlation, decreasing = FALSE), ][1 : nUpMost, ]
+    }
   }
 
   return(unique(c(MostCor$Gene1, MostCor$Gene2)))
@@ -308,9 +313,10 @@ sysCorGenes <- function(exProfS,
 #'                                    independence of rows and columns in a contingency table with fixed marginals.
 #'
 #' @examples
-#' # Creating the enrichment and depletion p values for TF binding by the positively
-#' # correlated genes of HVGCR system.
-#' EnrichDepletTF(sys = "HVGCR")
+#' # The enrichment and depletion values and p values of TF for the 10 most positively
+#' # correlated genes of NLRIN system.
+#' EnrichDepletNLRIN <- EnrichDepletTF(sys = "NLRIN", nUpMost = 10)
+#' EnrichDepletNLRIN[EnrichDepletNLRIN$Enrichment_P_value < EnrichDepletNLRIN$BH_enrichment, ]
 #'
 #' @export
 

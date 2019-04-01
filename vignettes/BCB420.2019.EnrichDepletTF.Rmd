@@ -89,23 +89,25 @@ names(SyDBgetRootSysIDs(fetchData("SysDB")))
 Inserting one system's name into `EnrichDepletTF()`
 For instance, typing this code into your console:
 ```{r eval=FALSE, include=FALSE}
-PHALY <- EnrichDepletTF(sys = "PHALY")
+NLRIN <- EnrichDepletTF(sys = "NLRIN", nUpMost = 10)
 
-head(PHALY)
+head(NLRIN)
 ```
+
+This queries for enrichment and depletion of TFs among the 10 most positively correlated genes of the "NLRIN" system.
 
 As inferred from the output, the transcription factors that are significantly enriched for this set of positively correlated genes are the TFs that their `Enrichment_P_value` are smaller than either the corresponding `BH_enrichment` cutoff value or than the `Bonferroni` cutoff value. The choise of cutoff value is the user's.
 
 Similarly, the transcription factors that are significantly depleted are the TFs that their `Depletion_P_value` are smaller than either the corresponding `BH_depletion` cutoff value or than the `Bonferroni` cutoff value.
 
 
-As shown by this example, non of the queried transcription factors were found to be enriched for the positively correlated pairs of genes of the "PHALY" system.
+As shown by this example, only one of the queried transcription factors were found to be enriched for the 10 most positively correlated pairs of genes of the "NLRIN" system.
 ```{r eval=FALSE, include=FALSE}
 #For BH cutoff
-PHALY[PHALY$Enrichment_P_value < PHALY$BH_enrichment, ]
+NLRIN[NLRIN$Enrichment_P_value < NLRIN$BH_enrichment, ]
 
 #For bonferroni cutoff
-PHALY[PHALY$Enrichment_P_value < PHALY$Bonferroni, ]
+NLRIN[NLRIN$Enrichment_P_value < NLRIN$Bonferroni, ]
 ```
 
 
