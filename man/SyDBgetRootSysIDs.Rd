@@ -4,12 +4,10 @@
 \alias{SyDBgetRootSysIDs}
 \title{\code{SyDBgetRootSysIDs} fetch root-system IDs from a systems database.}
 \usage{
-SyDBgetRootSysIDs(db, v = "2.1.1")
+SyDBgetRootSysIDs(db)
 }
 \arguments{
-\item{db}{(character)  name of the database}
-
-\item{v}{(character)  the database version. Defaults to 2.1.1}
+\item{db}{(list)  a systems database}
 }
 \value{
 a named vector of QQIDs; system codes are names

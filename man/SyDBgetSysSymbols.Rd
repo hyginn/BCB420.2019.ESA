@@ -4,26 +4,29 @@
 \alias{SyDBgetSysSymbols}
 \title{\code{SyDBgetSysSymbols} fetch root-system IDs from a systems database.}
 \usage{
-SyDBgetSysSymbols(db, sysCode, treatNOT = "exclude", v = "2.1.1")
+SyDBgetSysSymbols(db, sys, treatNOT = "exclude")
 }
 \arguments{
 \item{db}{(character)  name of the database}
 
-\item{sysCode}{(character)  the requested system code}
+\item{sys}{(character)  system codes or system IDs}
 
 \item{treatNOT}{(character)  not implemented}
-
-\item{v}{(character)  the database version. Defaults to 2.1.1}
 }
 \value{
-(character) a vector of HGNC symbols or a zero-length vector if
-                    none were found
+(list) a list of the same length as "sys", containing character
+               vectors of HGNC symbols, or zero-length vectors if no
+               symbols were found
 }
 \description{
 \code{SyDBgetSysSymbols} documentation in progress ...
 }
 \examples{
 \dontrun{
-SyDBgetSysSymbols("PHALY")            # all HGNC symbols in the PHALY system
+# all HGNC symbols of the PHALY system
+SyDBgetSysSymbols(mySDB, "PHALY")
+
+# all genes in the database:
+unlist(SyDBgetSysSymbols(mySDB, SyDBgetRootSysIDs(mySDB)), use.names = FALSE)
 }
 }
