@@ -24,7 +24,6 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     corrplot,
-    psych,
     RColorBrewer,
     ggplot2,
     BiocManager,
@@ -34,6 +33,7 @@ Suggests:
     testthat,
     BiocStyle,
     knitr,
-    rmarkdown
+    rmarkdown,
+    Cairo
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
