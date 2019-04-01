@@ -87,9 +87,8 @@ names(SyDBgetRootSysIDs(fetchData("SysDB")))
 ```
 
 Inserting one system's name into `EnrichDepletTF()`
-```{r}
-source('~/Bioinformatics/BCB420.2019.ESA/R/EnrichDepletTF.R', echo = TRUE)
-
+For instance, typing this code into your console:
+```{r eval=FALSE, include=FALSE}
 PHALY <- EnrichDepletTF(sys = "PHALY")
 
 head(PHALY)
@@ -101,7 +100,7 @@ Similarly, the transcription factors that are significantly depleted are the TFs
 
 
 As shown by this example, non of the queried transcription factors were found to be enriched for the positively correlated pairs of genes of the "PHALY" system.
-```{r}
+```{r eval=FALSE, include=FALSE}
 #For BH cutoff
 PHALY[PHALY$Enrichment_P_value < PHALY$BH_enrichment, ]
 

@@ -1,4 +1,4 @@
-# EnrichedTF.R
+# EnrichDepletTF.R
 
 # =====  1  Functions that loads the required datasets  ================================================
 # ====== 1.1  Load expression-profiles  =============================
