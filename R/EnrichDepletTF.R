@@ -160,22 +160,22 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #'                                  is FALSE.
 #' @param direction (character) A vector of 1L length of either "Positive" or "Negative".
 #'                              "Positive" returns pairs of genes that are significantly
-#'                               positively correlated. "Negative" returns pairs of genes
-#'                               that are significantly negatively correlated. The
-#'                               default is set to "Positive".
-#' @param multipleTests (char) A character vector of 1L length of either "Bonferroni" or
-#'                             "BH" (Benjamini-Hochberg), to set the multiple tests
-#'                             correction approach. The default is set to "Bonferroni".
-#' @param alpha (numeric)      a numeric or vector of 1L length, to set the value of alpha
-#'                             for deciding on the cutoff for significant results. The
-#'                             Default value is 0.05.
-#' @return (char vector)       A character vector of unique correlated of genes (HGNC
-#'                             symbols). Although the number of pairs of genes that
-#'                             constitutes the vector is set by the paramenter "nUpMost",
-#'                             the length of the vector may vary and won't always be
-#'                             2 * "nUpMost", because duplications are deleted so that each
-#'                             gene appears only once.
-#'
+#'                              positively correlated. "Negative" returns pairs of genes
+#'                              that are significantly negatively correlated. The
+#'                              default is set to "Positive".
+#' @param multipleTests (character) A vector of 1L length of either "Bonferroni" or
+#'                                  "BH" (Benjamini-Hochberg). Sets the multiple tests
+#'                                  correction approach. The default is "Bonferroni".
+#' @param alpha (numeric)      A vector of 1L length. Sets the value of alpha for
+#'                             deciding the cutoff for significant results. The Default
+#'                             is 0.05.
+#' @return (character)         A vector of unique genes (HGNC symbols) that were found to
+#'                             be significantly correlated, according to the conditions
+#'                             set by the parameters. For a numeric value of nUpMost,
+#'                             although the number of pairs of genes was set, the number
+#'                             of the returned genes is not always equal to 2 * "nUpMost",
+#'                             because some of the pairs may contain the same genes,
+#'                             while the function returns only a vector of unique genes.
 #' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
@@ -253,7 +253,6 @@ sysCorGenes <- function(exProfS,
         signifCor[order(signifCor$Correlation, decreasing = FALSE), ][1 : nUpMost, ]
     }
   }
-
   return(unique(c(MostCor$Gene1, MostCor$Gene2)))
 }
 
@@ -264,70 +263,81 @@ sysCorGenes <- function(exProfS,
 #' \code{EnrichDepletTF} Calculating the p values for enrichment and depletion of
 #'                       transcription factor binding sites within a system.
 #'
-#'
 #' @section Details: The systems were curated as part of BCB420H1 winter 2019 course. The
-#'                   TF binding datasets were curated by the GTRD database and edited
-#'                   by Boris Steipe. The expression profiles database was obtained from
-#'                   GEO and edited by Boris Steipe.
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R}{fetchData Github}
-#'                   Enrichment and depletion calculation were inspired by Boris Steipe's
-#'                   guidance and by "Pathway Guide"
-#'\href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
+#'                   TF binding datasets were curated by the GTRD database. The
+#'                   expression profiles database was obtained from GEO. For more
+#'                   information about the datasets, see \code{\link{fetchData}.
+#'                   Enrichment and depletion calculation were inspired by "Pathway
+#'                   Guide" \href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
+#'                   and by Devon Ryan \href{https://www.biostars.org/p/102946/}{Depletion}
 #'
-#' @param sys (char)           A character vector of 1L length of 5 uppercase lettered word
-#'                             that corresponds to a biological system curated during the
+#' @param sys (character)      A vector of 1L length, of 5 uppercase lettered word that
+#'                             corresponds to a biological system curated during the
 #'                             BCB420H1 winter 2019 course. The list of available systems
 #'                             can be retrieved by:
-#'                             names(SyDBgetRootSysIDs(fetchData("SysDB")))
-#' @param nUpMost (numeric / boolean) Either "FALSE" or numeric. Use "FALSE" for calculating
-#'                                    one sided enrichment and one sided depletion for all
-#'                                    significantly correlated genes. Use a a number (vector
-#'                                    of 1L length) to choose an amount of upmost
-#'                                    significantly correlated pairs of genes to calculate
-#'                                    their enrichment / depletion. The default is "FALSE".
-#' @param CorDirection (char)  Either "Positive" or "Negative". "Positive" uses pairs of
-#'                             genes that are significantly positively correlated to
-#'                             calculate their enrichment / depletion of TF binding.
-#'                             "Negative" uses pairs of genes that are significantly
-#'                             negatively correlated for the enrichment / depletion
-#'                             analysis. The default is "Positive".
-#' @param multipleTests (char) Either "Bonferroni" or "BH" (Benjamini-Hochberg). Sets the
-#'                             multiple tests correction mathematical approach for the
-#'                             calculation of correlation. The default is set to
-#'                             "Bonferroni". Note: this parameter does not influence the
-#'                             correction approach for the depletion / enrichment
-#'                             calculations, for the returned argument presents both
-#'                             approaches as default.
-#' @param alpha (numeric)      A numeric vector of 1L length. Sets the value of alpha
-#'                             as the cutoff for significant results. The same alpha is
-#'                             used for both choosing significantly correlated genes and
-#'                             for significantly enrichment / depletetion. The default
-#'                             value is 0.05.
-#' @return (data frame)        A data frame with 8 columns and rows number that is equal
-#'                             to the amnout of unique TF that can bind the genes of the
-#'                             chosen system. For each TF, provides: Enrichment magnitude
-#'                             among the systems' correlated genes; P value for one sided
-#'                             fishers exact test for enrichment; Depletion magnitude
-#'                             among the systems' correlated genes; P value for one sided
-#'                             fishers exact test for depletion; The BH cutoff according
-#'                             to the p value for enrichment; The BH cutoff according to
-#'                             the p value for depletion; The Bonferroni cutoff. Returns
-#'                             all values for both significantly enriched / depleted TFs
-#'                             and not-enriched / not-depleted TFs.
-#'
-#' @family <optional description of family>
+#'                             names(SyDBgetRootSysIDs(fetchData("SysDB"))). For more
+#'                             information, see \code{\link{fetchData} and
+#'                             \code{\link{SyDBgetRootSysIDs}
+#' @param nUpMost (numeric|logical) Either FALSE or a numeric vector of 1L length. FALSE
+#'                                  returns the one sided enrichment / depletion scores
+#'                                  and p values for all significantly correlated genes.
+#'                                  A numeric vector sets the number of most highly
+#'                                  correlated pairs of genes to return their one sided
+#'                                  enrichment / depletion scores and p values.
+#'                                  The default is FALSE.
+#' @param CorDirection (character) A vector of 1L length of either "Positive" or
+#'                                 "Negative". "Positive" calculates the enrichment /
+#'                                 depletion of TF-binding among pairs of genes that are
+#'                                 significantly positively correlated. "Negative"
+#'                                 calculates the enrichment / depletion of TF-binding
+#'                                 among pairs of genes that are significantly negatively
+#'                                 correlated. The default is "Positive".
+#' @param multipleTests (character) A vector of 1L length of either "Bonferroni" or
+#'                                  "BH" (Benjamini-Hochberg). Sets the multiple tests
+#'                                  correction approach for the calculation of
+#'                                  correlation. The default is "Bonferroni". Note that
+#'                                  this parameter does not influence the correction
+#'                                  approach for the depletion / enrichment calculations,
+#'                                  as the returned value contains both approaches as
+#'                                  a default.
+#' @param alpha (numeric)      A vector of 1L length. Sets the value of alpha for
+#'                             deciding the cutoff for significant results. The same
+#'                             value of alpha is used for both calculating the cutoff
+#'                             p value for significantly correlated pairs of genes and
+#'                             for calculating the cutoff p value for significantly
+#'                             enriched / depleted TFs among the significantly correlated
+#'                             pairs of genes. The Default is 0.05.
+#' @return (data frame)        A data frame with 8 columns, and rows dimensions that are
+#'                             equal to the number of unique TF that can bind the genes of
+#'                             the chosen system. The returned data frame provides the
+#'                             following information for each TF: Enrichment magnitude
+#'                             (Odds Ratio) among the systems' correlated genes; P value
+#'                             for one sided fisher's exact test for enrichment; Depletion
+#'                             magnitude (Odds Ratio) among the systems' correlated genes;
+#'                             P value for one sided fisher's exact test for depletion;
+#'                             The BH corrected cutoff calculated for the p values of
+#'                             the enrichment; The BH corrected cutoff calculated for
+#'                             the p values of depletion; The Bonferroni corrected cutoff.
+#'                             This data frame contains all values for the significantly
+#'                             enriched / depleted TFs as well as for the not-enriched /
+#'                             not-depleted TFs. If less then 3 correlated genes were fed
+#'                             into the function, the function will return NaN and a
+#'                             warning.
+#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
 #' @seealso \code{\link{fisher.test}} Performs Fisher's exact test for testing the null of
-#'                                    independence of rows and columns in a contingency table with fixed marginals.
+#'                                    independence of rows and columns in a contingency table
+#'                                    with fixed marginals.
 #'
 #' @examples
+#' \dontrun{
 #' # The enrichment and depletion values and p values of TF for the 10 most positively
 #' # correlated genes of NLRIN system.
 #' EnrichDepletNLRIN <- EnrichDepletTF(sys = "NLRIN", nUpMost = 10)
 #' EnrichDepletNLRIN[EnrichDepletNLRIN$Enrichment_P_value < EnrichDepletNLRIN$BH_enrichment, ]
-#'
+#' }
 #' @export
 
 
