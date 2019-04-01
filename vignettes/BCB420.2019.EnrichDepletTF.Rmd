@@ -1,14 +1,15 @@
 ---
-title: "The BCB420.2019.ESA Vignette"
+title: "EnrichDepletTF: querying for enrichement or depletion of TF-binding genes"
 author:
-- name: Boris Steipe
+- name: Sapir Labes
   affiliation: 
-  - http://orcid.org/0000-0002-1134-6758
+  - http://orcid.org/0000-0002-9478-5974
   - University of Toronto
-  email: boris.steipe@utoronto.ca
+  - The Hebrew University of Jerusalem
+  email: sapir.labes@mail.huji.ac.il
 date: "`r Sys.Date()`"
 abstract: >
-  This Vignette is a placeholder for global package documentation.
+  This Vignette demonstrates how to query enrichment and depletion of TF-binding genes among significantly correlated pairs of genes of a chosen system.
 output:
   BiocStyle::html_document:
     toc: true
@@ -20,11 +21,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 references:
 - id: steipe2019
-  title: 'EnrichDepletTF'
+  title: 'rptPlus: R Package Template - enhanced'
   author:
-  - family: Sapir
-    given: Labes
-    orcid: 0000-0002-9478-5974
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
   container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
   URL: 'https://github.com/hyginn/BCB420.2019.ESA'
 ---
@@ -69,13 +70,58 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 # About this Vignette
 
-This Vignette the EnrichDepletTF function of BCB420.2019.ESA package. See the `BCB420.2019.ESA` for more options and related functions.
+This Vignette explains and demonstrates how to use the EnrichDepletTF function of `BCB420.2019.ESA` package and how to interprete its results.
+
+This function uses an in-built helper function to find pairs of genes within the chosen system that their expression profiles significantly correlate (negatively or positively).
+Then, this function queries for enrichment or depletion in TF-binding-genes among the significantly correlated set of gene, with respect to the entire set of genes of the chosen system.
+
+Finding specific transcription factors that are enriched or depleted for a system, implies on a regulatory relationship between the TF and the binding genes, that could be evaluated and defined in consecutive research. 
+
+
+# Using the function
+As a first step, the user must choose a system to analyse.
+
+Presenting the available systems:
+```{r}
+names(SyDBgetRootSysIDs(fetchData("SysDB")))
+```
+
+Inserting one system's name into `EnrichDepletTF()`
+```{r}
+source("./R/EnrichDepletTF.R", echo = TRUE)
+
+PHALY <- EnrichDepletTF(sys = "PHALY")
+
+head(PHALY)
+```
+
+As inferred from the output, the transcription factors that are significantly enriched for this set of positively correlated genes are the TFs that their `Enrichment_P_value` are smaller than either the corresponding `BH_enrichment` cutoff value or than the `Bonferroni` cutoff value. The choise of cutoff value is the user's.
+
+Similarly, the transcription factors that are significantly depleted are the TFs that their `Depletion_P_value` are smaller than either the corresponding `BH_depletion` cutoff value or than the `Bonferroni` cutoff value.
+
+
+As shown by this example, non of the queried transcription factors were found to be enriched for the positively correlated pairs of genes of the "PHALY" system.
+```{r}
+#For BH cutoff
+PHALY[PHALY$Enrichment_P_value < PHALY$BH_enrichment, ]
+
+#For bonferroni cutoff
+PHALY[PHALY$Enrichment_P_value < PHALY$Bonferroni, ]
+```
+
+
+Please notice that `EnrichDepletTF()` has several parameters that are set to specific values as default, but can be modified by the user. The parameters are fully documented within the function documentation page. 
+
 
 
 # Further reading
 <a name="a1"></a>
 
-- TBD
+- Which 'systems' does this function refer to: Read about the available systems and their notation https://github.com/hyginn/BCB420.2019.ESA.
+- How were these systems curated: a link to the wiki page of the BCB420H1 course that the systems were curated during http://steipe.biochemistry.utoronto.ca/abc/index.php/Computational_Systems_Biology_Main_Page#Part_II:_Biocuration
+- Calculating P value by using fisher exact test: https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/
+- Cutoff for significance: https://www.pathwaycommons.org/guide/primers/statistics/multiple_testing/
+
 
 # Session Info
 
@@ -87,6 +133,12 @@ sessionInfo()
 
 <!-- the bibliography appears at the end of the page -->
 # References
+- `SyDBgetRootSysIDs()`: Written by Boris Steipe, published at  https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/SyDButils.R
+- `fetchData()`: Written by Boris Steipe, published at  https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R
+- `cor.test()`: Used for calculating pearson's correlation.
+- `fisher.test()`: Used for computing fisher exact test and calculating the p values for depletion and enrichment.
+- https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/
+- https://www.pathwaycommons.org/guide/primers/statistics/multiple_testing/
 
 
 <!-- End -->
