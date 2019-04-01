@@ -88,7 +88,7 @@ names(SyDBgetRootSysIDs(fetchData("SysDB")))
 
 Inserting one system's name into `EnrichDepletTF()`
 ```{r}
-source("./R/EnrichDepletTF.R", echo = TRUE)
+source('~/Bioinformatics/BCB420.2019.ESA/R/EnrichDepletTF.R', echo = TRUE)
 
 PHALY <- EnrichDepletTF(sys = "PHALY")
 
