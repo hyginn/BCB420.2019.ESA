@@ -7,26 +7,27 @@
 #'
 #' \code{sysExProf} Loads expression-profiles of chosen genes
 #'
-#' @section Details: The expression profiles were compiled by Boris Steipe from 52
-#' microarray experiments downloaded from GEO, and quantile normalized. The function
-#' that fetches the database was also written by Dr. Boris Steipe
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R}{fetchData Github}
-#' The code that deletes experiments with na values was written by Boris Steipe
-#'\href{ https://github.com/hyginn/BCB420.2019.ESA/blob/master/README.md}{removeNAs Github}
+#' @section Details: This is a helper function. The expression profiles were compiled
+#' from microarray experiments downloaded from GEO, and quantile normalized. For the
+#' function that fetches the database, see \code{\link{fetchData}.
 #'
+#' @param GeneSym (character)   A vector of length > 0L of HGNC symbols.
+#' @return  (numeric)           A matrix with row dimensions that are equal to the
+#'                              number of genes of the GeneSym vector that has
+#'                              expression data for all of the experiments.
+#'                              The column dimensions corresponds to the number of
+#'                              microarray experiments in the expression profile
+#'                              dataset. The matrix contains the expression profiles
+#'                              of genes that have data for all experiments in the
+#'                              expression profile source dataset. The rows names
+#'                              are the HGNC sybmols and the column names are the
+#'                              experiments' names.
 #'
-#' @param GeneSym (char vector)  A character vector of length > 0L of HGNC symbols.
-#' @return  (matrix)             A matrix with rows dimentions of the GeneSym vector
-#'                               length and 52 columns corresponding to the GEO experiments.
-#'                               Retrieves the expression profiles of genes that have data
-#'                               for all 52 GEO experiments. The rows names are the HGNC
-#'                               sybmols and the column names are the experiments' names.
-#'
-#' @family <optional description of family>
+#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
+#' @seealso \code{\link{fetchData}} Fetches the requested dataset.
 #'
 #' @examples
 #' # Expression profiles for "BRCA1" and "AR" genes.
@@ -51,22 +52,20 @@ sysExProf <- function(GeneSym) {
 #'
 #' \code{sysGTRDgenes} Fetch GTRD data for the specified genes.
 #'
-#' @section Details: The fetched dataset was collected and composed by Boris Steipe
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R{fetchData}.
-#' The GTRDgeneTFs dataset lists which TFs binds the upstream regulatory regions
-#' of each specified gene, as observed by ChIP-seq experiments to compose the GTRD
-#' database. The loading function was written by Boris Steipe
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R{fetchData}.
+#' @section Details: This is a helper function. The fetched dataset was composed from the
+#' GTRDgeneTFs dataset which lists which TFs bind the upstream regulatory regions of each
+#' specified gene, as observed by ChIP-seq experiments. For more details about the
+#' function that fetches the GRTDgeneTFs database, see \code{\link{fetchData}.
 #'
-#' @param GeneSym (char vector)  A character vector of length > 0L of HGNC symbols.
-#' @return (list)                A list of HGNC-symbol-named character vectors of
-#'                               the transcription factors that bind each gene.
+#' @param GeneSym (character)  A vector of length > 0L of HGNC symbols.
+#' @return (list)              A list of HGNC-symbol-named character vectors of
+#'                             the transcription factors that bind each gene.
 #'
-#' @family <optional description of family>
+#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
+#' @seealso \code{\link{fetchData}} Fetches the requested dataset.
 #'
 #' @examples
 #' # Fetching the vector of the transcription factors that bind the gene BCL3.
@@ -87,36 +86,36 @@ sysGTRDgenes <- function(GeneSym){
 #'
 #' \code{sysGTRDtf} Fetch GTRD data for the specified Transcription Factors and genes.
 #'
-#' @section Details: The fetched dataset was collected and composed by Boris Steipe
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R{fetchData}.
-#' The GTRDTFgenes dataset lists which genes bind each specified TF, as observed by
-#' ChIP-seq experiments that compose the GTRD database. The loading function was written
-#' by Boris Steipe
-#'\href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R{fetchData}.
+#' @section Details: This is a helper function. The fetched dataset was collected and
+#' composed from the GTRD database. The GTRDTFgenes dataset lists which  genes bind
+#' each specified TF, as observed by ChIP-seq experiments. For more details about the
+#' function that fetches the GTRDTFgenes database, see \code{\link{fetchData}. This
+#' function requires an input that can be produced by the helper function sysGTRDgenes.
 #'
-#' @param TfSym (char vector)   A character vector of length > 0L of unique TFs
-#'                              (HGNC symbols) that was extracted from the output
-#'                              of sysGTRDgenes() for a certain set of genes.
-#' @param GeneSym (char vector) A character vector of length > 0L of the unique genes
-#'                              (HGNC symbols) that the function sysGTRDgenes()
-#'                              retrieved for a certain set of genes (the same certain
-#'                              set of genes that was used to produce TfSym).
+#' @param TfSym (character)     A vector of length > 0L of unique TFs (HGNC symbols)
+#'                              that was extracted from the output of sysGTRDgenes()
+#'                              for a certain set of genes.
+#' @param GeneSym (character)   A vector of length > 0L of the unique genes (HGNC symbols)
+#'                              that the function sysGTRDgenes() retrieved for an input
+#'                              of a certain set of genes (the same certain set of genes
+#'                              that was used to produce TfSym).
 #' @return (list)               A list of transcription-factor-named character vectors of
 #'                              the genes that bind each transcription factor.
 #'
-#' @family <optional description of family>
+#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
+#' @seealso \code{\link{fetchData}} Fetches the requested dataset.
 #'
 #' @examples
+#' \dontrun{
 #' # Fetching the vector of the genes that bind the transcription factor AR.
 #' GTRDgenes <- sysGTRDgenes(GeneSym = c("LAMP1", "HDAC6"))
-#' GeneSym <- names(GTRDgenes) #The specific set of genes retrieved
-#' TfSym <- unique(unlist(GTRDgenes, use.names = FALSE)) #TFs that bind the specific set of genes
-#' sysGTRDtf(TfSym = TfSym, GeneSym = GeneSym)
-#'
+#' mySymbols <- names(GTRDgenes) #The specific set of genes retrieved
+#' myTfSym <- unique(unlist(GTRDgenes, use.names = FALSE)) #TFs that bind the specific set of genes
+#' sysGTRDtf(TfSym = myTfSym, GeneSym = mySymbols)
+#' }
 
 sysGTRDtf <- function(TfSym, GeneSym){
 
@@ -128,42 +127,42 @@ sysGTRDtf <- function(TfSym, GeneSym){
                                                                  #that are in GeneSym
 
   #Check:
-  if (identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
-    return(GTRDtf)
-  }else{
-    return(print("Error: input genes are not equal to output genes"))
+  if (! identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
+    stop(sprintf("%s is not identical to the genes that bind 'TfSym'.", "'GeneSym'"))
   }
+    return(GTRDtf)
 }
 
 
-# ===== 2 Finding positive correlated genes =============================
+# ===== 2 Finding positively or negatively correlated genes =============================
 
 #' sysUpCorGenes.
 #'
 #' \code{sysUpCorGenes} Finding pairs of genes that their expression profiles are the
-#'                      up most positively correlated.
+#'                      most positively or negatively correlated.
 #'
-#' @section Details: A function that produces a character vector of genes (HGNC symbols)
-#'                   of a set of unique genes that scored the up most correlation
-#'                   values for the expression profiles.
+#' @section Details: A helper function that produces a character vector of unique genes
+#'                   (HGNC symbols) that belongs to pairs of genes that their expression
+#'                   profiles were shown to be either positively or negatively correlated.
+#'                   It is also possible to specify the number the of most highly
+#'                   negatively or positively correlated pairs of genes to retrieve.
 #'
-#' @param exProfS (matrix)     A matrix with 52 columns that corresponds to 52 microarray
-#'                             experiments of expression profiles downloaded from GEO and
-#'                             quantile normalized and fetched by Dr. Boris Steipe
-#'                             \href{https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R}{fetchData Github}
-#'                             The matrix is produced by the function sysExProf() and the
-#'                             row dimentions are set by the length of the vector of the
-#'                             queried genes that was fed into sysExProf().
-#' @param nUpMost (numeric / boolean) Either "FALSE" to returns all significantly
-#'                                    correlated genes, a numeric or vector of 1L length,
-#'                                    describing the amount of upmost correlated pairs of
-#'                                    genes to return by the function. The default is set
-#'                                    to FALSE.
-#' @param direction (char)     A character vector of 1L length of either "Positive" or
-#'                             "Negative". "Positive" returns pairs of genes that are
-#'                             signigicantly positively correlated. "Negative" returns
-#'                             pairs of genes that are signigicantly negatively correlated.
-#'                             The default is set to "Positive".
+#' @param exProfS (numeric)    A matrix of expression profiles, with column dimensions
+#'                             equal to the number of microarray experiments, and row
+#'                             dimensions that are equal to the number of queried genes.
+#'                             All genes must have information for all experiments (i.e.,
+#'                             no NAs are allowed). The matrix can be produced  by the
+#'                             helper function sysExProf().
+#' @param nUpMost (numeric|logical) Either FALSE or a numeric vector of 1L length. FALSE
+#'                                  returns all significantly correlated genes. A numeric
+#'                                  vector sets the number of most highly correlated
+#'                                  pairs of genes to return by the function. The default
+#'                                  is FALSE.
+#' @param direction (character) A vector of 1L length of either "Positive" or "Negative".
+#'                              "Positive" returns pairs of genes that are significantly
+#'                               positively correlated. "Negative" returns pairs of genes
+#'                               that are significantly negatively correlated. The
+#'                               default is set to "Positive".
 #' @param multipleTests (char) A character vector of 1L length of either "Bonferroni" or
 #'                             "BH" (Benjamini-Hochberg), to set the multiple tests
 #'                             correction approach. The default is set to "Bonferroni".
@@ -177,7 +176,7 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #'                             2 * "nUpMost", because duplications are deleted so that each
 #'                             gene appears only once.
 #'
-#' @family <optional description of family>
+#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
@@ -188,10 +187,9 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #' @examples
 #' # Vector of the 12 up most positively correlated pairs of genes of "SLIGR"
 #' # system.
-#' GeneSym <- SyDBgetSysSymbols(fetchData("SysDB"),"SLIGR")[[1]]
-#' exProfs <- sysExProf(GeneSym = GeneSym)
-#' sysUpCorGenes(exProfS = exProfs, nUpMost = 12)
-#'
+#' mySymbols <- SyDBgetSysSymbols(fetchData("SysDB"),"SLIGR")[[1]]
+#' exProfS <- sysExProf(GeneSym = mySymbols)
+#' sysUpCorGenes(exProfS = exProfS, nUpMost = 12)
 
 sysCorGenes <- function(exProfS,
                         nUpMost = FALSE,
@@ -199,11 +197,23 @@ sysCorGenes <- function(exProfS,
                         multipleTests = "Bonferroni",
                         alpha = 0.05){
 
+  #checks
+  if (sum(is.na(exProfS)) != 0){ #No NAs in the exProfS matrix
+    stop(sprintf("%s contains NAs.", "'exProfS'"))
+  }
+  if (!((direction == "Positive") || (direction == "Negative"))){
+    stop(sprintf("%s must be either 'Positive' or 'Negative'.", "'direction'"))
+  }
+  if (!((multipleTests == "Bonferroni") || (multipleTests == "BH"))){
+    stop(sprintf("%s must be either 'Bonferroni' or 'BH'.", "'multipleTests'"))
+  }
+
   GeneSym <- row.names(exProfS)
   nPairs <- (length(GeneSym) * (length(GeneSym) - 1)) / 2 #number of pairs of genes
-  expCor <- as.data.frame(matrix(nrow = nPairs, ncol = 6, data = c("")),
-                          stringsAsFactors = FALSE)
-  colnames(expCor) <- c("Gene1", "Gene2", "Correlation", "Pvalue", "BH", "Bonferroni")
+  expCor <- data.frame(Gene1 = rep("", nPairs), Gene2 = rep("", nPairs),
+                       Correlation = rep("", nPairs), Pvalue = rep("", nPairs),
+                       BH = rep("", nPairs), Bonferroni = rep("", nPairs),
+                       stringsAsFactors = FALSE)
   expCor$Gene1 <- unlist(lapply(GeneSym, #Adding the column of the first genes of the pairs.
                                 function (x) rep(x = x,
                                                  (length(GeneSym) - which(GeneSym == x)))))
@@ -247,7 +257,7 @@ sysCorGenes <- function(exProfS,
   return(unique(c(MostCor$Gene1, MostCor$Gene2)))
 }
 
-# ===== 3 Enrichement and depletion of TF binding sites =============================
+# ===== 3 Enrichment and depletion of TF binding sites =============================
 
 #' EnrichDepletTF.
 #'
@@ -291,7 +301,7 @@ sysCorGenes <- function(exProfS,
 #' @param alpha (numeric)      A numeric vector of 1L length. Sets the value of alpha
 #'                             as the cutoff for significant results. The same alpha is
 #'                             used for both choosing significantly correlated genes and
-#'                             for significantly enrichement / depletetion. The default
+#'                             for significantly enrichment / depletetion. The default
 #'                             value is 0.05.
 #' @return (data frame)        A data frame with 8 columns and rows number that is equal
 #'                             to the amnout of unique TF that can bind the genes of the
@@ -344,14 +354,18 @@ EnrichDepletTF <- function(sys,
                             multipleTests = multipleTests,
                             alpha = alpha)
 
-  if (sum( ! is.na(upCorGenes)) >= 3) {
+  if (sum( ! is.na(upCorGenes)) >= 3) { #3 or more correlated genes.
     #calculating enrichment and depletion:
-    corEnrichDep <- as.data.frame(matrix(data = NA, nrow = length(TfSym), ncol = 8),
-                                   stringsAsFactors = F)
-    colnames(corEnrichDep) <- c("TF", "Enrichment", "Enrichment_P_value",
-                                "Depletion", "Depletion_P_value",
-                                "BH_enrichment","BH_depletion",
-                                "Bonferroni")
+    numRow <- length(TfSym)
+    corEnrichDep<-  data.frame(TF = rep(NA, numRow),
+                               Enrichment = rep(NA, numRow),
+                               Enrichment_P_value = rep(NA, numRow),
+                               Depletion = rep(NA, numRow),
+                               Depletion_P_value = rep(NA, numRow),
+                               BH_enrichment = rep(NA, numRow),
+                               BH_depletion = rep(NA, numRow),
+                               Bonferroni = rep(NA, numRow),
+                               stringsAsFactors = F)
     corEnrichDep$TF <- TfSym
 
     for (i in seq_along(TfSym)){
@@ -391,8 +405,8 @@ EnrichDepletTF <- function(sys,
 
     return(corEnrichDep)
 
-  } else {
-    return (print("Error: less then 3 significantly correlated genes"))
+  } else { #Less then 3 correlated genes.
+    return (message(NaN))
   }
 }
 
@@ -406,10 +420,10 @@ EnrichDepletTF <- function(sys,
 
 ##Testing whether the genes that appears in the output list of sysGTRDtf are
 ##the exact same genes that were given as the input in GeneSym
-#if (identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
-#  return(GTRDtf)
-#}else{
-#  return(print("Error: input genes are not equal to output genes"))
+#if (! identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
+#  stop(sprintf("%s is not identical to the genes that bind 'TfSym'.", "'GeneSym'"))
+#}
+#return(GTRDtf)
 #}
 
 

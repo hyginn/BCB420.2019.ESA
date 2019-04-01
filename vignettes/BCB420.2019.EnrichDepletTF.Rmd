@@ -43,20 +43,6 @@ references:
 </style>
 
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
-# knitr knits in a new session with an empty global workspace after setting its
-# working directory to ./vignettes. To make your package functions available in
-# the vignette, you have to load the library. The following two lines should
-# accomplish this without manual intervention:
-pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
-library(pkgName, character.only = TRUE)
-
-```
 
 &nbsp;
 
@@ -70,7 +56,7 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 # About this Vignette
 
-This Vignette explains and demonstrates how to use the EnrichDepletTF function of `BCB420.2019.ESA` package and how to interprete its results.
+This Vignette explains and demonstrates how to use the function `EnrichDepletTF()` of the package `BCB420.2019.ESA`, and how to interprete its results.
 
 This function uses an in-built helper function to find pairs of genes within the chosen system that their expression profiles significantly correlate (negatively or positively).
 Then, this function queries for enrichment or depletion in TF-binding-genes among the significantly correlated set of gene, with respect to the entire set of genes of the chosen system.
@@ -82,7 +68,7 @@ Finding specific transcription factors that are enriched or depleted for a syste
 As a first step, the user must choose a system to analyse.
 
 Presenting the available systems:
-```{r}
+```{r eval=FALSE, include=FALSE}
 names(SyDBgetRootSysIDs(fetchData("SysDB")))
 ```
 
