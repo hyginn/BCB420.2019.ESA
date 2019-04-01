@@ -28,9 +28,10 @@ package on GitHub and
 <!-- TOCbelow -->
 1. About this package:<br/>
 2. Data ...<br/>
-3. Notes<br/>
-4. References and Further reading<br/>
-5. Acknowledgements<br/>
+3. Functions ... <br />
+4. Notes<br/>
+5. References and Further reading<br/>
+6. Acknowledgements<br/>
 <!-- TOCabove -->
 
 ----
@@ -258,15 +259,25 @@ str(IPRgenes, list.len = 5)
 
 #### 2.6 Systems:
 
-A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <systemCode>)` to access all gene symbols for a system (or subsystem).
+A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <sys>)[[1]]` to access all gene symbols for a single system (or subsystem). Use `unlist(SyDBgetSysSymbols(myDB, SyDBgetRootSysIDs(myDB)), use.names = FALSE)` to access all genes in the database.
 
 ```R
 myDB <- fetchData("SysDB")
 
+
+SyDBgetRootSysIDs(myDB)
+#                                        PHALY                                       SLIGR 
+#  "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                        NLRIN                                       HVGCR 
+#  "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
 names(SyDBgetRootSysIDs(myDB))
 # [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
 
-SyDBgetSysSymbols(myDB, "HVGCR")
+
+SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
+# $HVGCR
 #  [1] "ADCY9"    "ADRB2"    "AKAP7"    "CACNA1C"  "CACNA2D1" "CACNA2D3" "CACNB1"   "CACNB3"  
 #  [9] "CACNB4"   "CACNG1"   "CACNG6"   "CALM1"    "CALM2"    "CALM3"    "GNAS"     "PRKACA"  
 # [17] "PRKACB"   "PRKAR1A"  "PRKAR1B"  "PRKAR2A"  "PRKAR2B" 
@@ -278,7 +289,7 @@ The old function stub `fetchComponents()` still works but is deprecated:
 
 ```R
 > fetchComponents("PHALY")
-Note: fetchComponents(...) is deprecated.Use SyDBgetSysSymbols(<database>, <system code>) instead.
+Note: fetchComponents(...) is deprecated. Use SyDBgetSysSymbols(<database>, <system code>) instead.
 
  [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"    "BECN1"     "BECN2"     "BIRC6"    
  [9] "BLOC1S1"   "BLOC1S2"   "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"   "CALCOCO2" 
@@ -288,16 +299,99 @@ Note: fetchComponents(...) is deprecated.Use SyDBgetSysSymbols(<database>, <syst
 
 &nbsp;
 
-## 3 Notes
+## 3 Functions
 
+&nbsp;
+
+#### 3.1 Fetching data
+
+See:
+```R
+?fetchData 
+fetchData()
+```
+&nbsp;
+
+#### 3.2 Systems database utilities
+
+
+'./R/SyDButils.R' contains a number of exported functions to support work with a systems database:
+
+* `SyDBgetRootSysIDs()` - returns a named vector with the IDs of all root systems in a systems database;
+* `SyDBgetSysSymbols()` - returns a list of the same length as the input vector with HGNC symbols of each system in the input vector;
+* `SyDBgetIDforKey()` - returns a vector of IDs for key(s) in a column of a table;
+* `SyDBgetValforID()` - returns a vector of values in a column of a table where the ID matches the input;
+* `SyDBinvalid()` - checks whether its database argument is a valid, current, system database;
+* `SyDBTree()` - returns a tree representation of the hierarchical structure of a system or systems in the database.
+
+Examples:
+```R
+mySDB <- fetchData("SysDB")
+
+SyDBgetRootSysIDs(mySDB)
+#                                       PHALY                                       SLIGR 
+# "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                       NLRIN                                       HVGCR 
+# "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
+names(SyDBgetRootSysIDs(mySDB))
+# [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
+
+
+SyDBgetIDforKey("HOPS complex", "code", "component", mySDB)
+# [1] "flip.face-782-d729-9622-299c-073fb8f2ec94"
+
+
+SyDBgetSysSymbols(mySDB, "HOPS complex")
+# $`HOPS complex`
+# [1] "VPS11"  "VPS16"  "VPS18"  "VPS33A" "VPS39"  "VPS41" 
+
+
+cat(SyDBTree("NLRIN", mySDB, MAX = 3), sep = "\n")
+# 
+#   --NLRIN
+#     |___NLRP3 activation signal
+#         |___Common activating signal
+#         |___NLRP3
+#         |___NLRP3 activation
+#     |___NLRIN regulation
+#         |___NLRIN positive regulation
+#         |___NLRIN negative regulation
+#     |___NLRP3 priming signal
+#         |___IL-beta priming signal
+#         |___TNF priming signal
+#         |___TLR priming signal
+#     |___NOT IN NLRIN
+#         |___NLRP7
+#         |___NLRC4
+#         |___AIM2
+#         |___NLRP14
+#         |___NLRP6
+#         |___NLRP12
+#         |___NLRP2
+#         |___NLRP9b
+#         |___NLRP1b
+
+
+```
+
+&nbsp;
+
+
+## 4 Notes
+
+... in progress
 &nbsp;
 
 ## 4 References and Further Reading
 
+... in progress
 &nbsp;
 
 ## 5 Acknowledgements
 
+... in progress
 &nbsp;
 
 <!-- [END] -->
