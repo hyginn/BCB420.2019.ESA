@@ -184,8 +184,8 @@ plotCorrelations <- function(bioSys,
                              coExpVsSemFile = NULL,
                              pShape = 16) {
 
-  sdf <- readRDS("dfdfdfd") #
-  #sdf <- computeCorrelations()
+  #sdf <- readRDS("dfdfdfd")
+  sdf <- computeCorrelations()
 
   if (!bioSys %in% sdf$System) {
     stop("Unknown system passed as parameter.")
