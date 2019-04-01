@@ -23,8 +23,6 @@
 #'                              are the HGNC sybmols and the column names are the
 #'                              experiments' names.
 #'
-#' @family
-#'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
 #' @seealso \code{\link{fetchData}} Fetches the requested dataset.
@@ -60,8 +58,6 @@ sysExProf <- function(GeneSym) {
 #' @param GeneSym (character)  A vector of length > 0L of HGNC symbols.
 #' @return (list)              A list of HGNC-symbol-named character vectors of
 #'                             the transcription factors that bind each gene.
-#'
-#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
@@ -101,8 +97,6 @@ sysGTRDgenes <- function(GeneSym){
 #'                              that was used to produce TfSym).
 #' @return (list)               A list of transcription-factor-named character vectors of
 #'                              the genes that bind each transcription factor.
-#'
-#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
@@ -176,7 +170,6 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #'                             of the returned genes is not always equal to 2 * "nUpMost",
 #'                             because some of the pairs may contain the same genes,
 #'                             while the function returns only a vector of unique genes.
-#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
@@ -323,7 +316,6 @@ sysCorGenes <- function(exProfS,
 #'                             not-depleted TFs. If less then 3 correlated genes were fed
 #'                             into the function, the function will return NaN and a
 #'                             warning.
-#' @family
 #'
 #' @author \href{https://orcid.org/0000-0002-9478-5974}{Sapir Labes} (aut)
 #'
