@@ -8,7 +8,7 @@ and produces plots with gene network data}
 systemAnalysis(gene)
 }
 \arguments{
-\item{sys}{Biological system}
+\item{gene}{A gene from the Biological system PHALY}
 }
 \value{
 a histogram for the node degree distribution of the PHALY gene network

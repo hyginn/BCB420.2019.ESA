@@ -42,7 +42,7 @@ fetchComponents <- function(sys) {
 #' \code{systemAnalysis()} Investigates genes from the system PHALY
 #' and produces plots with gene network data
 #'
-#' @param sys Biological system
+#' @param gene A gene from the Biological system PHALY
 #' @return a histogram for the node degree distribution of the PHALY gene network
 #' and a network plot for a gene from the PHALY system
 #'

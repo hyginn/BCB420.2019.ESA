@@ -23,7 +23,8 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings
+    Biostrings,
+    igraph
 Suggests:
     testthat,
     BiocStyle,
