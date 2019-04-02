@@ -94,8 +94,7 @@ STRINGExplore <- function(genes) {
   STRINGedges <- fetchData("STRINGedges0.8")
   geneSys <- list()
 
-  dat <- fetchComponents(genes)
-  # dat <- SyDBgetSysSymbols(fetchData("SysDB"), genes)
+  dat <- SyDBgetSysSymbols(fetchData("SysDB"), genes)
   geneSys <- unlist(dat)
   names(geneSys) <- c()
 
