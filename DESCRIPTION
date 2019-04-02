@@ -21,8 +21,9 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     cluster,
-    VennDiagram,
-    igraph
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
