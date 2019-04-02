@@ -3,20 +3,27 @@
 \name{seqSimVis}
 \alias{seqSimVis}
 \title{\code{seqSimVis()} Calculates sequence similarity and plots dot plots based on the
-three highest similarity values to visualize}
+top highest similarity values to visualize}
 \usage{
-seqSimVis(gene_of_int, system)
+seqSimVis(gene_of_int, system, num_top_similarity = 3)
 }
 \arguments{
 \item{gene_of_int}{(char) gene of interest}
 
 \item{system}{(char) system of interest}
+
+\item{num_top_similarity}{(num) number of top similarity values to visualize, with 3 as the default}
+}
+\value{
+(dataframe) dataframe of similarity values of gene of interest to each gene in the system
 }
 \description{
 \code{seqSimVis()} Calculates sequence similarity and plots dot plots based on the
-three highest similarity values to visualize
+top highest similarity values to visualize
 }
 \examples{
+# calculates sequence similarity and plots dot plots based on the top 3 highest similarity values
+# between the BRCA1 gene and the PHALY system genes
 seqSimVis("BRCA1", "PHALY")
 
 }

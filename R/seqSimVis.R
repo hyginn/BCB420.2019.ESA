@@ -1,17 +1,20 @@
-
-
 #' \code{seqSimVis()} Calculates sequence similarity and plots dot plots based on the
-#' three highest similarity values to visualize
+#' top highest similarity values to visualize
 #'
 #'
 #' @param gene_of_int (char) gene of interest
 #' @param system (char) system of interest
-
+#' @param num_top_similarity (num) number of top similarity values to visualize, with 3 as the default
+#'
+#' @return (dataframe) dataframe of similarity values of gene of interest to each gene in the system
+#'
 #' @examples
+#' # calculates sequence similarity and plots dot plots based on the top 3 highest similarity values
+#' # between the BRCA1 gene and the PHALY system genes
 #' seqSimVis("BRCA1", "PHALY")
 #'
 #' @export
-seqSimVis <- function(gene_of_int, system) {
+seqSimVis <- function(gene_of_int, system, num_top_similarity=3) {
 
   # set mart
   ensembl <- biomaRt::useMart("ensembl",
@@ -33,10 +36,12 @@ seqSimVis <- function(gene_of_int, system) {
   }
 
   # get genes of system
-  sys_genes <- fetchComponents(system)
+  HGNC <- fetchData("SysDB")
+  sys_genes <- SyDBgetSysSymbols(HGNC, system)[[1]]
 
   vals <- c()
   sys_sequences <- c()
+
   # get similarity values of genes in system
   for (gene in sys_genes) {
     print(paste0("Getting sequence for gene: ", gene))
@@ -92,6 +97,7 @@ seqSimVis <- function(gene_of_int, system) {
   }
 
   print("..Done")
+  return(gene_df)
 
 }
 
