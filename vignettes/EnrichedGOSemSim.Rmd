@@ -34,7 +34,8 @@ It then runs a semantic similarity analysis using mclusterSim() from the GOSemSi
 
 ##Output 
 
-The final output is a semanitic similarity matrix of the enriched GO terms for the system under investigation
+The final output is a semanitic similarity matrix of the enriched GO terms for the system under investi
+
 
 
 <!-- End -->

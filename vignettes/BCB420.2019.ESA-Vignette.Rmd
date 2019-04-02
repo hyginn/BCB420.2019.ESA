@@ -47,14 +47,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
 # knitr knits in a new session with an empty global workspace after setting its
 # working directory to ./vignettes. To make your package functions available in
 # the vignette, you have to load the library. The following two lines should
 # accomplish this without manual intervention:
 pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
 library(pkgName, character.only = TRUE)
-
 ```
 
 &nbsp;
@@ -87,6 +85,8 @@ sessionInfo()
 
 <!-- the bibliography appears at the end of the page -->
 # References
+
+
 
 
 <!-- End -->
