@@ -13,22 +13,23 @@
 # ==============================================================================
 
 # SIDE EFFECTS:
-# Writes jpg file to ~/inst/img/
+# Displays dendrogram
 
-# ====  PACKAGES  ==============================================================
-# Get packages
-if (requireNamespace("xlsx", quietly=TRUE)) {
-  install.packages("tidyverse")
-}
-if (requireNamespace("devtools", quietly=TRUE)) {
-  install.packages("devtools")
-  install.packages("Biostrings")
-  install.packages("Rtools")
-}
+# # ====  PACKAGES  ==============================================================
+# # Get packages
+# if (requireNamespace("xlsx", quietly=TRUE)) {
+#   install.packages("tidyverse", repos = "http://cran.us.r-project.org")
+# }
+# if (requireNamespace("devtools", quietly=TRUE)) {
+#   install.packages("devtools", repos = "http://cran.us.r-project.org")
+#   install.packages("Biostrings", repos = "http://cran.us.r-project.org")
+#   install.packages("Rtools", repos = "http://cran.us.r-project.org")
+# }
+#
+#
+# # Load packages
+# require(readxl, quietly = TRUE)
 
-
-# Load packages
-require(readxl, quietly = TRUE)
 
 # ==== FUNCTIONS ===============================================================
 
@@ -38,9 +39,13 @@ require(readxl, quietly = TRUE)
 #' @param filepath to system excel sheet
 #' Helper function to read in system data from excel
 #' @return sysHGNC. A list of genes in the system
+#' @examples
+#' \donttest{
+#' getSysGenes("BCB420-2019-System-PHALY-0.3.xlsx")
+#' }
 getSysGenes <- function(filepath) {
   # 1. Receive input data from excel spreadsheet and extract gene names with package tools
-  sysComponent <- read_excel(filepath, sheet = "component", skip = 1)
+  sysComponent <- readxl::read_excel(filepath, sheet = "component", skip = 1)
   sysHGNC <- sysComponent$sym[sysComponent$molType == "protein"]
   #Get rid of NA
   sysHGNC <- sysHGNC[!is.na(sysHGNC)]
@@ -52,17 +57,20 @@ getSysGenes <- function(filepath) {
 #' @param sysHGNC list of genes from system
 #' Accesses loaded TF data and filters for genes present in system
 #' @return sysTF. A smaller TF geneList with only genes in system.
+#' @examples
+#' \donttest{
+#' getSysTFdata(sysHGNC)
+#' }
 getSysTFdata <- function(sysHGNC) {
    # From Steipe, 2019 ESA readMe
    myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
                   "geneList-2019-03-13.RData")
-  load(url(myURL))  # loads GTRD geneList object
-
+  local({
+    load(url(myURL))  # loads GTRD geneList object
+  })
   # Only take elements from loaded data relevant to system
   sysTF <- geneList[sysHGNC]
   sysTF <- sysTF[lapply(sysTF,length)>0] #remove nulls
-  # Remove geneList
-  rm(geneList, myURL)
 
   return(sysTF)
 }
@@ -75,6 +83,10 @@ getSysTFdata <- function(sysHGNC) {
 #' distance matrix.
 #' @return matrix. A matrix with rownames as TF and column names as system genes
 #' In the matrix 1 means TF is associated with given gene. 0 means unassociated
+#' @examples
+#' \donttest{
+#' makeMatrix(list)
+#' }
 makeMatrix <- function(sysTF) {
   #Make matrix with row and column names
   allTF <- unique(unlist(sysTF))
@@ -99,31 +111,35 @@ makeMatrix <- function(sysTF) {
 #'
 #' @param matrix in the form of output of makeMatrix()
 #' Function which makes distanceMatrix, cluster and exports dendrogram
-#' @return NA
-#' @export ~/inst/img/TFOccuranceDendrogram.jpg
+#' @return distance binary matrix and dendrogram in plots
+#' @examples
+#' \donttest{
+#' visualize(matrix)
+#' }
 visualize <- function(matrix) {
   # Make binary distance matrix and cluster
-  distanceMatrixBinary <- dist(matrix, method = "binary")
-  clusterBinary <- hclust(distanceMatrixBinary)
+  distanceMatrixBinary <- stats::dist(matrix, method = "binary")
+  clusterBinary <- stats::hclust(distanceMatrixBinary)
 
   # Export Plots
   dendropath <- paste0(getwd(), "/inst/img/TFOccuranceDendrogram.jpg")
   heatpath <- paste0(getwd(), "/inst/img/TFOccuranceHeatmap.jpg")
   # Dendrogram
-  jpeg(file = dendropath, width = 1000, height = 350)
-  plot(clusterBinary, main="Dendrogram of TF Co-occurence", xlab="Gene",
+  graphics::plot(clusterBinary, main="Dendrogram of TF Co-occurence", xlab="Gene",
        ylab="Distance", sub="")
-  dev.off()
+  return(distanceMatrixBinary)
 }
 
 #' Main controller function for this file. Effects all other functions.
 #' @param filepath to system excel file
 #' Makes distance matrix, and cluster of shared TF presence for proteins in
 #' the filepath denoted by system
-#' @return NA
-#' @export ~/inst/img/TFOccuranceDendrogram.jpg
-#'
-#' @examples quantifyTFSimilarity(BCB420-2019-System-PHALY-0.3.xlsx)
+#' @return dendrogram of TF
+#' @export
+#' @examples
+#' \donttest{
+#' quantifyTFSimilarity("BCB420-2019-System-PHALY-0.3.xlsx")
+#' }
 quantifyTFSimilarity <- function(filepath) {
   HGNC <- getSysGenes(filepath)
   sysTF <- getSysTFdata(HGNC)
@@ -132,4 +148,25 @@ quantifyTFSimilarity <- function(filepath) {
   visualize(matrix)
 }
 
+#BCB420.2019.ESA::quantifyTFSimilarity("C:/Users/rwoo/Desktop/BCB420-2019-System-PHALY-0.3.xlsx")
+#devtools::document("BCB420.2019.ESA")
+#devtools::check("path/to/package/pkgname")
+#devtools::build("path/to/package/pkgname")
+#install.packages("path/to/package/packagename_version.tar.gz")
 
+# Sys.setenv(PATH = paste(Sys.getenv("PATH"), "*InstallDirectory*/Rtools/bin/",
+#                         "*InstallDirectory*/Rtools/mingw_64/bin", sep = ";")) #for 64 bit version
+# Sys.setenv(BINPREF = "*InstallDirectory*/Rtools/mingw_64/bin")
+# library(devtools)
+#
+# #Manually "force" version to be accepted
+# assignInNamespace("version_info", c(devtools:::version_info, list("3.5" = list(version_min = "3.3.0", version_max = "99.99.99", path = "bin"))), "devtools")
+# find_rtools() # is TRUE now
+#
+#
+# install.packages("pkgbuild") # pkgbuild is not available (for R version 3.5.0)
+# install.packages("devtools") # make sure you have the latest version from CRAN
+# library(devtools) # load package
+# devtools::install_github("r-lib/pkgbuild") # install updated version of pkgbuild from GitHub
+# library(pkgbuild) # load package
+# find_rtools() # should be TRUE, assuming you have Rtools 3.5
