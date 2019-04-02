@@ -1,5 +1,7 @@
+
 # helper.R
-#'
+#' @import readr
+#' @import biomaRt
 #' \code{EnrichmentHelper} It's a helper function for pathway enrichment analysis 
 #' function load all the required data for pathway enrichment analysis
 #' Return a list that contain reactome information. Modified data annotation from 
@@ -10,19 +12,23 @@
 #' @examples
 #' tmp<-EnrichmentHelper()
 #'
+#'@export
 EnrichmentHelper<-function(){
   HGNC <- fetchData("HGNCreference") 
-  load(file = file.path("../data", "ensg2sym.RData"))
+  load(system.file("extdata", "ensg2sym.RData", package="BCB420.2019.ESA"))
   #read reactome data
-  tmp <- readr::read_delim(file.path("../data", "Ensembl2Reactome.txt"),
-                           delim = "\t",
-                           skip = 0,
-                           col_names = c("ENSEMBL",
-                                         "REACTOME_ID", 
-                                         "HYPERLINK", 
-                                         "Description", 
-                                         "Unknown",
-                                         "Species"))  
+  
+  tmp <- readr::read_delim( system.file("extdata", "Ensembl2Reactome.txt", package="BCB420.2019.ESA") ,
+                            delim = "\t",
+                            skip = 0,
+                            col_names = c("ENSEMBL",
+                                          "REACTOME_ID", 
+                                          "HYPERLINK", 
+                                          "Description", 
+                                          "Unknown",
+                                          "Species"),
+                            col_types = "cccccc")
+  
   tmp <- tmp[tmp$Species == "Homo sapiens",]
   tmp$HGNC <- ensg2sym[tmp$ENSEMBL]
   #remove some not used column

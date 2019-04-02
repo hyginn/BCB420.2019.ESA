@@ -89,9 +89,8 @@ names(SyDBgetRootSysIDs(fetchData("SysDB")))
 Inserting one system's gene into `PathwayEnrichment()`. The function uses Bonferroni Correction and Benjamini-Hochberg control
 
 ```{r}
-source("../R/fetchComponents.R",echo = TRUE)
-source("../R/helper.R",echo = TRUE)
-source("../R/pathwayEnrich.R",echo = TRUE)
+
+library(ggplot2)
 geneSet<-fetchComponents("PHALY")
 #method can be BH or bonferroni.
 tmp<-EnrichmentHelper()

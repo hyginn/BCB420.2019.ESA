@@ -1,3 +1,4 @@
+
 # pathwayEnrich.R
 #'
 #' \code{PathwayEnrichment} a function that perform a pathway enrichment analysis 
@@ -16,6 +17,8 @@
 #' @return a barplot that show the enriched pathway and its p value(fisher test) 
 #' that is smaller than the ajusted p value.
 #' 
+#' @import ggplot2
+#' @import stats
 #' @author {Yufei Yang} (aut)
 #' @examples
 #' # Picking sample gene list to find the pathway enrichment and p value
@@ -121,3 +124,4 @@ PathwayEnrichment<-function(geneSet,method,data){
   }
   return(p)
 }
+
