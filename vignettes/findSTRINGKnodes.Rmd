@@ -1,0 +1,106 @@
+---
+title: "findSTRINGKnode Vignette"
+author:
+- name: Edward Ho
+  affiliation: 
+  - http://orcid.org/0000-0002-1360-0086
+  - University of Toronto
+  email: emc.ho@mail.utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette describes and explains the usage of the findSTRINGKnode function.
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{findSTRINGKNodes Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: findSTRINGKnodes.bib
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This Vignette explains the `findSTRINGKnodes()` function that is part of the BCB420.2019.ESA package. The function finds the strength of association (Knode value) of each gene in the p>=0.9 STRING functional protein association network. The Knodes metric is based on a modified version of Ripley's K-statistic, as implemented by @Cornish2014.
+
+# Function
+
+## Usage
+
+`findSTRINGKnodes(sys)`
+
+where `sys` is a 5-character system code corresponding to a system collected in "SysDB". The function returns a list of K node values for each HGNC symbol found in the STRING edges, sorted in descending order. Additionally, the function plots a labelled `ggplot2` scatterplot with the top \emph{n} genes, where \emph{n} is the number of genes in `sys` to visualize the genes that did have a high association to the system.
+
+## K node calculation
+
+The `findSTRINGKnodes()` function uses the network of protein associations at a confidence of p >= 0.9 curated by asdsdasd to calculate strength of association to a given system of genes available through the "SysDB" dataset. A graph is constructed from the STRING edges, and the vertex representing genes which are in the system have a weight of 1. All other vertices have a weight of 0. 
+
+Then, the modified Ripley's K-statistic is calculated through:
+
+$$K^{node_i[s]} = 2/p * \sum_j(p_j - \bar{p}) (dg(i,j)<=s)$$
+
+where $p_j$ is the weight of vertex $j$, $\bar{p}$ is the mean vertex weight across all vertices, and $I(dg[i,j]<=s)$ is an identity function equaling 1 if vertex i and vertex j are within distance s and 0 otherwise, as described by @Cornish2014.
+
+## Visualization
+
+The resulting Knode values are plotted in a labelled scatterplot using `ggplot2`. Only the number of genes equal to the number of genes in the input system are plotted. Genes that are part of the input system are labelled in green, and those that are not are labelled in red.
+
+## Example
+
+```{r echo=TRUE}
+knodes <- findSTRINGKnodes("PHALY")
+```
+
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+
+
+<!-- End -->
