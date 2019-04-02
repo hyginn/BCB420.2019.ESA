@@ -16,15 +16,20 @@
 #' @export
 findSTRINGKnodes <- function(sys) {
 
+  # Get genes that are system components
+  myDB <- fetchData("SysDB")
+  geneSet <- SyDBgetSysSymbols(myDB, sys)[[1]]
+
+  if (length(geneSet) == 0) {
+    print("Invalid system")
+    return (invisible(NULL))
+  }
+
   # Load high-confidence STRING edges
   STRINGedges <- fetchData("STRINGedges0.9")
 
   # Create graph from STRING edges
   geneGraph <- igraph::graph_from_edgelist(matrix(c(STRINGedges$a, STRINGedges$b), ncol = 2, byrow = FALSE), directed = FALSE)
-
-  # Get genes that are system components
-  myDB <- fetchData("SysDB")
-  geneSet <- SyDBgetSysSymbols(myDB, sys)[[1]]
 
   # Find IDs of vertices that are part of geneSet
   ids <- match(geneSet, igraph::V(geneGraph)$name)
@@ -54,13 +59,13 @@ findSTRINGKnodes <- function(sys) {
   # Plot scatterpoint of above dataframe, and have the genes that were in sys
   # labelled in green, genes that were not in sys labelled in red
 
-  ggplot2::ggplot(knodeDF, ggplot2::aes(x=1:numPlotPts, y=knodes, label = row.names(knodeDF), color = factor(inGeneSet, levels=c(TRUE, FALSE)))) +
+  print(ggplot2::ggplot(knodeDF, ggplot2::aes(x=1:numPlotPts, y=knodes, label = row.names(knodeDF), color = factor(inGeneSet, levels=c(TRUE, FALSE)))) +
     ggrepel::geom_label_repel() +
     ggplot2::geom_point(color = 'black') +
     ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::scale_color_manual(values = c("green", "red"), name = "In gene set") +
-    ggplot2::labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys))
+    ggplot2::labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys)))
 
   return (knodes)
 }
