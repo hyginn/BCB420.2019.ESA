@@ -25,7 +25,9 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     igraph,
-    SANTA
+    SANTA,
+    ggplot2,
+    ggrepel
 Suggests:
     testthat,
     BiocStyle,

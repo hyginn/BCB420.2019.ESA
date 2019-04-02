@@ -2,14 +2,12 @@
 % Please edit documentation in R/findSTRINGKnodes.R
 \name{findSTRINGKnodes}
 \alias{findSTRINGKnodes}
-\title{\code{findSTRINGKnodes} output a the K node values for vertices in the STRING interaction graph given the system of genes 'sys'.}
+\title{\code{findSTRINGKnodes} output the K node values for vertices in the STRING interaction graph given the system of genes 'sys'.}
 \usage{
-findSTRINGKnodes(sys, per = 0.05)
+findSTRINGKnodes(sys)
 }
 \arguments{
 \item{sys}{(character)       5-character system code of genes}
-
-\item{per}{(numeric)         Percentile of results to be plotted. Default is 0.05}
 }
 \value{
 (numeric) Knode values
@@ -17,9 +15,9 @@ findSTRINGKnodes(sys, per = 0.05)
 \description{
 \code{findSTRINGKnodes} outputs a the K node values (as defined by Cornish & Markowetz, 2014),
 a measure of the vertex association to the high-weighted vertices defined by the input
-curated gene system 'sys'. Also plots the knode values for the top percentile of knode values
-given by 'per'
+curated gene system 'sys'. Also plots the knode the top \emph{n} knode values
 }
 \examples{
-findSTRINGKnodes("PHALY", 0.05)
+# Find the Knodes values for all genes in the STRING graph sorted by association to the genes in PHALY
+findSTRINGKnodes("PHALY")
 }

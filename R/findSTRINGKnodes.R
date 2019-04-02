@@ -1,21 +1,20 @@
 # findSTRINGKnodes.R
 
-#' \code{findSTRINGKnodes} output a the K node values for vertices in the STRING interaction graph given the system of genes 'sys'.
+#' \code{findSTRINGKnodes} output the K node values for vertices in the STRING interaction graph given the system of genes 'sys'.
 #'
 #' \code{findSTRINGKnodes} outputs a the K node values (as defined by Cornish & Markowetz, 2014),
 #' a measure of the vertex association to the high-weighted vertices defined by the input
-#' curated gene system 'sys'. Also plots the knode values for the top percentile of knode values
-#' given by 'per'
+#' curated gene system 'sys'. Also plots the knode the top \emph{n} knode values
 #'
 #' @param sys (character)       5-character system code of genes
-#' @param per (numeric)         Percentile of results to be plotted. Default is 0.05
 
 #' @return (numeric) Knode values
 #' @examples
-#' findSTRINGKnodes("PHALY", 0.05)
+#' # Find the Knodes values for all genes in the STRING graph sorted by association to the genes in PHALY
+#' findSTRINGKnodes("PHALY")
 
 #' @export
-findSTRINGKnodes <- function(sys, per=0.05) {
+findSTRINGKnodes <- function(sys) {
 
   # Load high-confidence STRING edges
   STRINGedges <- fetchData("STRINGedges0.9")
@@ -25,7 +24,7 @@ findSTRINGKnodes <- function(sys, per=0.05) {
 
   # Get genes that are system components
   myDB <- fetchData("SysDB")
-  geneSet <- SyDBgetSysSymbols(myDB, sys)
+  geneSet <- SyDBgetSysSymbols(myDB, sys)[[1]]
 
   # Find IDs of vertices that are part of geneSet
   ids <- match(geneSet, igraph::V(geneGraph)$name)
@@ -40,7 +39,28 @@ findSTRINGKnodes <- function(sys, per=0.05) {
   # https://www.rdocumentation.org/packages/SANTA/versions/2.10.2/topics/Knode
   knodes <- SANTA::Knode(geneGraph, dist.method = c("shortest.paths"), vertex.attr = "annotated", verbose = TRUE)
 
-  plot(knodes[1:floor(length(knodes)*per)])
+  # Within the first n nodes in the ranked list (knodes), find which genes
+  # were not included in geneSet (genes in sys)
+  topRankedGenes <- names(knodes[1:length(geneSet)])
+  inGeneSetID <- which(topRankedGenes %in% geneSet)
+  notInGeneSetID <- which(!topRankedGenes %in% geneSet)
+
+  # Create R dataframe made of the top n nodes in the ranked list for plotting
+  numPlotPts <- length(geneSet)
+  knodeDF <- data.frame(knodes)
+  knodeDF <- knodeDF[1:numPlotPts, , drop=FALSE] # drop parameter to retain row names
+  knodeDF$inGeneSet <- topRankedGenes %in% geneSet # Mark the genes that were in the original system sys
+
+  # Plot scatterpoint of above dataframe, and have the genes that were in sys
+  # labelled in green, genes that were not in sys labelled in red
+  library(ggplot2)
+  ggplot(knodeDF, aes(x=1:numPlotPts, y=knodes, label = row.names(knodeDF), color = factor(inGeneSet, levels=c(TRUE, FALSE)))) +
+    ggrepel::geom_label_repel() +
+    geom_point(color = 'black') +
+    theme_classic(base_size = 16) +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    scale_color_manual(values = c("green", "red"), name = "In gene set") +
+    labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys))
 
   return (knodes)
 }
