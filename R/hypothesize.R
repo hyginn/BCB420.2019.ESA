@@ -14,8 +14,11 @@
 #'
 #' @export
 hypothesize <- function(network, ppi_ggi = NULL) {
+    # make interpretation maps
     EMAP <- makeEMAP()
     GMAP <- makeGMAP()
+
+    # plot the network
     visualizeInteractions(network, EMAP, ppi_ggi, GMAP)
   }
 
@@ -25,13 +28,15 @@ hypothesize <- function(network, ppi_ggi = NULL) {
 #' @param gmap The dataframe obtained from \code{makeGMAP}.
 #' @param emap The dataframe obtained from \code{makeEMAP}.
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
-  if (is.null(ppi_ggi))
+  if (is.null(ppi_ggi)) # if user does not want to highlight stringent subnetworks
   {
     genesInNetwork <- unique(c(network$A, network$B))
 
     network$A <- as.factor(network$A)
     network$B <- as.factor(network$B)
     allgenes <- as.factor(genesInNetwork)
+
+    # prepare nodes and edges information for plotting
     nodes <- data.frame(id = allgenes, allgenes, label = genesInNetwork, shape = 'circle')
     edges <- data.frame(
         from = network$A,
@@ -52,6 +57,7 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
     ppi_ggi$A <- as.factor(ppi_ggi$A)
     ppi_ggi$B <- as.factor(ppi_ggi$B)
 
+    # prepare nodes and edges information for plotting
     nodes <- data.frame(id = allgenes, allgenes, label = genesInNetwork,
                         group = ifelse(allgenes %in% allgenes2 , "ppi-ggi", "ggi"), shape = 'circle')
 

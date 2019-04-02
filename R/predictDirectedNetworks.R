@@ -11,8 +11,7 @@
 # Dependencies: tibble 2.0.1; biomaRt 2.38.0; xlsx 0.6.1; readxl 1.3.1; dplyr 0.8.0.1; ggplot2 3.1.0; biogridr 0.0.0.9000; visNetwork 2.0.5.
 
 # ====  GLOBAL PACKAGES ========================================================
-#' @import devtools
-#'
+
 source('./R/fetchData.R', echo=TRUE)
 source('./R/SyDButils.R', echo=TRUE)
 # ==============================================================================
@@ -31,11 +30,12 @@ source('./R/SyDButils.R', echo=TRUE)
 #'
 #' @export
 getSysInteractions <-function(sysName, criterion = "stringent") {
-
+    # check if a system name is given
     if (is.null(sysName)) {
       stop("System not provided.\n")
     }
 
+    # fetch the system's components
     STRINGedges <- as.data.frame(fetchData("STRINGedges0.9"))
 
     myDB <- fetchData("SysDB")
@@ -43,7 +43,7 @@ getSysInteractions <-function(sysName, criterion = "stringent") {
     systems <- SyDBgetSysSymbols(myDB, sysName)
     geneComp <- character()
 
-    if (length(sysName) == 1) {
+    if (length(sysName) == 1) { # if only one system is to be fetched
       geneComp <- SyDBgetSysSymbols(myDB, sysName)[[sysName]]
     } else {
       for (system in sysName) {
@@ -51,11 +51,13 @@ getSysInteractions <-function(sysName, criterion = "stringent") {
       }
     }
 
+    # map to STRING dataset to get PPI between systems' components
     interactions <- as.data.frame(STRINGedges[(STRINGedges$a %in% geneComp &
                                    STRINGedges$b %in% geneComp),])
     interactions <-
       unique(interactions[complete.cases(interactions),])
 
+    # augment PPI with GGI data
     mySys <- getGeneticInteractome(mySys = interactions, criterion = criterion)
 
     return(mySys)
