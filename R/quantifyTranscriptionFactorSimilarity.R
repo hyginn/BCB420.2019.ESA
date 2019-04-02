@@ -65,9 +65,7 @@ getSysTFdata <- function(sysHGNC) {
    # From Steipe, 2019 ESA readMe
    myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
                   "geneList-2019-03-13.RData")
-  local({
-    load(url(myURL))  # loads GTRD geneList object
-  })
+  load(url(myURL))  # loads GTRD geneList object
   # Only take elements from loaded data relevant to system
   sysTF <- geneList[sysHGNC]
   sysTF <- sysTF[lapply(sysTF,length)>0] #remove nulls
@@ -111,7 +109,7 @@ makeMatrix <- function(sysTF) {
 #'
 #' @param matrix in the form of output of makeMatrix()
 #' Function which makes distanceMatrix, cluster and exports dendrogram
-#' @return distance binary matrix and dendrogram in plots
+#' @return  dendrogram in plots
 #' @examples
 #' \donttest{
 #' visualize(matrix)
@@ -127,7 +125,6 @@ visualize <- function(matrix) {
   # Dendrogram
   graphics::plot(clusterBinary, main="Dendrogram of TF Co-occurence", xlab="Gene",
        ylab="Distance", sub="")
-  return(distanceMatrixBinary)
 }
 
 #' Main controller function for this file. Effects all other functions.
@@ -153,20 +150,3 @@ quantifyTFSimilarity <- function(filepath) {
 #devtools::check("path/to/package/pkgname")
 #devtools::build("path/to/package/pkgname")
 #install.packages("path/to/package/packagename_version.tar.gz")
-
-# Sys.setenv(PATH = paste(Sys.getenv("PATH"), "*InstallDirectory*/Rtools/bin/",
-#                         "*InstallDirectory*/Rtools/mingw_64/bin", sep = ";")) #for 64 bit version
-# Sys.setenv(BINPREF = "*InstallDirectory*/Rtools/mingw_64/bin")
-# library(devtools)
-#
-# #Manually "force" version to be accepted
-# assignInNamespace("version_info", c(devtools:::version_info, list("3.5" = list(version_min = "3.3.0", version_max = "99.99.99", path = "bin"))), "devtools")
-# find_rtools() # is TRUE now
-#
-#
-# install.packages("pkgbuild") # pkgbuild is not available (for R version 3.5.0)
-# install.packages("devtools") # make sure you have the latest version from CRAN
-# library(devtools) # load package
-# devtools::install_github("r-lib/pkgbuild") # install updated version of pkgbuild from GitHub
-# library(pkgbuild) # load package
-# find_rtools() # should be TRUE, assuming you have Rtools 3.5
