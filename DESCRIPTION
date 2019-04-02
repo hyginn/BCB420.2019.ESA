@@ -30,7 +30,8 @@ Imports:
     VennDiagram,
     GOSemSim,
     ggcorrplot,
-    ggplot2
+    ggplot2,
+    org.Hs.eg.db
 Suggests:
     testthat,
     BiocStyle,

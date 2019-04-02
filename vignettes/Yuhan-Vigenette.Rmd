@@ -1,0 +1,88 @@
+---
+title: "Relationship of GO term similarity VS gene expression correlation"
+author:
+- name: Yuhan Zhang
+  affiliation: 
+  - https://orcid.org/0000-0003-1275-7951
+  - University of Toronto
+  email: yuhan.zhang@mail.utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  Relationship of GO term similarity VS gene expression correlation
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This Vignette explains the input and output of the EDA tool 
+
+## Input 
+
+This tool takes the input of a set of genes of interest in HGNC symbols
+
+## Underlying process defined in the function 
+
+Taking the genes in the geneSet and calculating their pairwise correlations and Go term semantic similarities and plot heatmaps and scatterolot of them to visulaize the relationship between correlation vs similarity.
+
+##Output 
+
+The final output is a data frame of pairwise genes in the geneSet with their expression correlation and GO term similarities. Also it output two heatmaps of correlation and GO similarity, respectively. And a scatterplot of correlation vs semantic similarity.
+
+
+
+<!-- End -->
