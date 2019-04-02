@@ -10,7 +10,11 @@ Authors@R: c(
             person("Fan", "Shen", 
                     email = "van.shen@mail.utoronto.ca", 
                     role = c("ctb"), 
-                    comment = c(ORCID = "0000-0001-8720-5874"))
+                    comment = c(ORCID = "0000-0001-8720-5874")),
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -27,7 +31,11 @@ Imports:
     biomaRt,
     stats,
     ggplot2,
-    ggiraph
+    ggiraph,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
