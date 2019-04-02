@@ -1,24 +1,18 @@
 # make_venn_diagram.R
 
-#' Make Venn Diagrams
-#'
-#' \code{make_venn_diagram} is a helper function for \code{\link{clusterSystems}} and is unlikely to be useful elsewhere.
-#'
-#' @param system_genes vector of genes in the system
-#' @param sys_name name of the system
-#' @param cluster_genes vector of genes in the cluster
-#' @param clust_num Numeric identifier for the cluster
-#' @param jaccard The jaccard index of the set overlap of cluster and system
-#' @param p P value of the Jaccar index
-#'
-#' @return NULL
-#'
-#' @import VennDiagram
-#'
-#' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
-#'
-#'
+# Purpose:  a helper function for clusterSystems and is unlikely to be useful elsewhere.
 
+# Parameters:
+# system_genes      vector of genes in the system
+# sys_name          name of the system
+# cluster_genes     vector of genes in the cluster
+# clust_num         Numeric identifier for the cluster
+# jaccard           The jaccard index of the set overlap of cluster and system
+# p                 P value of the Jaccar index
+#
+# Value: NULL
+
+# Author: Rachel Silverstein
 
 
 make_venn_diagram <- function(system_genes, sys_name, cluster_genes, clust_num, jaccard, p) {

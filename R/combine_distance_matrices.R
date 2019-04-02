@@ -1,17 +1,16 @@
 # combine_distance_matrices.R
 
-#' Combine Distance Matrices
-#'
-#' \code{combine_distance_matrices} This is a helper function for \code{\link{clusterSystems}} and is unlikely to be useful elsewhere.
-#'
-#' @param mode Method by which to combine distance matrices
-#' @param distanceMatrices List of objects of class distance.
-#'
-#' @return single object of class distance.
-#'
-#' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
-#'
-#'
+# This is a helper function for clusterSystems and is unlikely to be useful elsewhere.
+
+# Parameters :
+# mode                Method by which to combine distance matrices
+# distanceMatrices    List of objects of class distance.
+#
+# Value:
+# single object of class distance.
+#
+# Author: Rachel Silverstein
+
 combine_distance_matrices <- function(mode, distanceMatrices) {
   if (length(distanceMatrices) > 1) {
 

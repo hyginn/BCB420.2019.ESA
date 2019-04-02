@@ -3,6 +3,14 @@
 # Purpose: Helper function for clusterSystems
 # Not useful elsewhere
 
+# Parameters:
+# systems         list of systems to match to clusters
+# clusts          clusters as output of culter::PAM
+
+# Value: List of length 2 where the first element is the best matches and the second are the Jaccard indexes of the matches
+
+# Author: Rachel Silverstein
+
 get_best_matches <- function (systems, clusts) {
   # For each system, determine which cluster best represents it using the Jaccard index
   best_matches <- character(length = length(systems))

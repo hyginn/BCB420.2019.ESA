@@ -1,16 +1,14 @@
-# .make_distance_matrices_list.R
+# make_distance_matrices_list.R
 
-#' Make distance matrices list
-#'
-#' \code{make_distance_matrices_list} This is a helper function for \code{\link{clusterSystems}} and is unlikely to be useful elsewhere.
-#'
-#' @param distances Character vector indicating the distance metrics to be used.
-#' @param all_genes Character vector of HGNC symbols with which to make distance matrices
-#'
-#' @return A list of objects of class distance.
-#'
-#' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
-#'
+# Purpose: This is a helper function for clusterSystems and is unlikely to be useful elsewhere.
+#
+# Parameters:
+# distances           Character vector indicating the distance metrics to be used.
+# all_genes           Character vector of HGNC symbols with which to make distance matrices
+#
+# Value:  A list of objects of class distance.
+
+# Author: Rachel Silverstein
 
 
 make_distance_matrices_list <- function (distances, all_genes) {

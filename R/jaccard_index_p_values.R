@@ -3,6 +3,8 @@
 # Purpose: Helper function for clusterSystems
 # not useful elsewhere
 
+# Author: Rachel Silverstein
+
 jaccard_index_p_values <- function(systems, jaccard_indexes, best_matches, clusters, trials = 1000) {
   p_values <- numeric(length = length(systems))
   names(p_values) <- names(systems)
