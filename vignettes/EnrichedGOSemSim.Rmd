@@ -1,0 +1,40 @@
+---
+title: "System curation GO term enrichment semantic similarity analysis"
+author:
+- name: Cathy Cha
+  affiliation: 
+  - http://orcid.org/0000-0003-4609-4965
+  - University of Toronto
+  email: cathy.cha@mail.utoronto.ca
+date: "`r Sys.Date()`"
+output: html_document
+abstract: Semantic similarity analysis of enriched GO terms for a geneset obtained from system curation 
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# About this Vignette
+
+This Vignette explains the input and output of the ESA tool 
+
+## Input 
+
+This tool takes the input of a curated systems code name, defined during the system curation unit and HGNC data. 
+
+## Underlying process defined in the function 
+
+Taking the system code, it retrieves gene sets annotated to the system and runs GOenrichment() analysis from the GOSim package from bioconductor, retrieving the GO terms enriched to the gene set under investigation. 
+
+It then runs a semantic similarity analysis using mclusterSim() from the GOSemSim package in bioconductor.
+
+##Output 
+
+The final output is a semanitic similarity matrix of the enriched GO terms for the system under investigation
+
+
+<!-- End -->
