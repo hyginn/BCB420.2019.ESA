@@ -77,8 +77,8 @@ visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
     eMappings <- match(as.character(ppi_ggi$type),
                        as.character(emap$geneticInt))
     edgeLabels <- ifelse(sel2,
-                         as.character(gmap$effect[gMappings]),
-                        as.character(emap$effect[eMappings]) )
+                        as.character(emap$effect[eMappings]),
+                        as.character(gmap$effect[gMappings]))
 
     edges <- data.frame(from = as.factor(network$A),
                         to = as.factor(network$B),
