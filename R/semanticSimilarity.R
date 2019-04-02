@@ -10,19 +10,21 @@
 #' @author \href{https://orcid.org/0000-0002-1134-6758}{Boris Steipe} (aut)
 #'
 #' @import BiocManager
-#' @import org.Hs.eg.db
+#' @import BiocCheck
+#' @import AnnotationDbi
 #' @import GOSim
 #' @import GOSemSim
 #'
+#'
 #' @examples
+#' \dontrun{
 #' semanticSimilarity("PHALY")
+#' }
 #' @export
 semanticSimilarity <- function(sys) {
 
   #Load the HGNC data
-  myURL <- paste0("https://github.com/hyginn/",
-                  "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-  load(url(myURL))
+  HGNC <- fetchData("HGNCreference")
 
   #org.Hs.eg.db uses entrez gene identifiers - need to annotate the geneset into entrez ID's with HGNC
   geneset <- fetchComponents(sys)
