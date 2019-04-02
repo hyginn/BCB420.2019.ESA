@@ -11,6 +11,10 @@
 #'
 #' @import BiocManager
 #' @import BiocCheck
+#' @import testthat
+#' @import knitr
+#' @import rmarkdown
+#' @import BiocStyle
 #' @import AnnotationDbi
 #' @import GOSim
 #' @import GOSemSim
