@@ -173,7 +173,7 @@ hsGO <- godata('org.Hs.eg.db', ont="MF")
       Correlation <- pairFrame$CorGene
       goSimilarity <- pairFrame$scoGO
       model <- lm(goSimilarity~Correlation)
-      lmplot <- ggplot2::ggplot(pairFrame, aes(x=Correlation, y=goSimilarity)) + 
+      lmplot <- ggplot2::ggplot(pairFrame, ggplot2::aes(x=Correlation, y=goSimilarity)) + 
         ggplot2::geom_point()+
         ggplot2::geom_smooth(method=lm)+
         ggplot2::ggtitle("Co-expression Correlation VS GO Semantic Similarity") +
@@ -181,10 +181,10 @@ hsGO <- godata('org.Hs.eg.db', ont="MF")
         ggplot2::scale_x_continuous(name = "Semantic Similarity") +
         ggplot2::scale_y_continuous(name = "Co-expression Correlation")
      print(lmplot)
-      result <- summary(model)
+    print(summary(model))
       
     
-    return(result)
+    return(mydata)
   }
   
 geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
