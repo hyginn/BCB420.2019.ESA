@@ -1,0 +1,63 @@
+---
+title: "Co-Expression Correlation And GOSemSim  Correlation ToolVignette"
+author:
+- name: Denitsa Vasileva
+  affiliation: 
+  - http://orcid.org/0000-0002-8778-6442
+  - University of Toronto
+  email: denitsa.vasileva@mail.utoronto.ca
+date: "`r Sys.Date()`"
+output: html_document
+abstract: The _Co-Expression Correlation And GOSemSim Correlation Tool_ is an exploratory system analysis tool which provides visualizations of the   co-expression correlation and function correlation (i.e. Semantic Similarity of GO terms)  between pairs of genes in a specified input biosystem. This document provides an introduction to the important comcepts that form the basis of this tool. In addition, an example that demonstrates the capabilities of the tool is also featured. 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+---
+## Fundamental Concepts Predicating the Tool
+
+In order to explain the biological significance and necessity of this tool it is necessary to explain a few basic biological concepts that underpine it.
+---
+* Co-expression correlation:
+    * Measure of how similar the expression profiles between genes are.
+    * Paiwise co-expression correlation is a measure of similarity between the expression profiles of a pair of genes
+    * The correlation is on a real number scale of -1 to 1 where number numbers close to -1 or 1 indicate a strong correlation
+    * The pairwise co-espression correlation for every pair of genes is calculated as the Pearson rank correlation coefficient 
+    * This only displays the likelihood of co-expression between pairs of genes and not the type of relaationshio between the genes
+
+* Semantic Similarity:
+    * Defined as the distance between a set of terms where diatnce is defined as a measure of likeness of meaning or semnatics 
+    * In the context of this tool, Semantic Similarity is defined as the distance between GO terms
+    * GO- (Gene Ontology)- is a universally agreed-upon, pre-defined set of terms used to define the function of genes.
+    * GO terms form hierarchies
+    * Semantic Similarity is a computational measure of similarity between GO terms
+    * There are multiple ways to calculate 
+    * It is calculated by the GOSemSim package in the Bioconductor repository in R 
+    * 
+---
+* Heat Maps of Pairwise Co-expression Correlation:
+    * Diagrams which use colours to represent correlation coefficient values
+    * List of genes on each axis
+    * Colours represent the strength and direction of the pairwise co-expressiom correlation between the pair of genes specified
+* Heat Map of Pairwise Semantic Similarity Correlation:
+    * diagrams which use colours to represent correlation coefficient values
+    * List of genes on each axis
+    * Colours represent the strength and direction of the pairwise Semnatic Similarity correlation between the pair of genes specified
+---
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
