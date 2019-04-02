@@ -8,6 +8,7 @@
 #' present in the dataset. As well, displays which conditions are up and down
 #' regulted significantly.
 #'
+#' For further information, see details in the \href{../doc/BCB420.2019.ESA-Vignette_McNeil.html}{ System Expression vignette} (or load the vignette with \code{vignette("BCB420.2019.ESA-Vignette_McNeil", package = "BCB420.2019.ESA")}).
 #'
 #' @param sysname (character) 5-letter code of system being investigated
 #' @param myQNXP (matrix) Matrix of expressions. Columns represent experiments and
