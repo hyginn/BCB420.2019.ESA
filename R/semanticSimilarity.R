@@ -25,7 +25,7 @@ semanticSimilarity <- function(sys) {
   HGNC <- fetchData("HGNCreference")
 
   #org.Hs.eg.db uses entrez gene identifiers - need to annotate the geneset into entrez ID's with HGNC
-  geneset <- fetchComponents(sys)
+  geneset <- SyDBgetSysSymbols(HGNC, sys)
   geneset <- (HGNC$sym %in% geneset)
   genes <- HGNC[geneset,]$GeneID
   genes <- as.character(genes)
