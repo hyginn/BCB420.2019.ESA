@@ -29,41 +29,6 @@ combine_distance_matrices <- function(mode, distanceMatrices) {
         }
       }
     }
-
-    # if (mode == 'sum') {
-    #   for (i in seq_along(distanceMatrices)) {
-    #     if (i == 1) {
-    #       combinedMatrix <- distanceMatrices[[i]]
-    #     } else {
-    #       combinedMatrix <- combinedMatrix + distanceMatrices[[i]]
-    #     }
-    #   }
-    # } else if (mode == 'product') {
-    #   for (i in seq_along(distanceMatrices)) {
-    #     if (i == 1) {
-    #       combinedMatrix <- distanceMatrices[[i]]
-    #     } else {
-    #       combinedMatrix <- combinedMatrix * distanceMatrices[[i]]
-    #     }
-    #   }
-    # } else if (mode == 'minimum') {
-    #   for (i in seq_along(distanceMatrices)) {
-    #     if (i == 1) {
-    #       combinedMatrix <- distanceMatrices[[i]]
-    #     } else {
-    #       combinedMatrix <- pmin(combinedMatrix,  distanceMatrices[[i]])
-    #     }
-    #   }
-    # } else if (mode == 'maximum') {
-    #   for (i in seq_along(distanceMatrices)) {
-    #     if (i == 1) {
-    #       combinedMatrix <- distanceMatrices[[i]]
-    #     } else {
-    #       combinedMatrix <- pmax(combinedMatrix, distanceMatrices[[i]])
-    #     }
-    #   }
-    # }
-
   } else {
     combinedMatrix <- distanceMatrices[[1]]
   }

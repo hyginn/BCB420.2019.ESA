@@ -4,7 +4,7 @@
 # Helper function for clusterSystems
 # probably not useful elsewhere
 
-# The the distance metric is determined by the distance function that is passed as a parameter.
+# The distance metric is determined by the distance function that is passed as a parameter.
 # The main use of this function is as a helper function for \code{\link{clusterSystems}}.
 
 # Parameters:

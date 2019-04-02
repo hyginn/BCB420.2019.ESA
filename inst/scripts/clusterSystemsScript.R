@@ -54,7 +54,7 @@ library(VennDiagram)
 
 # ====  FUNCTIONS  =============================================================
 
-# Define functions or source external files
+source("./R/clusterSystems.R")
 
 
 # ====  PROCESS  ===============================================================

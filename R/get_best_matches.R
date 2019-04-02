@@ -5,7 +5,7 @@
 
 # Parameters:
 # systems         list of systems to match to clusters
-# clusts          clusters as output of culter::PAM
+# clusts          clusters as output of cluster::PAM
 
 # Value: List of length 2 where the first element is the best matches and the second are the Jaccard indexes of the matches
 

@@ -17,10 +17,13 @@ jaccard_dist(gene1, gene2, graph)
 Numeric, distance score
 }
 \description{
-\code{jaccard_dist} Calculate the pairwise distance of genes in an interaction network.
+\code{jaccard_dist} calculates the pairwise distance of genes in an interaction network.
 }
 \details{
-Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes. Distance is then obtained by taking 1 - similarity.
+Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity
+is the number of common neighbors divided by the number of vertices that are
+neighbors of at least one of the 2 nodes. Distance is then obtained by taking
+1 - similarity.
 }
 \author{
 \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
