@@ -408,7 +408,7 @@ EnrichDepletTF <- function(sys,
     return(corEnrichDep)
 
   } else { #Less then 3 correlated genes.
-    return (message(NaN))
+    return(message(NaN))
   }
 }
 
