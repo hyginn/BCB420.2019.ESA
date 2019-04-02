@@ -21,6 +21,11 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     ggplot2
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
+
 Suggests:
     testthat,
     BiocStyle,
