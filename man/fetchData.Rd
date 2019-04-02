@@ -15,7 +15,10 @@ a dataset
 \description{
 \code{fetchData} documentation forthcoming.
 }
+\details{
+For the BioGRID dataset, see details in the \href{../doc/dataDetails-BioGRID.html}{ BioGRID data vignette} (or load the vignette with \code{vignette("dataDetails-BioGRID", package = "BCB420.2019.ESA")}).
+}
 \examples{
-fetchData()                         # prints avaialable datasets
+fetchData()                         # prints available datasets
 HGNC <- fetchData("HGNCreference")  # assigns the HGNC reference dataset
 }

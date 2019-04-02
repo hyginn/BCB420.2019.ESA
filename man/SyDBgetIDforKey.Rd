@@ -4,19 +4,25 @@
 \alias{SyDBgetIDforKey}
 \title{\code{SyDBgetIDforKey} fetch an ID from a systems database.}
 \usage{
-SyDBgetIDforKey(val, att, tbl, db)
+SyDBgetIDforKey(val, att, tbl, db, all = FALSE)
 }
 \arguments{
-\item{val}{(character)  match value "val" ...}
+\item{val}{(character)  IDs matching value(s) "val" ...}
 
-\item{att}{(character)  ... in attribute column "att" ...}
+\item{att}{(character)  ... in any attribute column "att" ...}
 
-\item{tbl}{(character)  ... of table "tbl" ...}
+\item{tbl}{(character)  ... of the table "tbl" ...}
 
 \item{db}{(character)  in database "db".}
+
+\item{all}{(logical)  if TRUE, then NA will be added to the returned
+vector, one for each element in "val" that was
+not found in "att". If FALSE (default), only
+matching IDs will be returned, i.e. the length
+of the input is not preserved.}
 }
 \value{
-(character) a vector of HGNC symbols or a zero-length vector if
+(character) a vector of QQIDs, or NA where
                     none were found
 }
 \description{
@@ -24,7 +30,7 @@ SyDBgetIDforKey(val, att, tbl, db)
 }
 \examples{
 \dontrun{
-SyDBgetIDforKey("PHALY","code","system", mySDB) # get the ID for the system
-                                               # with code "PHALY"
+# get the IDs for the systems with code "PHALY" and "nosuch". Element 2 is NA.
+SyDBgetIDforKey(c("PHALY", "nosuch"), "code","system", mySDB, all = TRUE)
 }
 }
