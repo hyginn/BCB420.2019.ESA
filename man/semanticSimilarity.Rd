@@ -8,7 +8,7 @@ GO terms for a systems gene set}
 semanticSimilarity(sys)
 }
 \arguments{
-\item{sys}{System Code}
+\item{sys}{- System Code (e.g., PHALY)}
 }
 \value{
 (matrix) a matrix of enriched GO terms with semantic similarity values
