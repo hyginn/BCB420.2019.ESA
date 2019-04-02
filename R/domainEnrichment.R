@@ -12,7 +12,7 @@
 #' @param alpha The alpha value for Benjamini-Hochberg control. Default is 0.05.
 #' @return A data frame that include domains in the system with its counts and frequency in system and in random genes; p-value, odd ratio, adjust p-value and enrichment; interpro descriptions. Return NULL if system is not available by \code{\link{SyDBgetSysSymbols}}.
 #'
-#' @import stats
+#' @importFrom stats p.adjust fisher.test reorder
 #' @import biomaRt
 #' @import ggplot2
 #' @import ggiraph
@@ -94,7 +94,7 @@ domainEnrichment <- function(system, alpha = 0.05) {
   }
 
   # 3.4 Multiple testing: Benjamini-Hochberg control for false discovery rate
-  tmp$p_adj_BH <- stats::p.adjust(tmp$p_value, "BH")
+  tmp$p_adj_BH <- p.adjust(tmp$p_value, "BH")
 
   # 3.5 Calculate the enrichment
   tmp$enrichment <- (tmp$sysFreq)/(tmp$randomFreq)

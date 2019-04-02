@@ -31,7 +31,11 @@ Imports:
     biomaRt,
     stats,
     ggplot2,
-    ggiraph
+    ggiraph,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
