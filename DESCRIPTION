@@ -27,8 +27,8 @@ Imports:
     BiocManager,
     GOSim,
     org.Hs.eg.db,
-    GOSemSim,
-    topGO
+    AnnotationDbi,
+    GOSemSim
 Suggests:
     testthat,
     BiocStyle,
