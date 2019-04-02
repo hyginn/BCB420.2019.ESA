@@ -10,7 +10,11 @@ Authors@R: c(
              person("Sapir", "Labes",
                     email = "sapir.labes@mail.huji.ac.il",
                     role = c("aut"),
-                    comment = c(ORCID = "0000-0002-9478-5974"))
+                    comment = c(ORCID = "0000-0002-9478-5974")),
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -23,7 +27,11 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings
+    Biostrings,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
