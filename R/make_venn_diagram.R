@@ -7,15 +7,13 @@
 # sys_name          name of the system
 # cluster_genes     vector of genes in the cluster
 # clust_num         Numeric identifier for the cluster
-# jaccard           The jaccard index of the set overlap of cluster and system
-# p                 P value of the Jaccar index
 #
 # Value: NULL
 
 # Author: Rachel Silverstein
 
 
-make_venn_diagram <- function(system_genes, sys_name, cluster_genes, clust_num, jaccard, p) {
+make_venn_diagram <- function(system_genes, sys_name, cluster_genes, clust_num) {
 
   clust_name <- paste(c("Cluster ", clust_num), collapse = "")
 

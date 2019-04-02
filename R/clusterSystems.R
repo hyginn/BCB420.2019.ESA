@@ -211,7 +211,7 @@ clusterSystems <- function(systems,
       system_genes <- unlist(systems[[i]])
       jaccard <- jaccard_indexes[i]
       p <- p_values[i]
-      make_venn_diagram(system_genes, sys_name, cluster_genes, clust_num, jaccard, p)
+      make_venn_diagram(system_genes, sys_name, cluster_genes, clust_num)
     }
   }
 
