@@ -2,24 +2,30 @@
 % Please edit documentation in R/ESA.R
 \name{systemAnalysis}
 \alias{systemAnalysis}
-\title{\code{systemAnalysis()} Investigates genes from the system PHALY
+\title{\code{systemAnalysis()} Investigates genes from a biological system
 and produces plots with gene network data}
 \usage{
-systemAnalysis(gene)
+systemAnalysis(gene, sys)
 }
 \arguments{
-\item{gene}{A gene from the Biological system PHALY}
+\item{gene}{A gene from a Biological system}
+
+\item{sys}{A Biological system}
 }
 \value{
-a histogram for the node degree distribution of the PHALY gene network
-and a network plot for a gene from the PHALY system
+a histogram for the node degree distribution of the system gene network
+and a network plot for a gene from the biological system
 }
 \description{
-\code{systemAnalysis()} Investigates genes from the system PHALY
+\code{systemAnalysis()} Investigates genes from a biological system
 and produces plots with gene network data
 }
 \examples{
-systemAnalysis("AMBRA1")
+\dontrun{
+# Retrieve a histogram for the node degrees of the PHALY gene network and
+# get the network plot of thr AMBRA1 gene from the PHALY system
+systemAnalysis("AMBRA1", "PHALY")
+}
 
 }
 \author{

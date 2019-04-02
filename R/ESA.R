@@ -7,53 +7,35 @@
 # Author: Deus Bajaj (deus.bajaj@mail.utoronto.ca)
 # License: MIT
 #
-# Input: The biological system PHALY and a gene the user picks from the system
-# Output: A histogram for the node degree distribution of the PHALY gene network
-# and a network plot for a gene from the PHALY system
+# Input: A biological system and a gene the user picks from the system
+# Output: A histogram for the node degree distribution of the system gene network
+# and a network plot for a gene from the biological system
 # Dependencies: devtools, iGraph
 #
 
 # ====  FUNCTIONS  =============================================================
 
-# function stub taken from Dr. Steipe's BCB420.2019.ESA package (https://github.com/hyginn/BCB420.2019.ESA)
-fetchComponents <- function(sys) {
-  # returns a fixed set of symbols.
-  if (sys == "PHALY") {
-    s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2",
-           "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7",
-           "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP",
-           "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM",
-           "KXD1", "LAMP1", "LAMP2", "LAMP3", "LAMP5", "MAP1LC3A", "MAP1LC3B",
-           "MAP1LC3C", "MGRN1", "MYO1C", "MYO6", "NAPA", "NSF", "OPTN",
-           "OSBPL1A", "PI4K2A", "PIK3C3", "PLEKHM1", "PSEN1", "RAB20", "RAB21",
-           "RAB29", "RAB34", "RAB39A", "RAB7A", "RAB7B", "RPTOR", "RUBCN",
-           "RUBCNL", "SNAP29", "SNAP47", "SNAPIN", "SPG11", "STX17", "STX6",
-           "SYT7", "TARDBP", "TFEB", "TGM2", "TIFA", "TMEM175", "TOM1",
-           "TPCN1", "TPCN2", "TPPP", "TXNIP", "UVRAG", "VAMP3", "VAMP7",
-           "VAMP8", "VAPA", "VPS11", "VPS16", "VPS18", "VPS33A", "VPS39",
-           "VPS41", "VTI1B", "YKT6")
-  } else {
-    s <- ""
-  }
-  return(s)
-}
-
 #'
-#' \code{systemAnalysis()} Investigates genes from the system PHALY
+#' \code{systemAnalysis()} Investigates genes from a biological system
 #' and produces plots with gene network data
 #'
-#' @param gene A gene from the Biological system PHALY
-#' @return a histogram for the node degree distribution of the PHALY gene network
-#' and a network plot for a gene from the PHALY system
+#' @param gene A gene from a Biological system
+#' @param sys A Biological system
+#' @return a histogram for the node degree distribution of the system gene network
+#' and a network plot for a gene from the biological system
 #'
 #' @author {Deus Bajaj} (aut)
 #'
 #' @examples
-#' systemAnalysis("AMBRA1")
+#' \dontrun{
+#' # Retrieve a histogram for the node degrees of the PHALY gene network and
+#' # get the network plot of thr AMBRA1 gene from the PHALY system
+#' systemAnalysis("AMBRA1", "PHALY")
+#' }
 #'
 #' @export
 
-systemAnalysis <- function(gene) {
+systemAnalysis <- function(gene, sys) {
 
   # Import STRINGedges from git repo at
   # https://github.com/deusbajaj/BCB420.2019.ESA
@@ -62,11 +44,10 @@ systemAnalysis <- function(gene) {
   # https://github.com/hyginn/BCB420.2019.ESA)
 
   # Load STRINGedges
-  myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                  "STRINGedges-2019-03-14.RData")
-  load(url(myURL)) # loads STRING edges object
+  STRINGedges <- fetchData("STRINGedges0.9")
 
-  set <- fetchComponents("PHALY") # Components for system PHALY
+  myDB <- fetchData("SysDB")
+  set <- SyDBgetSysSymbols(myDB, sys)
 
   # functionality adapted from Dr. Steipe's BCB420.2019.STRING package
   # (https://github.com/hyginn/BCB420.2019.STRING)
@@ -78,8 +59,11 @@ systemAnalysis <- function(gene) {
   # degree distribution
   dg <- igraph::degree(sXGene)
   #Getting a histogram for the node degree distribution of the gene network
-  hist(dg, col="#A5CCF5", main = "Node degrees of the gene network",
+  x <- hist(dg, main = "Node degrees of the gene network",
        xlab = "Degree", ylab = "Counts")
+
+  plot(x, col = "#A5CCF5", main = paste("Node degrees of the gene network"),
+       sub = NULL, xlab = "Degree", ylab = "Counts")
 
 
   gNet = STRINGedges[STRINGedges$a == gene|STRINGedges$b == gene ,]
