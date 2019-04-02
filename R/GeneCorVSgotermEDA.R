@@ -69,7 +69,6 @@ install.packages("ggcorrplot")
 library(GOSemSim)
 hsGO <- godata('org.Hs.eg.db', ont="MF")
 
-library("biomaRt")
 
 #'
 #' \code{myPlot()} 
