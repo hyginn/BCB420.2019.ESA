@@ -11,6 +11,8 @@
 #' @param method method of cutoff that the visualization plot method can be BH or 
 #' bonferroni.
 #' 
+#' @param data dataframe contain the mapping of gene and reactome data
+#' 
 #' @return a barplot that show the enriched pathway and its p value(fisher test) 
 #' that is smaller than the ajusted p value.
 #' 
@@ -18,23 +20,24 @@
 #' @examples
 #' # Picking sample gene list to find the pathway enrichment and p value
 #' # Call the symComp helper function to generate list
+#' tmp<-EnrichmentHelper()
 #' sampleGeneList<-c("CREBBP","NR1H3","RORA","SREBF1","SMARCD3")
-#' result <- PathwayEnrichment(sampleGeneList,"BH")
+#' result <- PathwayEnrichment(sampleGeneList,"BH",tmp)
 #'
 #' @export
-PathwayEnrichment<-function(geneSet,method){
+PathwayEnrichment<-function(geneSet,method,data){
   #fetch HGNC reference genes 
   pathway_df<-data.frame(pathway=c(),pval=c())
-  unique_pw<-unique(tmp$REACTOME_ID)
+  unique_pw<-unique(data$REACTOME_ID)
   #get data information from the helper function
-  tmp<-EnrichmentHelper()
+  
   
   fisher_matrix<-matrix(nrow = 2, ncol = 2)
   
   pwList<-c()
   #get all pathways in the given gene set
   for(gene in geneSet){
-    pws<-tmp$REACTOME_ID[tmp$HGNC==gene]
+    pws<-data$REACTOME_ID[data$HGNC==gene]
     for(pw in pws){
       if(!is.na(pw)){
         pwList<-c(pwList,pw)
@@ -54,7 +57,7 @@ PathwayEnrichment<-function(geneSet,method){
   }
   #calculate value for the occurance list of pathway for the given gene set
   for(gene in geneSet){
-    pws<-tmp$REACTOME_ID[tmp$HGNC==gene]
+    pws<-data$REACTOME_ID[data$HGNC==gene]
     for(pw in pws){
       if(!is.na(pw)){
         occurenceGene[[pw]]<-occurenceGene[[pw]]+1
@@ -67,14 +70,14 @@ PathwayEnrichment<-function(geneSet,method){
   #calculate value for the occurance list of pathway for all human gene and given gene set
   for( pathway in pwList){
     #get occurance from the reactome data
-    occur<-sum(tmp$REACTOME_ID==pathway)
+    occur<-sum(data$REACTOME_ID==pathway)
     occurence[[pathway]]<-occur
-    geneList<-tmp$HGNC[tmp$REACTOME_ID==pathway]
+    geneList<-data$HGNC[data$REACTOME_ID==pathway]
     #fisher matrix column for the all human gene
     #how many time a pw occur in the ref gene
     fisher_matrix[1,2]<-occur
     #how many time this pw are not occur in the ref gene
-    fisher_matrix[2,2]<-length(tmp$REACTOME_ID) -occur
+    fisher_matrix[2,2]<-length(data$REACTOME_ID) -occur
     occurSet<-occurenceGene[[pathway]]
     #fisher matrix column for the given gene set
     #how many pws are in system
@@ -90,7 +93,7 @@ PathwayEnrichment<-function(geneSet,method){
   #since the null hypothesis is the pathway is enriched
   enrichment<-enrichment[order(enrichment$pval),]
   #get adjusted p value for 2 methods
-  len<-length(tmp$REACTOME_ID)
+  len<-length(data$REACTOME_ID)
   #calculate adjusted p value using BH and bonferroni method
   adjustedPvalBH<-p.adjust(enrichment$pval, method = "BH", n = len)
   adjustedPvalBon<-p.adjust(enrichment$pval, method = "bonferroni", n = len)

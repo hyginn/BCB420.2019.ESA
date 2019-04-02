@@ -81,15 +81,21 @@ First, users must choose a system and get the genes in this system to analyse.
 
 Presenting the available systems:
 ```{r}
+source("../R/fetchData.R")
+source("../R/SyDButils.R")
 names(SyDBgetRootSysIDs(fetchData("SysDB")))
 ```
 
 Inserting one system's gene into `PathwayEnrichment()`. The function uses Bonferroni Correction and Benjamini-Hochberg control
 
 ```{r}
+source("../R/fetchComponents.R",echo = TRUE)
+source("../R/helper.R",echo = TRUE)
+source("../R/pathwayEnrich.R",echo = TRUE)
 geneSet<-fetchComponents("PHALY")
 #method can be BH or bonferroni.
-plot<- PathwayEnrichment(geneSet,"BH")
+tmp<-EnrichmentHelper()
+plot<- PathwayEnrichment(geneSet,"BH",tmp)
 plot
 ```
 
