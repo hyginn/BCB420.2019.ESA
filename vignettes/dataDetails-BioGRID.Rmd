@@ -39,9 +39,11 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
 # load BCB420-2019.ESA itself for knitr:
 pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
 library(pkgName, character.only = TRUE)
+
 ```
 
 &nbsp;
@@ -114,11 +116,14 @@ BioGRID <- as.data.frame(readr::read_tsv(FN,
                                                        "taxID_A",
                                                        "taxID_B"),
                                          col_types = "-------cc---c--ii-------"))
+
 nrow(BioGRID)  # 1647089
+
 # Remove all interactions for which taxID_A and taxID_B are not both 9606
 BioGRID <- BioGRID[BioGRID$taxID_A == 9606 & BioGRID$taxID_B == 9606, 
                    c("A", "B", "type")]
 nrow(BioGRID)  # 442753
+
 # Remove all interactions for which A and B are not both in HGNC sym
 myURL <- paste0("https://github.com/hyginn/",
                 "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
@@ -126,12 +131,16 @@ load(url(myURL))  # loads HGNC data frame
 BioGRID <- BioGRID[BioGRID$A %in% HGNC$sym & BioGRID$A %in% HGNC$sym, 
                    c("A", "B", "type")]
 nrow(BioGRID)  # 433505
+
 # How many genetic interactions?
 sum(BioGRID$type == "genetic")  # 4702
+
 # Save dataset:
 saveRDS(BioGRID, file = file.path("..", "data", "BioGRID", "BioGRID.3.5.170.rds"))  # 2.8 Mb
+
 # The dataset was uploaded to the assets server and is available with:
 BioGRID <- fetchData("BioGRID")
+
 ```
 
 &nbsp;
