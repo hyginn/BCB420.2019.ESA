@@ -12,9 +12,9 @@
 #'
 EnrichmentHelper<-function(){
   HGNC <- fetchData("HGNCreference") 
-  load(file = file.path("./data", "ensg2sym.RData"))
+  load(file = file.path("../data", "ensg2sym.RData"))
   #read reactome data
-  tmp <- readr::read_delim(file.path("./data", "Ensembl2Reactome.txt"),
+  tmp <- readr::read_delim(file.path("../data", "Ensembl2Reactome.txt"),
                            delim = "\t",
                            skip = 0,
                            col_names = c("ENSEMBL",
