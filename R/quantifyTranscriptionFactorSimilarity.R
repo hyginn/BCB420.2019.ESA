@@ -15,30 +15,14 @@
 # SIDE EFFECTS:
 # Displays dendrogram
 
-# # ====  PACKAGES  ==============================================================
-# # Get packages
-# if (requireNamespace("xlsx", quietly=TRUE)) {
-#   install.packages("tidyverse", repos = "http://cran.us.r-project.org")
-# }
-# if (requireNamespace("devtools", quietly=TRUE)) {
-#   install.packages("devtools", repos = "http://cran.us.r-project.org")
-#   install.packages("Biostrings", repos = "http://cran.us.r-project.org")
-#   install.packages("Rtools", repos = "http://cran.us.r-project.org")
-# }
-#
-#
-# # Load packages
-# require(readxl, quietly = TRUE)
-
-
 # ==== FUNCTIONS ===============================================================
 
-
+#' getSysGenes
 #' Helper Function: Read system data from excel
-#'
-#' @param filepath to system excel sheet
+#' @author \href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
+#' @param filepath {string} to system excel sheet
 #' Helper function to read in system data from excel
-#' @return sysHGNC. A list of genes in the system
+#' @return sysHGNC {list} A list of genes in the system
 #' @examples
 #' \donttest{
 #' getSysGenes("BCB420-2019-System-PHALY-0.3.xlsx")
@@ -52,11 +36,13 @@ getSysGenes <- function(filepath) {
   return(sysHGNC)
 }
 
+#' getSysTFdata
 #' Helper Function: get TF data only for genes in system
 #'
-#' @param sysHGNC list of genes from system
+#' @param sysHGNC {list of string} list of genes from system
 #' Accesses loaded TF data and filters for genes present in system
-#' @return sysTF. A smaller TF geneList with only genes in system.
+#' @return sysTF {list} A smaller TF geneList with only genes in system.
+#' @author \href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
 #' @examples
 #' \donttest{
 #' getSysTFdata(sysHGNC)
@@ -74,18 +60,20 @@ getSysTFdata <- function(sysHGNC) {
 }
 
 
+#' makeDistanceMatrix
 #' Helper function to make binary presence absence matrix
 #'
-#' @param sysTF output of getsysTFdata()
+#' @param sysTF {dataframe} output of getsysTFdata()
 #' Makes a binary presence absence matrix which can be transformed into a
 #' distance matrix.
-#' @return matrix. A matrix with rownames as TF and column names as system genes
+#' @return matrix {dataframe} A matrix with rownames as TF and column names as system genes
 #' In the matrix 1 means TF is associated with given gene. 0 means unassociated
+#' @author \href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
 #' @examples
 #' \donttest{
-#' makeMatrix(list)
+#' makeDistanceMatrix(list)
 #' }
-makeMatrix <- function(sysTF) {
+makeDistanceMatrix <- function(sysTF) {
   #Make matrix with row and column names
   allTF <- unique(unlist(sysTF))
   matrix <- data.frame(matrix(0, nrow = length(names(sysTF)) , ncol = length(allTF)))
@@ -105,16 +93,19 @@ makeMatrix <- function(sysTF) {
   return(matrix)
 }
 
+#' visualizeDendrogram
 #' Helper Visualization Function
 #'
-#' @param matrix in the form of output of makeMatrix()
+#' @param matrix {dataframe} in the form of output of makeDistanceMatrix(). Binary matrix
 #' Function which makes distanceMatrix, cluster and exports dendrogram
-#' @return  dendrogram in plots
+#' @return  {null} writes dendrogram in plots
+#' @author \href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
+
 #' @examples
 #' \donttest{
-#' visualize(matrix)
+#' visualizeDendrogram(matrix)
 #' }
-visualize <- function(matrix) {
+visualizeDendrogram <- function(matrix) {
   # Make binary distance matrix and cluster
   distanceMatrixBinary <- stats::dist(matrix, method = "binary")
   clusterBinary <- stats::hclust(distanceMatrixBinary)
@@ -127,12 +118,14 @@ visualize <- function(matrix) {
        ylab="Distance", sub="")
 }
 
+#' quantifyTFSimilarity
 #' Main controller function for this file. Effects all other functions.
-#' @param filepath to system excel file
+#' @param filepath {string} to system excel file
 #' Makes distance matrix, and cluster of shared TF presence for proteins in
 #' the filepath denoted by system
-#' @return dendrogram of TF
+#' @return {null} writes dendrogram of TF to plots
 #' @export
+#' @author \href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
 #' @examples
 #' \donttest{
 #' quantifyTFSimilarity("BCB420-2019-System-PHALY-0.3.xlsx")
@@ -141,12 +134,8 @@ quantifyTFSimilarity <- function(filepath) {
   HGNC <- getSysGenes(filepath)
   sysTF <- getSysTFdata(HGNC)
   notInSysTF <- HGNC[!HGNC %in% names(sysTF)]
-  matrix <- makeMatrix(sysTF)
-  visualize(matrix)
+  matrix <- makeDistanceMatrix(sysTF)
+  visualizeDendrogram(matrix)
 }
 
-#BCB420.2019.ESA::quantifyTFSimilarity("C:/Users/rwoo/Desktop/BCB420-2019-System-PHALY-0.3.xlsx")
-#devtools::document("BCB420.2019.ESA")
-#devtools::check("path/to/package/pkgname")
-#devtools::build("path/to/package/pkgname")
-#install.packages("path/to/package/packagename_version.tar.gz")
+

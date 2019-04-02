@@ -22,3 +22,6 @@ Main controller function for this file. Effects all other functions.
 quantifyTFSimilarity("BCB420-2019-System-PHALY-0.3.xlsx")
 }
 }
+\author{
+\href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
+}

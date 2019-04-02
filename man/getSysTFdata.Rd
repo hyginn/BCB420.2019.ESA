@@ -21,3 +21,6 @@ Helper Function: get TF data only for genes in system
 getSysTFdata(sysHGNC)
 }
 }
+\author{
+\href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
+}

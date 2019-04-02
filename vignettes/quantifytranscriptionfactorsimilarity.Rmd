@@ -22,22 +22,21 @@ quantifyTranscriptionFactorSimilarity()
 - Input: filepath the system excelsheet
 - Output:TFOccuranceDendrogram in plots. A dendrogram that shows the distance on the basis of common TFs. 
 
+Example: 
+\donttest{
+quantifyTFSimilarity("BCB420-2019-System-PHALY-0.3.xlsx")
+}
+
 ## Helper Functions
 
 The file has several helper functions. Please see the Roxygen documentation for more detail 
 
 - getSysGenes(): Helper function to read in system data from excel
 - getSysTFdata(): Helper Function: get TF data only for genes in system
-- makeMatrix(): Helper function to make binary presence absence matrix
-- visualize(): Helper Visualization Function
+- makeDistanceMatrix(): Helper function to make binary presence absence matrix
+- visualizeDendrogram(): Helper Visualization Function
 
-## Hidden Information 
 
-This information was not deemed to be signficant for display, but can still be access in the following functions by altering the return statement. 
-
-- List of genes without TF from database: quantifyTFSimilarity
-- Cluster: visualize
-- Distance Matrix: visualize
 
 
 

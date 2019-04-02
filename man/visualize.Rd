@@ -11,7 +11,7 @@ visualize(matrix)
 Function which makes distanceMatrix, cluster and exports dendrogram}
 }
 \value{
-distance binary matrix and dendrogram in plots
+dendrogram in plots
 }
 \description{
 Helper Visualization Function
@@ -20,4 +20,7 @@ Helper Visualization Function
 \donttest{
 visualize(matrix)
 }
+}
+\author{
+\href{https://orcid.org/ORCID:0000-0002-1387-487X}{Rachel Woo} (aut)
 }
