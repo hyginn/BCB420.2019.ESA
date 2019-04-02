@@ -21,6 +21,7 @@ getGeneticInteractome <- function(mySys, criterion){
                       mustWork = TRUE)
   humInt <- read.delim(file, stringsAsFactors = FALSE)
   humInt <- humInt[complete.cases(humInt), ]
+  colnames(mySys)[1:2] <- c("a", "b")
 
   if (criterion == "stringent") { # stringent => GGI between physical
                                   # interactors of system components
@@ -29,7 +30,7 @@ getGeneticInteractome <- function(mySys, criterion){
 
   } else if (criterion == "relaxed") { # stringent => all GGI in which system's
                                        # physical interactors are involved
-    interctorsInSystemID <- (humInt$A %in% mySys$a | humInt$B %in% mySys$B)
+    interctorsInSystemID <- (humInt$A %in% mySys$a | humInt$B %in% mySys$b)
   }
 
   ggi <- humInt[interctorsInSystemID,]
