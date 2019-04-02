@@ -4,7 +4,7 @@
 \alias{getGeneticInteractome}
 \title{Return BioGrid genetic interaction tags of physical interactors of the system}
 \usage{
-getGeneticInteractome(mySys, criterion, key)
+getGeneticInteractome(mySys, criterion)
 }
 \arguments{
 \item{mySys}{The dataframe of PPI between system's components}

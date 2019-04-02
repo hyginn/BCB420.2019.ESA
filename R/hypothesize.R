@@ -5,19 +5,10 @@
 #' @param network A dataframe of physically-interacting system components with their genetic interactions and
 #' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available
 #' @import visNetwork
-#' @import xlsx
-#' @import readxl
-#' @importFrom dplyr filter
-#' @import biomaRt
-#' @import ggplot2
-#' @import biogridr
-#' @import utils
-#' @include SyDButils.R fetchComponents.R fetchData.R
-#' @importFrom stats complete.cases
+#'
 #' @examples
-#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SILGRESA")
-#' mySys <- getSysInteractions("SLIGR", criterion = "stringent", key = myKey)
-#' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed", key = myKey)
+#' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
+#' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
 #' hypothesize(mySys)
 #' hypothesize(mySys2, mySys)
 #'

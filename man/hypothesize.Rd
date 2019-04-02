@@ -15,9 +15,8 @@ hypothesize(network, ppi_ggi = NULL)
 Generates an annotated hypothesis graph whose nodes are components of \code{mySys} and edges are GGI interpretations in either \code{EMAP} or \code{GMAP}
 }
 \examples{
-myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SILGRESA")
-mySys <- getSysInteractions("SLIGR", criterion = "stringent", key = myKey)
-mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed", key = myKey)
+mySys <- getSysInteractions("SLIGR", criterion = "stringent")
+mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
 hypothesize(mySys)
 hypothesize(mySys2, mySys)
 

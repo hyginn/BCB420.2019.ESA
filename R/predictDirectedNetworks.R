@@ -20,28 +20,21 @@ source('./R/SyDButils.R', echo=TRUE)
 #' Filter system by physically-interacting components and return their genetic interactions
 #'
 #' @param sysName A string specifying the full path to the excel sheet containing the system's components
-#' @param key a unique string key
 #' @param criterion A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
-#' @import xlsx
-#' @import readxl
 #' @importFrom dplyr filter
 #' @import biomaRt
 #' @import ggplot2
-#' @import biogridr
 #' @import utils
 #' @include SyDButils.R fetchComponents.R fetchData.R
 #' @importFrom stats complete.cases
 #' @examples
-#' myKey <- getKey("Nada Elnour", "nada.elnour@@mail.utoronto.ca", "SILGRESA")
-#' mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
+#' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 #'
 #' @export
-getSysInteractions <-
-  function(sysName,
-           key,
-           criterion = "stringent") {
+getSysInteractions <-function(sysName, criterion = "stringent") {
+
     if (is.null(sysName)) {
       stop("System not provided.\n")
     } else if (is.null(key)){

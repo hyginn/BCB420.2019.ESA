@@ -47,7 +47,6 @@ Collate:
     'fetchComponents.R'
     'fetchData.R'
     'getGeneticInteractome.R'
-    'getKey.R'
     'hypothesize.R'
     'makeMaps.R'
     'makeSeq.R'

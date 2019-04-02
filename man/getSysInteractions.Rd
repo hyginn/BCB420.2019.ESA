@@ -4,12 +4,10 @@
 \alias{getSysInteractions}
 \title{Filter system by physically-interacting components and return their genetic interactions}
 \usage{
-getSysInteractions(sysName, key, criterion = "stringent")
+getSysInteractions(sysName, criterion = "stringent")
 }
 \arguments{
 \item{sysName}{A string specifying the full path to the excel sheet containing the system's components}
-
-\item{key}{a unique string key}
 
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
 }
@@ -21,7 +19,6 @@ or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 Filter system by physically-interacting components and return their genetic interactions
 }
 \examples{
-myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SILGRESA")
-mySys <- getSysInteractions("SLIGR", key = myKey, criterion = "stringent")
+mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 
 }
