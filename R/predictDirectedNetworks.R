@@ -14,7 +14,6 @@
 #' @import devtools
 #'
 source('./R/fetchData.R', echo=TRUE)
-source('./R/fetchComponents.R', echo=TRUE)
 source('./R/SyDButils.R', echo=TRUE)
 # ==============================================================================
 #' Filter system by physically-interacting components and return their genetic interactions
@@ -24,10 +23,8 @@ source('./R/SyDButils.R', echo=TRUE)
 #' @return A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
 #' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 #' @importFrom dplyr filter
-#' @import biomaRt
-#' @import ggplot2
 #' @import utils
-#' @include SyDButils.R fetchComponents.R fetchData.R
+#' @include SyDButils.R fetchData.R
 #' @importFrom stats complete.cases
 #' @examples
 #' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
@@ -37,8 +34,6 @@ getSysInteractions <-function(sysName, criterion = "stringent") {
 
     if (is.null(sysName)) {
       stop("System not provided.\n")
-    } else if (is.null(key)){
-      stop("Provide valid key for biogrid ratification")
     }
 
     STRINGedges <- as.data.frame(fetchData("STRINGedges0.9"))
@@ -61,7 +56,7 @@ getSysInteractions <-function(sysName, criterion = "stringent") {
     interactions <-
       unique(interactions[complete.cases(interactions),])
 
-    mySys <- getGeneticInteractome(mySys = interactions, criterion = criterion, key = key)
+    mySys <- getGeneticInteractome(mySys = interactions, criterion = criterion)
 
     return(mySys)
   }

@@ -13,9 +13,7 @@
 #' hypothesize(mySys2, mySys)
 #'
 #' @export
-hypothesize <-
-  function(network,
-           ppi_ggi = NULL) {
+hypothesize <- function(network, ppi_ggi = NULL) {
     EMAP <- makeEMAP()
     GMAP <- makeGMAP()
     visualizeInteractions(network, EMAP, ppi_ggi, GMAP)
@@ -29,92 +27,55 @@ hypothesize <-
 visualizeInteractions <- function(network, emap, ppi_ggi, gmap) {
   if (is.null(ppi_ggi))
   {
-    network$gene1 <- as.factor(network$gene1)
-    network$gene2 <- as.factor(network$gene2)
-    allgenes <-
-      as.factor(unique(c(
-        as.character(network$gene1),
-        as.character(network$gene2)
-      )))
-    nodes <-
-      data.frame(id = allgenes,
-                 allgenes,
-                 label = unique(c(
-                   as.character(network$gene1),
-                   as.character(network$gene2)
-                 )),
-                 shape = 'circle')
-    edges <-
-      data.frame(
-        from = network$gene1,
-        to = network$gene2,
-        label = emap$effect[match(network$interactionType, emap$geneticInt)],
+    genesInNetwork <- unique(c(network$A, network$B))
+
+    network$A <- as.factor(network$A)
+    network$B <- as.factor(network$B)
+    allgenes <- as.factor(genesInNetwork)
+    nodes <- data.frame(id = allgenes, allgenes, label = genesInNetwork, shape = 'circle')
+    edges <- data.frame(
+        from = network$A,
+        to = network$B,
+        label = emap$effect[match(network$type, emap$geneticInt)],
         arrows = "to"
       )
   } else {
-    network$gene1 <- as.factor(network$gene1)
-    network$gene2 <- as.factor(network$gene2)
+    genesInNetwork <- unique(c(as.character(network$A), as.character(network$B)))
+    allgenes <- as.factor(genesInNetwork)
 
-    ppi_ggi$gene1 <- as.factor(ppi_ggi$gene1)
-    ppi_ggi$gene2 <- as.factor(ppi_ggi$gene2)
+    genesInPGI <- unique(c(as.character(ppi_ggi$A), as.character(ppi_ggi$B)))
+    allgenes2 <- as.factor(genesInPGI)
 
-    allgenes <-
-      as.factor(unique(c(
-        as.character(network$gene1),
-        as.character(network$gene2)
-      )))
+    network$A <- as.factor(network$A)
+    network$B <- as.factor(network$B)
 
-    allgenes2 <-
-      as.factor(unique(c(
-        as.character(ppi_ggi$gene1),
-        as.character(ppi_ggi$gene2)
-      )))
+    ppi_ggi$A <- as.factor(ppi_ggi$A)
+    ppi_ggi$B <- as.factor(ppi_ggi$B)
 
-    nodes <-
-      data.frame(
-        id = allgenes,
-        allgenes,
-        label = unique(c(
-          as.character(network$gene1),
-          as.character(network$gene2)
-        )),
-        group = ifelse(allgenes %in% allgenes2 , "ppi-ggi", "ggi"),
-        shape = 'circle'
-      )
+    nodes <- data.frame(id = allgenes, allgenes, label = genesInNetwork,
+                        group = ifelse(allgenes %in% allgenes2 , "ppi-ggi", "ggi"), shape = 'circle')
 
     edgeLabels <- c()
 
-    for (i in 1:(length(network$interactionType))) {
-      sel <-
-        (
-          as.character(network$gene1[i]) %in% as.character(ppi_ggi$gene1) &
-            as.character(network$gene2[i]) %in% as.character(ppi_ggi$gene2)
-        )
+    for (i in 1:(length(network$type))) {
+
+      sel <- (as.character(network$A[i]) %in% as.character(ppi_ggi$A) &
+                as.character(network$B[i]) %in% as.character(ppi_ggi$B))
+
       if (sel) {
-        idx <-
-          which(
-            as.character(ppi_ggi$gene1) == as.character(network$gene1[i]) &
-              as.character(ppi_ggi$gene2) == as.character(network$gene2[i])
-          )
-        edgeLabels <-
-          c(edgeLabels, as.character(emap$effect[match(ppi_ggi$interactionType[idx], emap$geneticInt)]))
+        idx <- which(as.character(ppi_ggi$A) == as.character(network$A[i]) &
+                       as.character(ppi_ggi$B) == as.character(network$B[i]))
+        interpretation <- emap$effect[match(ppi_ggi$type[idx], emap$geneticInt)]
+        edgeLabels <- c(edgeLabels, as.character(interpretation))
       } else {
-        edgeLabels <-
-          c(edgeLabels, as.character(gmap$effect[match(network$interactionType[i], gmap$geneticInt)]))
+        interpretation <- gmap$effect[match(network$type[i], gmap$geneticInt)]
+        edgeLabels <- c(edgeLabels, as.character(interpretation))
       }
     }
-
-    edges <-
-      data.frame(
-        from = network$gene1,
-        to = network$gene2,
-        label = edgeLabels,
-        arrows = "to"
-      )
-
+    edges <- data.frame(from = network$A, to = network$B, label = edgeLabels, arrows = "to")
   }
 
-  visNetwork(nodes, edges) %>% visGroups(groupname = "ppi-ggi", color = "salmon") %>% visOptions(selectedBy = "group") %>% visEdges(color = "darkgray")
+  visNetwork(nodes, edges) %>% visGroups(groupname = "ppi-ggi", color = "salmon") %>% visEdges(color = "darkgray")
 }
 
 # [END]

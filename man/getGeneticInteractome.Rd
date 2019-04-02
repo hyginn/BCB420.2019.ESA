@@ -10,8 +10,6 @@ getGeneticInteractome(mySys, criterion)
 \item{mySys}{The dataframe of PPI between system's components}
 
 \item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
-
-\item{key}{a unique string key}
 }
 \value{
 The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")

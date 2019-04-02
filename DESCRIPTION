@@ -26,30 +26,13 @@ Imports:
     Biostrings,
     utils,
     stats,
-    xlsx,
-    readxl,
     visNetwork,
     dplyr,
-    biomaRt,
-    ggplot2,
-    biogridr,
     devtools
 Suggests:
     testthat,
     BiocStyle,
     knitr,
     rmarkdown
-Remotes: NElnour/biogridr
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-Collate: 
-    'SyDButils.R'
-    'fetchComponents.R'
-    'fetchData.R'
-    'getGeneticInteractome.R'
-    'hypothesize.R'
-    'makeMaps.R'
-    'makeSeq.R'
-    'predictDirectedNetworks.R'
-    'rptGC.R'
-    'zzz.R'
