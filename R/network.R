@@ -16,10 +16,6 @@
 #' @export
 
 produceGeneNetwork <- function(sys, gene="VPS41") {
-  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                      "STRINGedges-2019-03-14.RData")
-  load(url(StringURL)) # loads STRING edges object
-  load(url(StringURL)) # loads STRING edges object
 
   # fetch data
   myDB <- fetchData("SysDB")
@@ -66,10 +62,7 @@ produceGeneNetwork <- function(sys, gene="VPS41") {
 
 #' @export
 produceGenesNetwork <- function(sys, genes=c("ARF5","SPTBN2","KTF22")) {
-  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                      "STRINGedges-2019-03-14.RData")
-  load(url(StringURL)) # loads STRING edges object
-  load(url(StringURL)) # loads STRING edges object
+
   #fetch data
   myDB <- fetchData("SysDB")
   geneSet <- SyDBgetSysSymbols(myDB, sys)
