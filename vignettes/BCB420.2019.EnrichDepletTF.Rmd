@@ -42,19 +42,16 @@ references:
   }
 </style>
 
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-# knitr knits in a new session with an empty global workspace after setting its
-# working directory to ./vignettes. To make your package functions available in
-# the vignette, you have to load the library. The following two lines should
-# accomplish this without manual intervention:
+# The following two lines should load the library of our package
 pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
 library(pkgName, character.only = TRUE)
-
 ```
 
 
@@ -82,13 +79,13 @@ Finding specific transcription factors that are enriched or depleted for a syste
 As a first step, the user must choose a system to analyse.
 
 Presenting the available systems:
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 names(SyDBgetRootSysIDs(fetchData("SysDB")))
 ```
 
 Inserting one system's name into `EnrichDepletTF()`
 For instance, typing this code into your console:
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 NLRIN <- EnrichDepletTF(sys = "NLRIN", nUpMost = 10)
 
 head(NLRIN)
@@ -102,7 +99,7 @@ Similarly, the transcription factors that are significantly depleted are the TFs
 
 
 As shown by this example, only one of the queried transcription factors were found to be enriched for the 10 most positively correlated pairs of genes of the "NLRIN" system.
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 #For BH cutoff
 NLRIN[NLRIN$Enrichment_P_value < NLRIN$BH_enrichment, ]
 

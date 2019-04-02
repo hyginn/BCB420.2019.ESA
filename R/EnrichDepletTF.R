@@ -9,7 +9,7 @@
 #'
 #' @section Details: This is a helper function. The expression profiles were compiled
 #' from microarray experiments downloaded from GEO, and quantile normalized. For the
-#' function that fetches the database, see \code{\link{fetchData}.
+#' function that fetches the database, see \code{\link{fetchData}}.
 #'
 #' @param GeneSym (character)   A vector of length > 0L of HGNC symbols.
 #' @return  (numeric)           A matrix with row dimensions that are equal to the
@@ -29,7 +29,7 @@
 #'
 #' @examples
 #' # Expression profiles for "BRCA1" and "AR" genes.
-#' sysExProf(GeneSym = c("BRCA1", "AR"))
+#' # sysExProf(GeneSym = c("BRCA1", "AR"))
 #'
 
 sysExProf <- function(GeneSym) {
@@ -53,7 +53,7 @@ sysExProf <- function(GeneSym) {
 #' @section Details: This is a helper function. The fetched dataset was composed from the
 #' GTRDgeneTFs dataset which lists which TFs bind the upstream regulatory regions of each
 #' specified gene, as observed by ChIP-seq experiments. For more details about the
-#' function that fetches the GRTDgeneTFs database, see \code{\link{fetchData}.
+#' function that fetches the GRTDgeneTFs database, see \code{\link{fetchData}}.
 #'
 #' @param GeneSym (character)  A vector of length > 0L of HGNC symbols.
 #' @return (list)              A list of HGNC-symbol-named character vectors of
@@ -65,7 +65,7 @@ sysExProf <- function(GeneSym) {
 #'
 #' @examples
 #' # Fetching the vector of the transcription factors that bind the gene BCL3.
-#' sysGTRDgenes(GeneSym = c("BCL3"))
+#' # sysGTRDgenes(GeneSym = c("BCL3"))
 #'
 
 sysGTRDgenes <- function(GeneSym){
@@ -85,7 +85,7 @@ sysGTRDgenes <- function(GeneSym){
 #' @section Details: This is a helper function. The fetched dataset was collected and
 #' composed from the GTRD database. The GTRDTFgenes dataset lists which  genes bind
 #' each specified TF, as observed by ChIP-seq experiments. For more details about the
-#' function that fetches the GTRDTFgenes database, see \code{\link{fetchData}. This
+#' function that fetches the GTRDTFgenes database, see \code{\link{fetchData}}. This
 #' function requires an input that can be produced by the helper function sysGTRDgenes.
 #'
 #' @param TfSym (character)     A vector of length > 0L of unique TFs (HGNC symbols)
@@ -178,11 +178,15 @@ sysGTRDtf <- function(TfSym, GeneSym){
 #'                                 Kendall's tau or Spearman's rho.
 #'
 #' @examples
+#' \dontrun{
 #' # Vector of the 12 up most positively correlated pairs of genes of "SLIGR"
 #' # system.
-#' mySymbols <- SyDBgetSysSymbols(fetchData("SysDB"),"SLIGR")[[1]]
-#' exProfS <- sysExProf(GeneSym = mySymbols)
-#' sysUpCorGenes(exProfS = exProfS, nUpMost = 12)
+#' # mySymbols <- SyDBgetSysSymbols(fetchData("SysDB"),"SLIGR")[[1]]
+#' # exProfS <- matrix(data = sample(1:200, 4 * length(mySymbols), replace = TRUE),
+#' #                  ncol = 4) #generating synthetic expression data
+#' # row.names(exProfS) <- mySymbols
+#' # sysUpCorGenes(exProfS = exProfS, nUpMost = 12)
+#' }
 
 sysCorGenes <- function(exProfS,
                         nUpMost = FALSE,
@@ -259,18 +263,18 @@ sysCorGenes <- function(exProfS,
 #' @section Details: The systems were curated as part of BCB420H1 winter 2019 course. The
 #'                   TF binding datasets were curated by the GTRD database. The
 #'                   expression profiles database was obtained from GEO. For more
-#'                   information about the datasets, see \code{\link{fetchData}.
+#'                   information about the datasets, see \code{\link{fetchData}}.
 #'                   Enrichment and depletion calculation were inspired by "Pathway
 #'                   Guide" \href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
 #'                   and by Devon Ryan \href{https://www.biostars.org/p/102946/}{Depletion}
 #'
-#' @param sys (character)      A vector of 1L length, of 5 uppercase lettered word that
-#'                             corresponds to a biological system curated during the
-#'                             BCB420H1 winter 2019 course. The list of available systems
-#'                             can be retrieved by:
-#'                             names(SyDBgetRootSysIDs(fetchData("SysDB"))). For more
-#'                             information, see \code{\link{fetchData} and
-#'                             \code{\link{SyDBgetRootSysIDs}
+#' @param sys (character) A vector of 1L length, of 5 uppercase lettered word that
+#'                        corresponds to a biological system curated during the
+#'                        BCB420H1 winter 2019 course. The list of available systems
+#'                        can be retrieved by:
+#'                        names(SyDBgetRootSysIDs(fetchData("SysDB"))). For more
+#'                        information, see \code{\link{fetchData}} and
+#'                        \code{\link{SyDBgetRootSysIDs}}
 #' @param nUpMost (numeric|logical) Either FALSE or a numeric vector of 1L length. FALSE
 #'                                  returns the one sided enrichment / depletion scores
 #'                                  and p values for all significantly correlated genes.
