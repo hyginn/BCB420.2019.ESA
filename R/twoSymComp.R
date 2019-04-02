@@ -1,26 +1,26 @@
-# symComp.R
+# twoSymComp.R
 
 #'
-#' \code{symComp} Return a list of domains that the genes in two systems
+#' \code{twoSymComp} Return a list of domains that the genes in two systems
 #'    overlap along with genes that mapped to the same domains
 #'
-#' @param system1 The name of the system in interest. Is compared with system2
+#' @param system1 (character) The name of the system in interest. Is compared with system2
 #'     in this function.
-#' @param system2 The name of the system in interest. Is compared with system1
+#' @param system2 (character) The name of the system in interest. Is compared with system1
 #'     in this function.
-#' @return A list of overlapping Pfam domains along with genes that mapped to them.
+#' @return (list) A list of overlapping Pfam domains along with genes that mapped to them.
 #'     Also, a horizonal bar graph is generated to summarize the count of genes
 #'     mapped to each overlapping domains.
 #' @author {Tina Lee} (aut)
 #' @examples
 #' # Picking sample system1 and system2 to get intersect domains of the
 #' # two systems
-#' # Call the symComp helper function to generate list
-#' result <- symComp("PHALY", "SLIGR")
+#' # Call the twoSymComp helper function to generate list
+#' result <- twoSymComp("PHALY", "SLIGR")
 #'
 #' @export
 
-symComp <- function(system1, system2) {
+twoSymComp <- function(system1, system2) {
 
   # Load required Pfam domain data
   genesIPR <- fetchData("genesIPR")
@@ -37,6 +37,7 @@ symComp <- function(system1, system2) {
   s2 <- genesIPR[unlist(geneSet2)]
   s2 <- s2[!sapply(s2, is.null)]
 
+  # find overlapping domains of the two systems
   tmp <- vector()
   for (i in seq_along(s1)) {
     for (j in seq_along(s2)) {
@@ -47,6 +48,7 @@ symComp <- function(system1, system2) {
     }
   }
 
+  # find corresponding genes that maps to the overlapping domains
   dom <- list()
   for (i in seq_along(tmp)) {
     d <- vector()
@@ -66,7 +68,7 @@ symComp <- function(system1, system2) {
   }
   names(dom) <- tmp
 
-  # Plot horixontal graph of results
+  # Plot horizontal graph of overlapping domains
   res <- sort(unlist(lapply(dom, function(x) length(x))))
 
   graphics::barplot(res,
@@ -79,7 +81,7 @@ symComp <- function(system1, system2) {
                                                       bias = 1.3)(length(dom)),
                     las = 1)
 
-  # return a list of overlapped domains along with genes that maps to the
+  # return a list of overlapping domains along with genes that maps to the
   # domains
   dom <- dom[order(unlist(lapply(dom, function(x) length(x))), decreasing = TRUE)]
 
