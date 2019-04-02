@@ -6,7 +6,12 @@ Authors@R: c(
              person("Boris", "Steipe", 
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
-                    comment = c(ORCID = "0000-0002-1134-6758"))
+                    comment = c(ORCID = "0000-0002-1134-6758")),
+                    person("Yufei", "Yang", 
+                    email = "faye.yang@utoronto.ca", 
+                    role = "aut", 
+                    comment = ""
+                    
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -20,7 +25,7 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings,
-    ggplot2
+    ggplot2,
     cluster,
     grid,
     igraph,
