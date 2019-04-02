@@ -7,14 +7,15 @@ geoQNURL <- paste0(
 )
 dfColNames <- c("gene1", "gene2", "correlation", "goCorrelation")
 
-#'
+#' \code{preDraw} Helper function.
 #' Helper function for the co-expression correlation and semantic similarity correllation heat maps
-#' @param fileName - if not NULL - it will use the Cairo package to create a
-#' device. It checks the file extension to instantiate appropriate device;
-#' otherwise - it does nothing (graphs are plotted on screen)
+#' @param fileName (character)     if not NULL - it will use the Cairo package to create a
+#'                                 device. It checks the file extension to
+#'                                 instantiate appropriate device;
+#'                                 otherwise - it does nothing (graphs are plotted on screen)
 #' @return (NULL)
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
-#' @references \href{https://CRAN.R-project.org/package=Cairo}
+#' [Cairo package](https://CRAN.R-project.org/package=Cairo
 preDraw <- function(fileName) {
   if (is.null(fileName)) {
     return(invisible(NULL))
@@ -45,7 +46,6 @@ preDraw <- function(fileName) {
   return(invisible(NULL))
 }
 
-#'
 #' Helper function for the co-expression correlation & semantic similarity correlation heat maps
 #' @param fileName - if not NULL - it will call dev.off to save the file
 #' otherwise - it prompts for user input - so the user can see the graph
@@ -68,15 +68,15 @@ postDraw <- function(fileName) {
 #'
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 #' @seealso \code{\link{<fetchData>}}
-#' @param silent = FALSE - suppresses all messages when TRUE
-#' @return (data frame) ## containing gene A, gene B, correlation between them and
-#' GOSemSim correlation
-#' @references \href{http://bioconductor.org/packages/release/bioc/html/GOSemSim.html}
-#' @references \href{https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html}
+#' @param silent = FALSE suppresses all messages when TRUE
+#' @return (data frame)           containing gene A, gene B, correlation between them and
+#'                                GOSemSim correlation
+#' [GOSemSim package](http://bioconductor.org/packages/release/bioc/html/GOSemSim.html)
+#' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
+#' @export
 computeCorrelations <- function(silent = FALSE) {
   sysDB <- fetchData("SysDB")
   geoQNXP <- readRDS(url(geoQNURL))
-
   if (!silent) {
     cat(sprintf("Loading GO - genome wide annotation for human.\n"))
   }
@@ -155,6 +155,8 @@ calcStats <- function(dframe, bioSys) {
 }
 
 #'
+#' \code{plotCorrelations()} Plots co-expression and functional correlations.
+#'
 #' \code{plotCorrelations()} Calculates pairwise co-expression Correlation
 #' between expression profiles of genes in input system bioSys and pairwise
 #' Semantic Similarity correlation between GO terms of genes in input system bioSys
@@ -164,19 +166,19 @@ calcStats <- function(dframe, bioSys) {
 #'
 #'
 #' @param bioSys Biological system symbol.
-#' @param coExpFile - if specified - will save the functional correlation
-#' graph to file. Supported file formats - pdf and png
-#' @param semSimFile - if specified - will dave the semantic similarity
+#' @param coExpFile file name for the functional correlation
+#' graph. If not specified (NULL - default) the graph will be shown on screen. Supported file formats - pdf and png
+#' @param semSimFile if specified - will dave the semantic similarity
 #' correlation graph to file. Supported formats - pdf and png
-#' @param  coExpVsSemFile - if sepcified - will save the functional correlation
+#' @param  coExpVsSemFile if sepcified - will save the functional correlation
 #' vs semantic similarity correlation to file. Supported formats - see ggsave.
-#' @param  pShape - shape of the points in the functional vs co-expression
+#' @param  pShape shape of the points in the functional vs co-expression
 #' graph. Example values - 1,16,22,23 etc. See ggplot.
 #' @return (list) ggplot graph.
 #'
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 #' @references H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
-#' @references \href{https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html}
+#' @references \href{https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html}{corrplot package}
 #' @examples
 #' \dontrun{
 #' plotCorrelations("PHALY")
