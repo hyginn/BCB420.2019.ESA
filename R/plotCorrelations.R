@@ -186,7 +186,7 @@ plotCorrelations <- function(bioSys,
 
   #sdf <- readRDS("dfdfdfd")
   sdf <- computeCorrelations()
-
+  saveRDS(sdf,"dfdfdfd")
   if (!bioSys %in% sdf$System) {
     stop("Unknown system passed as parameter.")
   }
@@ -275,7 +275,9 @@ plotCorrelations <- function(bioSys,
       ggplot2::scale_color_manual(values = cols) +
       ggplot2::scale_x_continuous(name = "Semantic similarity") +
       ggplot2::scale_y_continuous(name = "Co-expression correlation")
-  graph
+
+  print(graph)
+
   if (!is.null(coExpVsSemFile)) {
         ggplot2::ggsave(filename = coExpVsSemFile)
   }
