@@ -20,7 +20,7 @@ This is the vignette for the quantifyTranscriptionFactorSimilarity.R contributio
 
 quantifyTranscriptionFactorSimilarity()
 - Input: filepath the system excelsheet
-- Output: ~/inst/img/TFOccuranceDendrogram.jpg. A dendrogram that shows the distance on the basis of common TFs. 
+- Output:TFOccuranceDendrogram in plots. A dendrogram that shows the distance on the basis of common TFs. 
 
 ## Helper Functions
 
