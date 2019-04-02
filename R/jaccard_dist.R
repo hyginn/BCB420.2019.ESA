@@ -2,31 +2,26 @@
 
 #' Jaccard Distance.
 #'
-#' \code{jaccard_dist} Calculate the pairwise similarity of genes in an interaction network.
+#' \code{jaccard_dist} Calculate the pairwise distance of genes in an interaction network.
 #'
-#' Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes.
-#' Note that this functions requires the igraph package to previously be loaded.
-#' @section <title>: additional explanation
+#' Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes. Distance is then obtained by taking 1 - similarity.
 #'
 #' @param gene1 Character, HGNC symbol of the first gene.
 #' @param gene2 Character, HGNC sysmbol of the second gene
 #' @param graph igraph object representing the network
-#' @return Numeric, similarity score: Jaccard similarity
+#' @return Numeric, distance score
 #'
-#' @family <optional description of family>
 #'
 #' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
 #'
-#' @seealso \code{\link{<function>}} <describe related function>, ... .
 #'
 #' @examples
-#' # Calculate the network similarity of 2 related genes:
-#' net_sim("BRCA1", "BRCA2")
-#' [1] 0.3481481
 #'
-#' # Calculate network similarity of 2 genes that are not known to be related:
-#' net_sim("ROBO1", "BRCA1")
-#' [1] 0.01592357
+#' STRING <- fetchData("STRINGedges0.8")
+#' # convert the STRINGedges object into an igraph object
+#' STRINGgraph <- igraph::graph_from_edgelist(as.matrix(STRING[,1:2]))
+#' # calcualte the Jaccard network distance between "BRCA1" and "BRCA2"
+#' jaccard_dist("BRCA1", "BRCA2", STRINGgraph)
 #'
 #' @export
 
@@ -35,7 +30,7 @@ jaccard_dist <- function(gene1, gene2, graph) {
   if (gene1==gene2) {
     return(1)
   } else { # compute Jaccard similarity normally
-    sim <- similarity(graph, vids = c(gene1, gene2) , method = "jaccard")
+    sim <- igraph::similarity(graph, vids = c(gene1, gene2) , method = "jaccard")
     sim <- sim[1, 2]
     distance <- 1 - sim
     return(distance)
