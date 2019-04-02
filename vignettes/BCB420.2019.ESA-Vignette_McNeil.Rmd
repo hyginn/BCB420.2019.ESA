@@ -8,7 +8,7 @@ author:
   email: matthew.mcenil@utoronto.ca
 date: "`r Sys.Date()`"
 abstract: >
-This function will be capable of taking a system 5-letter code and then providing information on its system level expression profiles.
+  This function will be capable of taking a system 5-letter code and then providing information on its system level expression profiles.
 output:
   BiocStyle::html_document:
     toc: true
@@ -71,6 +71,18 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 This function is capable of taking a defined system name and providing its specific expression profiles. This includes normalizing the epression levels provided by the function and then providing a mean expression for each experiment. It will additionally identify which conditions caused the system to be significantly up or down regulated.
 
+# Example and usage
+If we want to see the responses of the PHALY to the various conditions present in the dataset, we will perform the following function
+
+```{r, echo=TRUE}
+# Load the expression profiles:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "GEO-QN-profile-2019-03-24.rds")
+myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
+
+#Call created function
+System_Expression("PHALY", myQNXP)
+```
 # Session Info
 
 This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
