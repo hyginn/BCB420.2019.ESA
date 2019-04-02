@@ -2,13 +2,35 @@
 
 #' \code{fetchData} read a prepared dataset from a repository.
 #'
-#' \code{fetchData} documentation forthcoming.
+#' \code{fetchData} loads and returns datasets from a data repository. When
+#'                  invoked without parameters, a list of available datasets is
+#'                  printed. When invoked with a parameter \code{set}, the
+#'                  intended dataset is fetched with \code{\link[base]{readRDS}}
+#'                  and returned.
 #'
-#' For the BioGRID dataset, see details in the \href{../doc/dataDetails-BioGRID.html}{ BioGRID data vignette} (or load the vignette with \code{vignette("dataDetails-BioGRID", package = "BCB420.2019.ESA")}).
+#' @section Details:
+#' \itemize{
+#'   \item For the \code{HGNCreference} dataset, see ...
+#'   \item For the GTRD derived transcription factor datasets
+#'           \code{GTRDgeneTFs} and \code{GTRDTFgenes}, see ...
+#'   \item For the BioGRID protein-protein interaction dataset, see details in
+#'             the \href{../doc/dataDetails-BioGRID.html}{BioGRID data vignette}
+#'            (or load the vignette with \code{vignette("dataDetails-BioGRID",
+#'            package = "BCB420.2019.ESA")}).
+#'   \item For the  STRING database derived datasets \code{STRINGedges0.9},
+#'            \code{STRINGedges0.8}, and \code{STRINGactions}, see ...
+#'   \item For the InterPro database datasets \code{genesIPR}, and
+#'            \code{IPRgenes} dataset, see ...
+#'   \item For the expression profiles dataset \code{GEOprofiles}, see ...
+#'   \item For the systems database dataset \code{SysDB}, see ...
+#'   \item The Reactome dataset \code{ReactomeSym} is currently undocumented.
+#' }
+#'
 #'
 #' @param set (character)  name of the requested dataset
 #'
-#' @return a dataset
+#' @return a dataset, usually either a \code{list} or a \code{data frame}, or
+#'         \code{NULL} (invisibly) if no dataset was specified.
 #' @examples
 #' fetchData()                         # prints available datasets
 #' HGNC <- fetchData("HGNCreference")  # assigns the HGNC reference dataset
@@ -28,7 +50,8 @@ fetchData <- function(set) {
                                   "genesIPR",
                                   "IPRgenes",
                                   "GEOprofiles",
-                                  "SysDB"),
+                                  "SysDB",
+                                  "ReactomeSym"),
                          desc = c("HGNC symbols and crossreferences",
                                   "Genes and their TFs by ChIP-seq from GTRD",
                                   "TFs and their genes by ChIP-seq from GTRD",
@@ -39,7 +62,8 @@ fetchData <- function(set) {
                                   "genes and the InterPro domains they contain",
                                   "InterPro domains and the genes they are found in",
                                   "GEO expression profiles, quantile normalized",
-                                  "A systems database"),
+                                  "A systems database",
+                                  "A tibble of Reactome IDs and HGNC symbols"),
                          FN   = c("HGNCreference.rds",
                                   "GTRDgeneTFs-2019-03-13.rds",
                                   "GTRDTFgenes-2019-03-13.rds",
@@ -50,7 +74,8 @@ fetchData <- function(set) {
                                   "genesIPR-V.73.rds",
                                   "IPRgenes-V.73.rds",
                                   "GEO-QN-profile-2019-03-24.rds",
-                                  "systemsDB-2018-03-28.rds"),
+                                  "systemsDB-2018-03-28.rds",
+                                  "ReactomeSym.rds"),
                          stringsAsFactors = FALSE)
   rownames(availDat) <- availDat$sets
 
