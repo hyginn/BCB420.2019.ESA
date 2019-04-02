@@ -75,38 +75,6 @@ The core purposes of the tool:
 2. To provide an overview correlation.
 3. Return network graphs on selected genes.
 
-# Example
-```
-produceGeneNetwork = function(sys, gene="ATP2A3") {
-  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                      "STRINGedges-2019-03-14.RData")
-  load(url(StringURL)) # loads STRING edges object
-  
-  # fetch data
-  myDB <- fetchData("SysDB")
-  geneSet <- SyDBgetSysSymbols(fetchData("SysDB"), sys)
-  
-  # 1.query a gene network
-  # gene = "ATP2A3" #randomly select a gene
-  # find the genes that is attached to the ATP2A3 by edges
-  geneNetwork = STRINGedges[STRINGedges$a == gene|STRINGedges$b==gene ,]
-  
-  # get the number of genes in the list
-  rowcount = dim(geneNetwork)[1]
-  networkdata = c()
-  # append all the genes to the list
-  for(i in 1:rowcount){
-    networkdata = append(networkdata,geneNetwork[i,]$a)
-    networkdata = append(networkdata,geneNetwork[i,]$b)
-  }
-  # add edges between genes
-  g = igraph::graph(edges=networkdata, directed=F)
-  # plot the graph
-  plot(g,edge.arrow.size=.2, vertex.color="red", vertex.size=2,
-       vertex.frame.color="gray", vertex.label.color="black",
-       vertex.label.cex=0.6, vertex.label.dist=1, edge.curved=0.1)
-}
-```
 # Further reading
 - https://github.com/hyginn/BCB420.2019.STRING
 - https://github.com/hannzhang/BCB420.2019.ESA/blob/master/R/network.R
@@ -145,6 +113,6 @@ loaded via a namespace (and not attached):
 
 <!-- the bibliography appears at the end of the page -->
 # References
-- https://github.com/hyginn/BCB420.2019.STRING
+
 
 <!-- End -->

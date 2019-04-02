@@ -85,7 +85,7 @@ produceGenesNetwork <- function(sys, genes=c("ARF5","SPTBN2","KTF22")) {
   # create igraph graphs from geneNetwork2
   net <- igraph::graph_from_data_frame(d=geneNetwork,vertices = nodes,directed = F)
   # plot the graph, set the color and length
-  graphics::plot(net, edge.arrow.size=.2, vertex.color=c("red"), vertex.size=2,
+  igraph::plot(net, edge.arrow.size=.2, vertex.color=c("red"), vertex.size=2,
        vertex.frame.color="gray", vertex.label.color="black",
        vertex.label.cex=0.6, vertex.label.dist=1, edge.curved=0)
 }
