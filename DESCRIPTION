@@ -7,11 +7,11 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+
              person("Gabriela", "Morgenshtern",
                     email = "g.morgenshtern@mail.utoronto.ca",
                     role = c("aut"),
-                    comment = c(ORCID = "0000-0003-4762-8797"))
-    )
+                    comment = c(ORCID = "0000-0003-4762-8797")))
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
              Biology), Winter 2019 - a required course in the Specialist
@@ -32,6 +32,7 @@ Imports:
     readr,
     stats,
     igraph
+
 Suggests:
     testthat,
     BiocStyle,
