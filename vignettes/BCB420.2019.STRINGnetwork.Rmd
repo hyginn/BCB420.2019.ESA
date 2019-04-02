@@ -1,0 +1,150 @@
+---
+title: "The BCB420.2019.STRINGnetwork: contruct correlation network for a system"
+author:
+- name: Han Zhang
+  email: helennn.zhang@utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette shows the package STRINGnetwork to obtain gene networks from the system PHYLA
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This sample Vignette explains the BCB420.2019.STRINGnetwork package and guide through how to use this tool.
+This package provides the visualization of gene correlation within a system.
+
+The core purposes of the tool:
+1. To help study a system.
+2. To provide an overview correlation.
+3. Return network graphs on selected genes.
+
+# Example
+```
+produceGeneNetwork = function(sys, gene="ATP2A3") {
+  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                      "STRINGedges-2019-03-14.RData")
+  load(url(StringURL)) # loads STRING edges object
+  
+  # fetch data
+  myDB <- fetchData("SysDB")
+  geneSet <- SyDBgetSysSymbols(fetchData("SysDB"), sys)
+  
+  # 1.query a gene network
+  # gene = "ATP2A3" #randomly select a gene
+  # find the genes that is attached to the ATP2A3 by edges
+  geneNetwork = STRINGedges[STRINGedges$a == gene|STRINGedges$b==gene ,]
+  
+  # get the number of genes in the list
+  rowcount = dim(geneNetwork)[1]
+  networkdata = c()
+  # append all the genes to the list
+  for(i in 1:rowcount){
+    networkdata = append(networkdata,geneNetwork[i,]$a)
+    networkdata = append(networkdata,geneNetwork[i,]$b)
+  }
+  # add edges between genes
+  g = igraph::graph(edges=networkdata, directed=F)
+  # plot the graph
+  plot(g,edge.arrow.size=.2, vertex.color="red", vertex.size=2,
+       vertex.frame.color="gray", vertex.label.color="black",
+       vertex.label.cex=0.6, vertex.label.dist=1, edge.curved=0.1)
+}
+```
+# Further reading
+- https://github.com/hyginn/BCB420.2019.STRING
+- https://github.com/hannzhang/BCB420.2019.ESA/blob/master/R/network.R
+
+
+# Session Info
+
+This release of the `BCB420.2019.STRINGnetwork` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS  10.14.3
+
+Matrix products: default
+BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_CA.UTF-8/en_CA.UTF-8/en_CA.UTF-8/C/en_CA.UTF-8/en_CA.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] rmarkdown_1.10 knitr_1.20     testthat_2.0.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.0         digest_0.6.18      rprojroot_1.3-2    R6_2.3.0          
+ [5] backports_1.1.2    magrittr_1.5       evaluate_0.12      rlang_0.3.0.1     
+ [9] tools_3.5.1        igraph_1.2.2       yaml_2.2.0         compiler_3.5.1    
+[13] pkgconfig_2.0.2    BiocManager_1.30.4 htmltools_0.3.6 
+
+<!-- the bibliography appears at the end of the page -->
+# References
+- https://github.com/hyginn/BCB420.2019.STRING
+
+<!-- End -->

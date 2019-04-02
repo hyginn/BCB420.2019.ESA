@@ -15,20 +15,27 @@
 
 #' @export
 
-produceGeneNetwork = function(sys, gene="VPS41") {
+produceGeneNetwork <- function(sys, gene="VPS41") {
   StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
                       "STRINGedges-2019-03-14.RData")
   load(url(StringURL)) # loads STRING edges object
-  
+  load(url(StringURL)) # loads STRING edges object
+
   # fetch data
   myDB <- fetchData("SysDB")
-  geneSet <- SyDBgetSysSymbols(fetchData("SysDB"), sys)
-  
+  geneSet <- SyDBgetSysSymbols(myDB, sys)
+
+  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                      "STRINGedges-2019-03-14.RData")
+
+  load(url(StringURL)) # loads STRING edges object
+  load(url(StringURL)) # loads STRING edges object
+
   # 1.query a gene network
   # gene = "VPS41" #randomly select a gene
   # find the genes that is attached to the VPS41 by edges
   geneNetwork = STRINGedges[STRINGedges$a == gene|STRINGedges$b==gene ,]
-  
+
   # get the number of genes in the list
   rowcount = dim(geneNetwork)[1]
   networkdata = c()
@@ -40,7 +47,7 @@ produceGeneNetwork = function(sys, gene="VPS41") {
   # add edges between genes
   g = igraph::graph(edges=networkdata, directed=F)
   # plot the graph
-  plot(g,edge.arrow.size=.2, vertex.color="red", vertex.size=2,
+  graphics::plot(g,edge.arrow.size=.2, vertex.color="red", vertex.size=2,
        vertex.frame.color="gray", vertex.label.color="black",
        vertex.label.cex=0.6, vertex.label.dist=1, edge.curved=0.1)
 }
@@ -58,14 +65,19 @@ produceGeneNetwork = function(sys, gene="VPS41") {
 #' produceGenesNetwork("PHALY", c("ARF5","SPTBN2","KTF22"))
 
 #' @export
-produceGenesNetwork = function(sys, genes=c("ARF5","SPTBN2","KTF22")) {
+produceGenesNetwork <- function(sys, genes=c("ARF5","SPTBN2","KTF22")) {
   StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
                       "STRINGedges-2019-03-14.RData")
   load(url(StringURL)) # loads STRING edges object
-  
+  load(url(StringURL)) # loads STRING edges object
   #fetch data
   myDB <- fetchData("SysDB")
   geneSet <- SyDBgetSysSymbols(myDB, sys)
+
+  StringURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                      "STRINGedges-2019-03-14.RData")
+  load(url(StringURL)) # loads STRING edges object
+  load(url(StringURL)) # loads STRING edges object
   # find all the genes that are attached to the selected genes
   geneNetwork = STRINGedges[STRINGedges$a %in% genes | STRINGedges$b %in% genes,]
   # find the unique genes attach to each selected gene
@@ -73,7 +85,7 @@ produceGenesNetwork = function(sys, genes=c("ARF5","SPTBN2","KTF22")) {
   # create igraph graphs from geneNetwork2
   net <- igraph::graph_from_data_frame(d=geneNetwork,vertices = nodes,directed = F)
   # plot the graph, set the color and length
-  plot(net, edge.arrow.size=.2, vertex.color=c("red"), vertex.size=2,
+  graphics::plot(net, edge.arrow.size=.2, vertex.color=c("red"), vertex.size=2,
        vertex.frame.color="gray", vertex.label.color="black",
        vertex.label.cex=0.6, vertex.label.dist=1, edge.curved=0)
 }
