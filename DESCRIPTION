@@ -24,10 +24,10 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    BiocManager
-    GOSim
-    org.Hs.eg.db
-    GOSemSim
+    BiocManager,
+    GOSim,
+    org.Hs.eg.db,
+    GOSemSim,
     topGO
 Suggests:
     testthat,
