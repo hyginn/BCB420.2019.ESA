@@ -1,0 +1,58 @@
+---
+title: "System curation GO term enrichment semantic similarity analysis"
+author:
+- name: Cathy Cha
+  affiliation: 
+  - http://orcid.org/0000-0003-4609-4965
+  - University of Toronto
+  email: cathy.cha@mail.utoronto.ca
+date: "`r Sys.Date()`"
+abstract: Semantic similarity analysis of enriched GO terms for a geneset obtained from system curation 
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# About this Vignette
+
+This Vignette explains the input and output of the ESA tool 
+
+## Input 
+
+This tool takes the input of a curated systems code name, defined during the system curation unit and HGNC data. 
+
+## Underlying process defined in the function 
+
+Taking the system code, it retrieves gene sets annotated to the system and runs GOenrichment() analysis from the GOSim package from bioconductor, retrieving the GO terms enriched to the gene set under investigation. 
+
+It then runs a semantic similarity analysis using mclusterSim() from the GOSemSim package in bioconductor.
+
+##Output 
+
+The final output is a semanitic similarity matrix of the enriched GO terms for the system under investi
+
+
+
+<!-- End -->
