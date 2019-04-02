@@ -1,11 +1,10 @@
 # clusterSystemsScript.R
 #
 # Purpose:
-# Version:
-# Version history:
-# Date:
-# Author:
-# License:
+# Version: 1.0
+# Date: April 1 2019
+# Author: Rachel Silverstein
+# License: MIT
 #
 # Input:
 # Output:
@@ -30,12 +29,27 @@
 #      or executed interactively.
 #
 
-systemDB_name <- "SysDB"
+if (FALSE) {
+  systemDB_name <- "SysDB"
+}
+
 
 # ====  PACKAGES  ==============================================================
 # Load all required packages.
-#
-# Use non-standard libraries with  package::function() idiom if possible.
+
+if (require("cluster")) {
+  install.packages(cluster)
+}
+library(cluster)
+
+if (require("igraph")) {
+  install.packages(igraph)
+}
+library(igraph)
+if (require("VennDiagram")) {
+  install.packages(VennDiagram)
+}
+library(VennDiagram)
 
 
 # ====  FUNCTIONS  =============================================================
