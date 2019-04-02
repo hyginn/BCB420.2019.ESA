@@ -56,7 +56,7 @@ makeEMAP <- function() {
 
   EMAP <- data.frame(geneticInt = geneticInteractions,
                      effect = effects,
-                     notes = notes)
+                     notes = notes, stringsAsFactors = FALSE)
 
   return(EMAP)
 
@@ -101,7 +101,7 @@ makeGMAP <- function() {
   )
 
   GMAP <- data.frame(geneticInt = geneticInteractions,
-                     effect = effects)
+                     effect = effects, stringsAsFactors = FALSE)
 
   return(GMAP)
 

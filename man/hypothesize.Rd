@@ -2,17 +2,19 @@
 % Please edit documentation in R/hypothesize.R
 \name{hypothesize}
 \alias{hypothesize}
-\title{Generates an annotated hypothesis graph whose nodes are components of \code{mySys} and edges are GGI interpretations in either \code{EMAP} or \code{GMAP}}
+\title{hypothesize}
 \usage{
 hypothesize(network, ppi_ggi = NULL)
 }
 \arguments{
-\item{network}{A dataframe of physically-interacting system components with their genetic interactions and}
+\item{network}{A dataframe of physically-interacting system components with
+their genetic interactions and}
 
-\item{ppi_ggi}{An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available}
+\item{ppi_ggi}{An optional dataframe to specify subset of \code{mySys} for
+which both PPI and GGI data is available}
 }
 \description{
-Generates an annotated hypothesis graph whose nodes are components of \code{mySys} and edges are GGI interpretations in either \code{EMAP} or \code{GMAP}
+hypothesize
 }
 \examples{
 mySys <- getSysInteractions("SLIGR", criterion = "stringent")
@@ -20,4 +22,11 @@ mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
 hypothesize(mySys)
 hypothesize(mySys2, mySys)
 
+}
+\author{
+Nada Elnour, \email{nada.elnour@mail.utoronto.ca}
+
+\code{hypothesize} generates an annotated hypothesis graph whose nodes are
+components of \code{mySys} and edges are GGI interpretations in either
+\code{EMAP} or \code{GMAP}
 }

@@ -2,23 +2,32 @@
 % Please edit documentation in R/predictDirectedNetworks.R
 \name{getSysInteractions}
 \alias{getSysInteractions}
-\title{Filter system by physically-interacting components and return their genetic interactions}
+\title{getSysInteractions}
 \usage{
 getSysInteractions(sysName, criterion = "stringent")
 }
 \arguments{
-\item{sysName}{A string specifying the full path to the excel sheet containing the system's components}
+\item{sysName}{A string specifying the full path to the excel sheet
+containing the system's components}
 
-\item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
+\item{criterion}{A string, either "stringent" or "relaxed", specifying if
+only GGI between physical interactors should be selected.}
 }
 \value{
-A dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+A dataframe of system components and either their GGI between
+physical interactors should be selected (iff \code{criterion} == "stringent")
 or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 }
 \description{
-Filter system by physically-interacting components and return their genetic interactions
+getSysInteractions
 }
 \examples{
 mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 
+}
+\author{
+Nada Elnour, \email{nada.elnour@mail.utoronto.ca}
+
+\code{getSysInteractions} filter system by physically-interacting components
+and return their genetic interactions
 }

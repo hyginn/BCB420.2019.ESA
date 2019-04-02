@@ -2,19 +2,26 @@
 % Please edit documentation in R/hypothesize.R
 \name{visualizeInteractions}
 \alias{visualizeInteractions}
-\title{A helper function of \code{hypothesize} that plots the hypothesis graph}
+\title{visualizeInteractions}
 \usage{
 visualizeInteractions(network, emap, ppi_ggi, gmap)
 }
 \arguments{
-\item{network}{A dataframe of physically-interacting system components with their genetic interactions and}
+\item{network}{A dataframe of physically-interacting system components with
+their genetic interactions and}
 
 \item{emap}{The dataframe obtained from \code{makeEMAP}.}
 
-\item{ppi_ggi}{An optional dataframe to specify subset of \code{mySys} for which both PPI and GGI data is available}
+\item{ppi_ggi}{An optional dataframe to specify subset of \code{mySys} for
+which both PPI and GGI data is available}
 
 \item{gmap}{The dataframe obtained from \code{makeGMAP}.}
 }
 \description{
+visualizeInteractions
+}
+\author{
+Nada Elnour, \email{nada.elnour@mail.utoronto.ca}
+
 A helper function of \code{hypothesize} that plots the hypothesis graph
 }

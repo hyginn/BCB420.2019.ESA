@@ -2,19 +2,27 @@
 % Please edit documentation in R/getGeneticInteractome.R
 \name{getGeneticInteractome}
 \alias{getGeneticInteractome}
-\title{Return BioGrid genetic interaction tags of physical interactors of the system}
+\title{getGeneticInteractome}
 \usage{
 getGeneticInteractome(mySys, criterion)
 }
 \arguments{
 \item{mySys}{The dataframe of PPI between system's components}
 
-\item{criterion}{A string, either "stringent" or "relaxed", specifying whether only GGI between physical interactors should be selected.}
+\item{criterion}{A string, either "stringent" or "relaxed", specifying
+whether only GGI between physical interactors should be selected.}
 }
 \value{
-The dataframe of system components and either their GGI between physical interactors should be selected (iff \code{criterion} == "stringent")
+The dataframe of system components and either their GGI between
+physical interactors should be selected (iff \code{criterion} == "stringent")
 or all GGI of physical interactors (iff \code{relaxed} == "stringent")
 }
 \description{
-Return BioGrid genetic interaction tags of physical interactors of the system
+getGeneticInteractome
+}
+\author{
+Nada Elnour, \email{nada.elnour@mail.utoronto.ca}
+
+\code{getGeneticInteractome} augments systems with BioGRID genetic
+interaction annotations
 }
