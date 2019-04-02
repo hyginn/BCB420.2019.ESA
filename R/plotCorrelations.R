@@ -3,8 +3,10 @@
 
 bioSystems <- c("PHALY", "SLIGR", "NLRIN")
 
-geoQNURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                  "GEO-QN-profile-2019-03-24.rds")
+geoQNURL <- paste0(
+  "http://steipe.biochemistry.utoronto.ca/abc/assets/",
+  "GEO-QN-profile-2019-03-24.rds"
+)
 dfColNames <- c("gene1", "gene2", "correlation", "goCorrelation")
 
 #'
@@ -15,29 +17,33 @@ dfColNames <- c("gene1", "gene2", "correlation", "goCorrelation")
 #' @return none
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 #' @references https://CRAN.R-project.org/package=Cairo
-preDraw <- function(fileName){
+preDraw <- function(fileName) {
   if (is.null(fileName)) {
     return()
   }
   # is the file extension pdf?
-  if (grepl(".pdf$",fileName)) {
-    Cairo::CairoPDF(file = fileName,
-                    width = 1920,
-                    height = 1080,
-                    res = 92,
-                    pointsize = 12)
+  if (grepl(".pdf$", fileName)) {
+    Cairo::CairoPDF(
+      file = fileName,
+      width = 1920,
+      height = 1080,
+      res = 92,
+      pointsize = 12
+    )
     return()
   }
   # otherwise - default to png
-  if (!grepl(".png$",fileName)) {
-    fileName <- paste0(fileName,".png")
+  if (!grepl(".png$", fileName)) {
+    fileName <- paste0(fileName, ".png")
   }
-  #Cairo Package https://CRAN.R-project.org/package=Cairo
-  Cairo::CairoPNG(file = fileName,
-                    width = 1920,
-                    height = 1080,
-                    res = 92,
-                    pointsize = 12)
+  # Cairo Package https://CRAN.R-project.org/package=Cairo
+  Cairo::CairoPNG(
+    file = fileName,
+    width = 1920,
+    height = 1080,
+    res = 92,
+    pointsize = 12
+  )
 }
 
 #'
@@ -47,7 +53,7 @@ preDraw <- function(fileName){
 #' before the next one is drawn
 #' @return none
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
-postDraw <- function(fileName){
+postDraw <- function(fileName) {
   if (is.null(fileName)) {
     readline(prompt = "Press enter to continue...")
   } else {
@@ -72,9 +78,9 @@ computeCorrelations <- function(silent = FALSE) {
   if (!silent) {
     cat(sprintf("Loading GO - genome wide annotation for human.\n"))
   }
-  hsGO <- GOSemSim::godata('org.Hs.eg.db', keytype = "SYMBOL", ont = "MF")
+  hsGO <- GOSemSim::godata("org.Hs.eg.db", keytype = "SYMBOL", ont = "MF")
   if (!silent) {
-    cat(sprintf("%d rows loaded.\n",nrow(hsGO)))
+    cat(sprintf("%d rows loaded.\n", nrow(hsGO)))
   }
   systemV <- vector(mode = "character", length = 0)
   gene1V <- vector(mode = "character", length = 0)
@@ -92,15 +98,16 @@ computeCorrelations <- function(silent = FALSE) {
         gene1 <- systemComponents[c1]
         gene2 <- systemComponents[c2]
         if (c1 != c2) {
-          prf1 <- as.numeric(geoQNXP[gene1,])
-          prf2 <- as.numeric(geoQNXP[gene2,])
+          prf1 <- as.numeric(geoQNXP[gene1, ])
+          prf2 <- as.numeric(geoQNXP[gene2, ])
           cCorr <- cor(prf1, prf2, use = "pairwise.complete.obs")
-          cGO   <- GOSemSim::geneSim(gene1,
-                                 gene2,
-                                 semData = hsGO,
-                                 measure = "Wang",
-                                 combine = "BMA")[[1]]
-        } else {# the same gene
+          cGO <- GOSemSim::geneSim(gene1,
+            gene2,
+            semData = hsGO,
+            measure = "Wang",
+            combine = "BMA"
+          )[[1]]
+        } else { # the same gene
           cCorr <- 1
           cGO <- 1
         }
@@ -138,7 +145,7 @@ computeCorrelations <- function(silent = FALSE) {
 #' and sem sim correlation for all records that belong to a System
 #' in the data frame
 calcStats <- function(dframe, bioSys) {
-  d <- dframe[dframe$System == bioSys,]
+  d <- dframe[dframe$System == bioSys, ]
   corrSum <- sum(d$correlation, na.rm = TRUE)
   goCorrSum <- sum(d$goCorrelation, na.rm = TRUE)
   recCount <- nrow(d)
@@ -167,33 +174,31 @@ calcStats <- function(dframe, bioSys) {
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 #'
 #' @examples
-#' plotCorrelations("PHALY") - plots functional correlation graph, semantic
-#' similarity correlation graph and functional vs co-expression correlation
-#' graphs and returns the latter as ggplot list
+#' plotCorrelations("PHALY") ## plots functional correlation graph, semantic
+#' ## similarity correlation graph and functional vs co-expression correlation
+#' ## graphs and returns the latter as ggplot list
 #'
-#' @examples
-#' plotCorrelations("PHALY", coExpFile = "somefile.pdf") - save functional
-#' correlation graph into file 'somefile.pdf', and plots similarity correlation
-#' graph and functional vs co-expression correlation graphs and returns the
-#' latter as ggplot list
 #'
+#' plotCorrelations("PHALY", coExpFile = "somefile.pdf") ## save functional
+#' ## correlation graph into file 'somefile.pdf', and plots similarity correlation
+#' ## graph and functional vs co-expression correlation graphs and returns the
+#' ## latter as ggplot list
 #' @export
 plotCorrelations <- function(bioSys,
                              coExpFile = NULL,
                              semSimFile = NULL,
                              coExpVsSemFile = NULL,
                              pShape = 16) {
-
-  #sdf <- readRDS("dfdfdfd")
   sdf <- computeCorrelations()
-  saveRDS(sdf,"dfdfdfd")
   if (!bioSys %in% sdf$System) {
     stop("Unknown system passed as parameter.")
   }
 
   # Convert the data frame to a symmetrix matrix (required by corrplot)
-  sysDF <- sdf[sdf$System == bioSys,
-               c("gene1","gene2","correlation","goCorrelation")]
+  sysDF <- sdf[
+    sdf$System == bioSys,
+    c("gene1", "gene2", "correlation", "goCorrelation")
+  ]
 
   geneCount <- length(unique(sysDF$gene1))
   coM <- matrix(nrow = geneCount, ncol = geneCount)
@@ -203,23 +208,31 @@ plotCorrelations <- function(bioSys,
   colnames(goM) <- unique(sysDF$gene1)
   rownames(goM) <- unique(sysDF$gene2)
   for (i in 1:nrow(sysDF)) {
-    coM[as.character(sysDF$gene1[i]),
-      as.character(sysDF$gene2[i])] <- as.numeric(sysDF$correlation[i])
-    coM[as.character(sysDF$gene2[i]),
-      as.character(sysDF$gene1[i])] <- as.numeric(sysDF$correlation[i])
-    goM[as.character(sysDF$gene1[i]),
-        as.character(sysDF$gene2[i])] <- as.numeric(sysDF$goCorrelation[i])
-    goM[as.character(sysDF$gene2[i]),
-        as.character(sysDF$gene1[i])] <- as.numeric(sysDF$goCorrelation[i])
+    coM[
+      as.character(sysDF$gene1[i]),
+      as.character(sysDF$gene2[i])
+    ] <- as.numeric(sysDF$correlation[i])
+    coM[
+      as.character(sysDF$gene2[i]),
+      as.character(sysDF$gene1[i])
+    ] <- as.numeric(sysDF$correlation[i])
+    goM[
+      as.character(sysDF$gene1[i]),
+      as.character(sysDF$gene2[i])
+    ] <- as.numeric(sysDF$goCorrelation[i])
+    goM[
+      as.character(sysDF$gene2[i]),
+      as.character(sysDF$gene1[i])
+    ] <- as.numeric(sysDF$goCorrelation[i])
   }
   # R requires Cairo package - in order to save the image to file
   # Check if the package is installed and if not - default to screen
   if (!"Cairo" %in% rownames(installed.packages())) {
     if (!is.null(coExpFile) || !is.null(semSimFile) || !is.null(coExpVsSemFile)) {
       message("Saving graphs to file requires Cairo pckg. Defaulting to screen.")
-      coExpFile = NULL
-      semSimFile = NULL
-      coExpVsSemFile = NULL
+      coExpFile <- NULL
+      semSimFile <- NULL
+      coExpVsSemFile <- NULL
     }
   }
 
@@ -228,13 +241,13 @@ plotCorrelations <- function(bioSys,
   cat(sprintf("Plotting functional correlation...\n"))
   preDraw(coExpFile)
   corrplot::corrplot(as.matrix(coM),
-     type = "upper",
-     order = "original",
-     tl.cex = 0.5,
-     diag = TRUE,
-     title = "Functional Correlation",
-     col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu"),
-     mar = c(0,0,1,0)
+    type = "upper",
+    order = "original",
+    tl.cex = 0.5,
+    diag = TRUE,
+    title = "Functional Correlation",
+    col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu"),
+    mar = c(0, 0, 1, 0)
   )
   postDraw(coExpFile)
 
@@ -243,43 +256,43 @@ plotCorrelations <- function(bioSys,
   cat(sprintf("Plotting semantic similarity correlation...\n"))
   preDraw(semSimFile)
   corrplot::corrplot(goM,
-     type = "upper",
-     order = "original",
-     tl.cex = 0.5,
-     diag = TRUE,
-     na.label = "N",
-     na.label.col = "white",
-     title = "Semantic similarity correlation",
-     col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu"),
-     mar = c(0,0,1,0)
+    type = "upper",
+    order = "original",
+    tl.cex = 0.5,
+    diag = TRUE,
+    na.label = "N",
+    na.label.col = "white",
+    title = "Semantic similarity correlation",
+    col = RColorBrewer::brewer.pal(n = 8, name = "RdYlBu"),
+    mar = c(0, 0, 1, 0)
   )
   postDraw(semSimFile)
 
   cat(sprintf("Plotting functional vs co-expression correlation...\n"))
   title <- paste0("Functional vs co-expression correlation ", bioSys)
-  cols <- c("PHALY" = "darkgrey", "SLIGR" = "grey","NLRIN" = "grey")
+  cols <- c("PHALY" = "darkgrey", "SLIGR" = "grey", "NLRIN" = "grey")
   cols[bioSys] <- "darkgreen"
 
   sdf$ord <- ifelse(sdf$System == bioSys, 2.5, 1.5)
-  sdf <- sdf[order(sdf$ord),]
+  sdf <- sdf[order(sdf$ord), ]
 
   graph <- ggplot2::ggplot(data = sdf) +
-      ggplot2::geom_point(
-        ggplot2::aes(x = goCorrelation, y = correlation, colour = System),
-                        shape = pShape, #16, #1,
-                        size = 2.0,
-                        na.rm = TRUE
-                       ) +
-      ggplot2::ggtitle(title) +
-      ggplot2::theme_bw() +
-      ggplot2::scale_color_manual(values = cols) +
-      ggplot2::scale_x_continuous(name = "Semantic similarity") +
-      ggplot2::scale_y_continuous(name = "Co-expression correlation")
+    ggplot2::geom_point(
+      ggplot2::aes(x = goCorrelation, y = correlation, colour = System),
+      shape = pShape, # 16, #1,
+      size = 2.0,
+      na.rm = TRUE
+    ) +
+    ggplot2::ggtitle(title) +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_manual(values = cols) +
+    ggplot2::scale_x_continuous(name = "Semantic similarity") +
+    ggplot2::scale_y_continuous(name = "Co-expression correlation")
 
   print(graph)
 
   if (!is.null(coExpVsSemFile)) {
-        ggplot2::ggsave(filename = coExpVsSemFile)
+    ggplot2::ggsave(filename = coExpVsSemFile)
   }
   return(graph)
 }
