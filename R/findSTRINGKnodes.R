@@ -10,7 +10,7 @@
 
 #' @return (numeric) Knode values
 #' @examples
-#' # Find the Knodes values for all genes in the STRING graph sorted by association to the genes in PHALY
+#' # Find the Knodes values for genes in the STRING graph sorted by association to PHALY genes
 #' findSTRINGKnodes("PHALY")
 
 #' @export
@@ -53,14 +53,14 @@ findSTRINGKnodes <- function(sys) {
 
   # Plot scatterpoint of above dataframe, and have the genes that were in sys
   # labelled in green, genes that were not in sys labelled in red
-  library(ggplot2)
-  ggplot(knodeDF, aes(x=1:numPlotPts, y=knodes, label = row.names(knodeDF), color = factor(inGeneSet, levels=c(TRUE, FALSE)))) +
+
+  ggplot2::ggplot(knodeDF, ggplot2::aes(x=1:numPlotPts, y=knodes, label = row.names(knodeDF), color = factor(inGeneSet, levels=c(TRUE, FALSE)))) +
     ggrepel::geom_label_repel() +
-    geom_point(color = 'black') +
-    theme_classic(base_size = 16) +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    scale_color_manual(values = c("green", "red"), name = "In gene set") +
-    labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys))
+    ggplot2::geom_point(color = 'black') +
+    ggplot2::theme_classic(base_size = 16) +
+    ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+    ggplot2::scale_color_manual(values = c("green", "red"), name = "In gene set") +
+    ggplot2::labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys))
 
   return (knodes)
 }

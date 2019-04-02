@@ -18,6 +18,6 @@ a measure of the vertex association to the high-weighted vertices defined by the
 curated gene system 'sys'. Also plots the knode the top \emph{n} knode values
 }
 \examples{
-# Find the Knodes values for all genes in the STRING graph sorted by association to the genes in PHALY
+# Find the Knodes values for genes in the STRING graph sorted by association to PHALY genes
 findSTRINGKnodes("PHALY")
 }
