@@ -11,7 +11,11 @@ Authors@R: c(
              person("Cathy", "Cha",
                     email = "cathy.cha@mail.utoronto.ca", 
                     role = c("aut","cre"), 
-                    comment = c(ORCID = "0000-0003-4609-4965")) 
+                    comment = c(ORCID = "0000-0003-4609-4965")), 
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
