@@ -56,7 +56,7 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'  from a curated system it's highly likely that highly-centrality nodes will impart some
 #'  important functionality to the system.
 #'
-#' @param geneSys (str) A 5 character string representing the name of
+#' @param genes (str) A 5 character string representing the name of
 #' the desired curated gene system user would like to build a
 #' high-confidence interaction network for.
 
@@ -78,17 +78,26 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'
 #'
 #' @examples
+#' \dontrun{
 #' STRINGExplore("PHALY")
-#'
+#'}
 #' @export
 
-STRINGExplore <- function(geneSys) {
+# it's better to ensure this doesn't rely on internet to run. make the input a gene list,
+# and leverage the exported fn externally (3 inputs: geneSys, STRINGactions, STRINGedges)
+
+STRINGExplore <- function(genes) {
   #### 1. Prepare / Load data:####
   # alternate / future route: add option to create edges from
-  # high correlation scored expression data (Pearson rho >80%) and network thos
-  geneSys <- SyDBgetSysSymbols(fetchData("SysDB"), geneSys)
+  # high correlation scored expression data (Pearson rho >80%) and network those
   STRINGactions <- fetchData("STRINGactions")
   STRINGedges <- fetchData("STRINGedges0.8")
+  geneSys <- list()
+
+  dat <- fetchComponents(genes)
+  # dat <- SyDBgetSysSymbols(fetchData("SysDB"), genes)
+  geneSys <- unlist(dat)
+  names(geneSys) <- c()
 
   actionSet <- STRINGactions[STRINGactions$protein1 %in% geneSys &
                                STRINGactions$protein2 %in% geneSys,]
@@ -96,25 +105,25 @@ STRINGExplore <- function(geneSys) {
   geneSysEdges <- STRINGedges[sel, c("protein1", "protein2")]
 
   #### 2. igraph setup (visNetwork backbone)####
-  sXG <-  graph.data.frame(geneSysEdges, directed = F)
-  sXGgraph <-  simplify(sXG)
+  sXG <-  igraph::graph.data.frame(geneSysEdges, directed = F)
+  sXGgraph <-  igraph::simplify(sXG)
 
   #### 3. Calculate betweeness centrality of graph based on STRING scores ####
-  bC <-  centr_betw(sXG)
+  bC <-  igraph::centr_betw(sXG)
   nodeBetw <- bC$res
   nodeBetw <- round(log(nodeBetw + 1)) + 1
-  V(sXGgraph)$btwndegree <- nodeBetw
+  igraph::V(sXGgraph)$btwndegree <- nodeBetw
 
   #### 4. visNetwork setup from igraph object ####
   # 4.1 Nodes dataframe setup
-  nodes <- get.data.frame(sXGgraph, what="vertices")
+  nodes <- igraph::get.data.frame(sXGgraph, what="vertices")
   nodes <- data.frame(id = nodes$name, title = nodes$name,
                       group = nodes$btwndegree, betweeness = nodes$btwndegree)
   setNames(nodes, c("id", "title", "betweeness", "betweeness centrality"))
   nodes <- nodes[order(nodes$id, decreasing = F),]
 
   # 4.2 Edges dataframe setup
-  edges <- get.data.frame(sXGgraph, what="edges")
+  edges <- igraph::get.data.frame(sXGgraph, what="edges")
   edges$interactions <- ""
   for(i in 1:nrow(edges)){
     edges[i,]$interactions <- getEdgeInteractions(edges[i,]$from, edges[i,]$to, actionSet)
@@ -122,9 +131,9 @@ STRINGExplore <- function(geneSys) {
   edges$title = paste("<p>",edges$from, "--",edges$to, ":", edges$interactions, "</p>")
 
   #### 5. Plot visNetwork ####
-  network <- visNetwork(nodes, edges, height = "500px", width = "100%") %>%
-    visOptions(selectedBy = "betweeness", highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-    visPhysics(stabilization = FALSE)
+  network <- visNetwork::visNetwork(nodes, edges, height = "500px", width = "100%") %>%
+    visNetwork::visOptions(selectedBy = "betweeness", highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+    visNetwork::visPhysics(stabilization = FALSE)
 
   #### 6. Return a labeled list for data transparency and future analysis ####
   networkData <- list("nodes" = nodes, "edges" = edges, "network" = network)

@@ -4,10 +4,10 @@
 \alias{STRINGExplore}
 \title{STRINGExplore}
 \usage{
-STRINGExplore(geneSys)
+STRINGExplore(genes)
 }
 \arguments{
-\item{geneSys}{(str) A 5 character string representing the name of
+\item{genes}{(str) A 5 character string representing the name of
 the desired curated gene system user would like to build a
 high-confidence interaction network for.}
 }
@@ -33,8 +33,9 @@ May be useful for downstream analysis by the end user.
 }
 
 \examples{
+\dontrun{
 STRINGExplore("PHALY")
-
+}
 }
 \author{
 \href{https://orcid.org/0000-0003-4762-8797}{Gabriela Morgenshtern} (aut)
