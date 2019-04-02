@@ -62,7 +62,7 @@ seqSimVis <- function(gene_of_int, system) {
     # get similarity values
     plist <- list(seq1, seq2)
     if (length(seq2) != 0) {
-      psimmat = protr::parSeqSim(plist, cores = 4, type = "local", submat = "BLOSUM62")
+      psimmat = protr::parSeqSim(plist, cores = 2, type = "local", submat = "BLOSUM62")
       print(paste0("Similarity value comparing against ", gene, ": ", psimmat[1,2]))
       vals <- c(vals, psimmat[1,2])
     } else {
