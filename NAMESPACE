@@ -2,4 +2,11 @@
 
 export(System_Expression)
 export(exProf)
-export(makeSeq)
+export(SyDBTree)
+export(SyDBgetIDforKey)
+export(SyDBgetRootSysIDs)
+export(SyDBgetSysSymbols)
+export(SyDBgetValForID)
+export(SyDBinvalid)
+export(fetchComponents)
+export(fetchData)
