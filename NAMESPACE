@@ -4,12 +4,9 @@ export(SyDBTree)
 export(SyDBgetIDforKey)
 export(SyDBgetRootSysIDs)
 export(SyDBgetSysSymbols)
-<<<<<<< HEAD
-export(domainEnrichment)
-=======
 export(SyDBgetValForID)
 export(SyDBinvalid)
->>>>>>> 3e6a2759f7f3cad52bf6a993a8671c5827129af9
+export(domainEnrichment)
 export(fetchComponents)
 export(fetchData)
 export(makeSeq)

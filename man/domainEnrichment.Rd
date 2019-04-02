@@ -2,26 +2,42 @@
 % Please edit documentation in R/domainEnrichment.R
 \name{domainEnrichment}
 \alias{domainEnrichment}
-\title{Domain enrichment in a system.}
+\title{Domain enrichment in a desired system.}
 \usage{
-domainEnrichment(system = "PHALY", numEnrichment = 40)
+domainEnrichment(system, alpha = 0.05)
 }
 \arguments{
-\item{system}{The shortehand notation of selected system, five-letter code as discussed in class. Default is PHALY.}
+\item{system}{The shortehand notation of selected system, five-letter code as discussed in class.}
 
-\item{numEnrichment}{The number of enriched domain ploted. Default is 40.}
+\item{alpha}{The alpha value for Benjamini-Hochberg control. Default is 0.05.}
 }
 \value{
-A data frame that include domains in the system with its counts and frequency of exist in system and in random genes; p-value, odd ratio, adjust p-value and enrichment; interpro descriptions.
+A data frame that include domains in the system with its counts and frequency in system and in random genes; p-value, odd ratio, adjust p-value and enrichment; interpro descriptions. Return NULL if system is not available by \code{\link{SyDBgetSysSymbols}}.
 }
 \description{
 \code{domainEnrichment} Find the enriched domains in selected system and interpret enrichment by plot.
 }
+\details{
+For the PHYLA system, see details in the \href{../doc/domainEnrichment-Vignette.html}{PHALY domain enrichemnt vignette} (or load the vignette with \code{vignette("domainEnrichment-Vignette", package = "BCB420.2019.ESA")}).
+}
+\section{Details}{
+ This function is created as part of BCB420 2019 winter course. The domain databaase were fetched from InterPro, see more details in \code{\link{fetchData}}.
+}
+
 \examples{
-# Plot 50 enrichend domains in PHALY system orderd by rich factor(counts in system/counts in random)
-# User can hover around the point on plot to get more info (i.e counts, p-value)
+# Plot enrichend domains in PHALY system orderd by rich factor
+# Plot would separate to two parts if too many domains are enriched
+# User can hover around the point on plot to get more info (i.e ID descripton)
 system <- "PHALY"
 domainEnrichment(system)
+
+}
+\seealso{
+\code{\link{fetchData}} Fetch data from package
+
+\code{\link{SyDBgetRootSysIDs}} Get the system ID in database
+
+\code{\link{SyDBgetSysSymbols}} Get the genes in desired system
 }
 \author{
 \href{https://orcid.org/0000-0001-8720-5874}{Fan Shen} (aut)
