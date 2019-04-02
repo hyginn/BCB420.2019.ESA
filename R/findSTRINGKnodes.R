@@ -58,7 +58,7 @@ findSTRINGKnodes <- function(sys) {
     ggrepel::geom_label_repel() +
     ggplot2::geom_point(color = 'black') +
     ggplot2::theme_classic(base_size = 16) +
-    ggplot2::theme(plot.title = element_text(hjust = 0.5)) +
+    ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5)) +
     ggplot2::scale_color_manual(values = c("green", "red"), name = "In gene set") +
     ggplot2::labs(x="Gene Knode Rank", y="Knode Value", title=paste("Top Knode Values Through Association with Genes in ", sys))
 
