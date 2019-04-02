@@ -10,6 +10,7 @@
 #' @author \href{https://orcid.org/0000-0002-1134-6758}{Boris Steipe} (aut)
 #'
 #' @import BiocManager
+#' @import org.Hs.eg.db
 #' @import GOSim
 #' @import GOSemSim
 #'
