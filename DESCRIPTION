@@ -35,14 +35,3 @@ Suggests:
     rmarkdown
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
-Collate: 
-    'SyDButils.R'
-    'fetchComponents.R'
-    'fetchData.R'
-    'getGeneticInteractome.R'
-    'hypothesize.R'
-    'makeMaps.R'
-    'makeSeq.R'
-    'predictDirectedNetworks.R'
-    'rptGC.R'
-    'zzz.R'
