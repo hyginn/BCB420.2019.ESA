@@ -1,0 +1,65 @@
+---
+title: ""
+author: "Liwen Zhuang"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{VISMCL}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Background 
+STRING is a database of functional interactions. STRING interactions are inferred from a variety of different experimental and conputational categories, score with a confidence score and made avaliable as network edges where notdes are ENSEMBL protein IDs.The dataframe of STRING data used in my function are normalized and mapped to HGNC symbols, the database doesn't contain duplicates are complete.(no NA values for score column)[https://github.com/hyginn/BCB420.2019.STRING]
+In this function, I use STRING score as an indicator of "related",if edges between two symbols does not exist in our database, we will ignore it and doesn't count in the averaging process.
+
+## Input Info
+Our input is just the curated systems information, a usable STRING database and a gene name (HGNC) of interest.
+
+## Function description
+1. Sum up the total score between each component gene in current system and the gene of interest
+2. Devide the total score with the number of components in each system to get final score
+3. Print information gained in each system
+4. Return the system with the highest final score among all systems
+
+There are several situations I considered: 
+
+* If there is no or very rare interaction between any component and the input gene, the final score should be (around) 0.
+* If System A and B have the same total number of components and most components in System A have higher interaction score than components in B, function should output system A.
+* If system A have lots of component, but only small portion of them have interactions with gene in interest, System B have a smaller amount of component, but with higher portion of genes which have interactions,(but smaller in absolute number). I want the function to output system B instead of system A
+
+So I choose to use [finalscore = totalscore/ #of components in the system] to capture the situations above.
+
+## Function Usage
+```
+#load data
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "STRINGedges-2019-03-14.RData")
+load(url(myURL))
+myDB <- fetchData("SysDB")
+#use the function
+mostRelSys(myDB,"CFTR")
+#> mostRelSys(myDB,"CFTR")
+#total interaction found in system  PHALY is  4 with final score of  56.23077 .
+#total interaction found in system  SLIGR is  0 with final score of  0 .
+#total interaction found in system  NLRIN is  0 with final score of  0 .
+#total interaction found in system  HVGCR is  6 with final score of  263.9048 .
+#[1] "HVGCR"
+```
+
+## Function Insight
+I was trying to use this function to build a hierarchy between systems; suppose A is a subsystem of B,which means (almost) all components in A are in B,then for each gene A and B in common, most gene should give system A as an result of this function. 
+This function is more useful to generate hypothesis of the hierarchy, instead of a definitive answer, since the result describe above doesn't imply they have a subset relationship. But we can use it to filter some information out.
+
+## Problems
+One problem with this function and the hierachy hypothesis is the Running time, suppose among n system, each with m components, to generate hypothesis about hierarchy, we need to O(n*m)! to get the result, this is just ridiculusly large.
+Even only with the function itself with such small database, we still need noticeable amount of time to run the function.
+```
+> system.time({mostRelSys(myDB,"CFTR")})
+total interaction found in system  PHALY is  4 with final score of  56.23077 .
+total interaction found in system  SLIGR is  0 with final score of  0 .
+total interaction found in system  NLRIN is  0 with final score of  0 .
+total interaction found in system  HVGCR is  6 with final score of  263.9048 .
+  user system   流逝 
+  1.75   0.33   2.08 
+```
