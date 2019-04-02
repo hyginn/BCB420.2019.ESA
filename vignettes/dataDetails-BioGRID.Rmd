@@ -1,0 +1,167 @@
+---
+title: "Data Details - BioGRID"
+author:
+- name: Boris Steipe
+  affiliation: 
+  - http://orcid.org/0000-0002-1134-6758
+  - University of Toronto
+  email: boris.steipe@utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  Details on the preparation of BioGRID interaction data for the BCB420.2019.ESA package.
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Data Details - BioGRID}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: BCB420.2019.ESA-bibliography.bib
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# load BCB420-2019.ESA itself for knitr:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+If any of this information is ambiguous, inaccurate, outdated, or incomplete, please check the [most recent version](https://github.com/hyginn/BCB420.2019.ESA) of the package on GitHub and if the problem has not already been addressed, please 
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this vignette:
+
+This vignette [@steipe-rptPlus] describes the workflow that was used to prepare the BioGRID dataset for the package. Source data is  protein-protein interaction data from [BioGRID ](https:/thebiogrid.org/) [@pmid30476227].
+
+
+# BioGRID Data
+
+The BioGRID is a collection of curated protein-protein interaction data. BioGRID data is [licensed under the MIT license](https://downloads.thebiogrid.org/Download/LICENSE.txt). This document describes work with [BioGRID 3.5.170 (2019-02-25)](https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-3.5.170/) [@pmid30476227].
+
+&nbsp;
+
+## Data semantics
+
+BioGRID interaction data is available in various formats common to protein-protein interaction databases. For our purposes of working with HGNC symbols, the BioGRID TAB 2.0 file format appears useful. Details are described [here](https://wiki.thebiogrid.org/doku.php/biogrid_tab_version_2.0).
+
+The file `BIOGRID-ALL-3.5.170.tab2.zip` contains the following columns of interest to us:
+
+8. Official symbol for Interactor A. A common gene name/official symbol for interactor A. Will be a “-” if no name is available.
+9. Official symbol for Interactor B. Same structure as column 8.
+13. Experimental System Type. This will be either "physical" or "genetic" as a classification of the Experimental System Name.
+16. Organism ID for Interactor A. This is the NCBI Taxonomy ID for Interactor A.
+17. Organism ID for Interactor B. Same structure as 16.
+
+&nbsp;
+
+## Data download and processing
+
+1. Navigate to the [download directory of the **BioGRID** database](https://downloads.thebiogrid.org/BioGRID/Release-Archive/BIOGRID-3.5.170/).
+2. Download the following data file: 
+* `BIOGRID-ALL-3.5.170.tab2.zip` (70.7 Mb);
+3. Uncompress the file and place it into a sister directory of your working directory which is called `data`. (It should be reachable with `file.path("..", "data", "BioGRID")`). **Warning:**  `../data/BioGRID/BIOGRID-ALL-3.5.170.tab2.txt` is 618.9 Mb!
+
+&nbsp;
+
+### Preparations: packages, functions, files
+
+To begin processing, we need to make sure the required packages are installed:
+
+**`readr`** provides functions to read data which are particularly suitable for
+large datasets. They are much faster than the built-in read.csv() etc. But caution: these functions return "tibbles", not data frames. ([Know the difference](https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html).)
+```R
+if (! requireNamespace("readr")) {
+  install.packages("readr")
+}
+```
+
+&nbsp;
+
+
+## Selecting protein-protein interactions
+
+```R
+FN <- file.path("..", "data", "BioGRID", "BIOGRID-ALL-3.5.170.tab2.txt")
+BioGRID <- as.data.frame(readr::read_tsv(FN,
+                                         skip = 1,
+                                         col_names = c("A",
+                                                       "B",
+                                                       "type",
+                                                       "taxID_A",
+                                                       "taxID_B"),
+                                         col_types = "-------cc---c--ii-------"))
+nrow(BioGRID)  # 1647089
+# Remove all interactions for which taxID_A and taxID_B are not both 9606
+BioGRID <- BioGRID[BioGRID$taxID_A == 9606 & BioGRID$taxID_B == 9606, 
+                   c("A", "B", "type")]
+nrow(BioGRID)  # 442753
+# Remove all interactions for which A and B are not both in HGNC sym
+myURL <- paste0("https://github.com/hyginn/",
+                "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
+load(url(myURL))  # loads HGNC data frame
+BioGRID <- BioGRID[BioGRID$A %in% HGNC$sym & BioGRID$A %in% HGNC$sym, 
+                   c("A", "B", "type")]
+nrow(BioGRID)  # 433505
+# How many genetic interactions?
+sum(BioGRID$type == "genetic")  # 4702
+# Save dataset:
+saveRDS(BioGRID, file = file.path("..", "data", "BioGRID", "BioGRID.3.5.170.rds"))  # 2.8 Mb
+# The dataset was uploaded to the assets server and is available with:
+BioGRID <- fetchData("BioGRID")
+```
+
+&nbsp;
+
+# References
+
+&nbsp;
+
+Oughtred, R., Stark, C., Breitkreutz, B. J., Rust, J., Boucher, L., Chang, C., Kolas, N., O'Donnell, L., Leung, G., McAdam, R., Zhang, F., Dolma, S., Willems, A., Coulombe-Huntington, J., Chatr-Aryamontri, A., Dolinski, K., & Tyers, M. (2019). The BioGRID interaction database: 2019 update. [Nucleic acids research, D1, D529-D541](https://academic.oup.com/nar/article/47/D1/D529/5204333).
+
+&nbsp;
+
+# Acknowledgements
+
+Thanks to Simon Kågedal's very useful [PubMed to APA reference tool](http://helgo.net/simon/pubmed/).
+
+&nbsp;
+
+
+
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+
+
+<!-- End -->
