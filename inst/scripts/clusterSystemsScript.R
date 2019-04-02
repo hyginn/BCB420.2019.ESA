@@ -1,18 +1,13 @@
 # clusterSystemsScript.R
 #
-# Purpose:
+# Purpose: Script that generates the example results
+#          used in my project page.
 # Version: 1.0
 # Date: April 1 2019
 # Author: Rachel Silverstein
 # License: MIT
 #
-# Input:
-# Output:
-# Dependencies:
-#
-# ToDo:
-# Notes:
-#
+
 # ==============================================================================
 
 # NO SIDE EFFECTS:
@@ -21,21 +16,8 @@
 # All other code will not be executed unless this is done interactively.
 
 
-# ====  PARAMETERS  ============================================================
-#
-#      This script uses guard-blocks that prevent execution of
-#      code that should not be executed when the entire script
-#      is sourced. Thus it can be source()'d to load its functions,
-#      or executed interactively.
-#
-
-if (FALSE) {
-  systemDB_name <- "SysDB"
-}
-
 
 # ====  PACKAGES  ==============================================================
-# Load all required packages.
 
 if (require("cluster")) {
   install.packages(cluster)
@@ -59,43 +41,69 @@ source("./R/clusterSystems.R")
 
 # ====  PROCESS  ===============================================================
 
-myDB <- fetchData(systemDB_name)
-rootSysIDs <- SyDBgetRootSysIDs(myDB)
+if (FALSE) {
 
-sys_names <- names(rootSysIDs)
+  myDB <- fetchData("SysDB")
+  rootSysIDs <- SyDBgetRootSysIDs(myDB)
 
-# initialize a list of the genes in the different systems
-systems <- vector(mode="list", length=length(sys_names))
+  sys_names <- names(rootSysIDs)
 
-names(systems) <- sys_names
+  # initialize a list of the genes in the different systems
+  systems <- vector(mode="list", length=length(sys_names))
 
-# populate the list with vectors of genes
-for (i in seq_along(sys_names)) {
-  systems[[i]] <- SyDBgetSysSymbols(myDB, sys_names[i])
+  names(systems) <- sys_names
+
+  # populate the list with vectors of genes
+  for (i in seq_along(sys_names)) {
+    systems[[i]] <- SyDBgetSysSymbols(myDB, sys_names[i])
+  }
+
+  # test clustering by variables individually
+  clusterSystems(systems,
+                 distances = c("transcription_factor"))
+
+  clusterSystems(systems,
+                 distances = c("expression_profile"))
+
+  clusterSystems(systems,
+                 distances = c("network_jaccard"))
+
+  clusterSystems(systems,
+                 distances = c("network_distance"))
+
+  # test some combinations
+  clusterSystems(systems,
+                 distances = c("transcription_factor",
+                               "network_jaccard",
+                               "network_distance",
+                               "expression_profile"),
+                 combineMatrices = 'sum')
+
+  clusterSystems(systems,
+                 distances = c("transcription_factor",
+                               "network_jaccard",
+                               "network_distance",
+                               "expression_profile"),
+                 combineMatrices = 'product')
+
+  clusterSystems(systems,
+                 distances = c("transcription_factor",
+                               "network_jaccard",
+                               "network_distance",
+                               "expression_profile"),
+                 combineMatrices = 'minimum')
+
+  clusterSystems(systems,
+                 distances = c("transcription_factor",
+                               "network_jaccard",
+                               "network_distance",
+                               "expression_profile"),
+                 combineMatrices = 'maximum')
+
 }
 
 
-GTRD <- fetchData("GTRDgeneTFs")
-GEO <- fetchData("GEOprofiles")
-STRING <- fetchData("S")
 
-result <- clusterSystems(systems,
-                          distances = c("transcription_factor"),
-                          customDistanceFn = NULL,
-                          dataSources = NULL,
-                          combineMatrices = TRUE,
-                          printVennDiagrams = TRUE)
-
-
-print(result)
-
-
-
-# ====  TESTS  =================================================================
-if (TRUE) {
-  # Enter your function tests here...
-
-}
 
 
 # [END]
