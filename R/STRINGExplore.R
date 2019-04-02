@@ -132,7 +132,7 @@ STRINGExplore <- function(genes) {
   #### 5. Plot visNetwork ####
   network <- visNetwork::visNetwork(nodes, edges, height = "500px", width = "100%") %>%
     visNetwork::visOptions(selectedBy = "betweeness", highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-    visNetwork::visPhysics(stabilization = FALSE)
+    visNetwork::visPhysics(stabilization = TRUE, timestep = 0.3)
 
   #### 6. Return a labeled list for data transparency and future analysis ####
   networkData <- list("nodes" = nodes, "edges" = edges, "network" = network)
