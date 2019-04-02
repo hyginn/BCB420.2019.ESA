@@ -1,4 +1,4 @@
-# .combine_distance_matrices.R
+# combine_distance_matrices.R
 
 #' Combine Distance Matrices
 #'

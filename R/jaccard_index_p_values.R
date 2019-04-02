@@ -1,4 +1,4 @@
-# .jaccard_index_p_values.R
+# jaccard_index_p_values.R
 
 # Purpose: Helper function for clusterSystems
 # not useful elsewhere

@@ -1,4 +1,4 @@
-# .make_venn_diagram.R
+# make_venn_diagram.R
 
 #' Make Venn Diagrams
 #'
@@ -13,6 +13,8 @@
 #'
 #' @return NULL
 #'
+#' @import VennDiagram
+#'
 #' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
 #'
 #'
@@ -20,10 +22,6 @@
 
 
 make_venn_diagram <- function(system_genes, sys_name, cluster_genes, clust_num, jaccard, p) {
-  if (!require(VennDiagram)) {
-    utils::install.packages("VennDiagram")
-  }
-  library(VennDiagram)
 
   clust_name <- paste(c("Cluster ", clust_num), collapse = "")
 
@@ -35,16 +33,15 @@ make_venn_diagram <- function(system_genes, sys_name, cluster_genes, clust_num, 
 
   grid::grid.newpage()
   venn <- VennDiagram::draw.pairwise.venn(area1 = area1,
-                     area2 = area2,
-                     cross.area = int,
-                     category = category,
-                     euler.d = T,
-                     scaled = T,
-                     fill = c('red', 'blue'),
-                     alpha = c(0.5, 0.5),
-                     cat.default.pos = 'outer'
+                                            area2 = area2,
+                                            cross.area = int,
+                                            category = category,
+                                            euler.d = T,
+                                            scaled = T,
+                                            fill = c('red', 'blue'),
+                                            alpha = c(0.5, 0.5),
+                                            cat.default.pos = 'outer')
 
-  )
   return(NULL)
 }
 

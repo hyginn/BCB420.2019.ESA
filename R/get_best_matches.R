@@ -1,4 +1,4 @@
-# .get_best_matches.R
+# get_best_matches.R
 
 # Purpose: Helper function for clusterSystems
 # Not useful elsewhere

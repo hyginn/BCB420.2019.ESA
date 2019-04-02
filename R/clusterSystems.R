@@ -71,6 +71,11 @@
 #'                combineMatrices = NULL)
 #'
 #'
+#'
+#' @import cluster
+#' @import VennDiagram
+#' @import igraph
+#'
 #' @export
 
 
@@ -80,21 +85,7 @@ clusterSystems <- function(systems,
                            dataSources = NULL,
                            combineMatrices,
                            printVennDiagrams = TRUE) {
-  # import dependencies
-  if (!requireNamespace("igraph")) {
-    utils::install.packages("igraph")
-  }
-  library(igraph)
 
-  if (!requireNamespace("VennDiagram")) {
-    utils::install.packages('VennDiagram')
-  }
-  library(VennDiagram)
-
-  if (!requireNamespace("cluster")) {
-    utils::install.packages("cluster")
-  }
-  library(cluster)
 
   # make a single vector containing all of the genes from all of the systems together
   all_genes <- unique(unlist(systems))
@@ -121,6 +112,7 @@ clusterSystems <- function(systems,
 
   # use the number of systems as the number of clusters for PAM clustering
   clust_obj <- cluster::pam(combinedMatrix, k = length(systems), diss = TRUE)
+
   clusters <- clust_obj$clustering
 
   # get the best cluster - system pairings

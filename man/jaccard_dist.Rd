@@ -22,15 +22,6 @@ Numeric, distance score
 \details{
 Jaccard similarity of 2 nodes in the gene network is calculated. Jaccard similarity is the number of common neighbors divided by the number of vertices that are neighbors of at least one of the 2 nodes. Distance is then obtained by taking 1 - similarity.
 }
-\examples{
-
-STRING <- fetchData("STRINGedges0.8")
-# convert the STRINGedges object into an igraph object
-STRINGgraph <- igraph::graph_from_edgelist(as.matrix(STRING[,1:2]))
-# calcualte the Jaccard network distance between "BRCA1" and "BRCA2"
-jaccard_dist("BRCA1", "BRCA2", STRINGgraph)
-
-}
 \author{
 \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
 }
