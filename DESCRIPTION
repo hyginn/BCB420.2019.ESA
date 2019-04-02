@@ -27,7 +27,10 @@ Imports:
     cluster,
     grid,
     igraph,
-    VennDiagram
+    VennDiagram,
+    GOSemSim,
+    ggcorrplot,
+    ggplot2
 Suggests:
     testthat,
     BiocStyle,
