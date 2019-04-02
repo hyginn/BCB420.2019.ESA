@@ -36,13 +36,13 @@ System_Expression<- function(sysname, myQNXP){
   num_observations <- apply(expressions, 1, function(x) sum(!is.na(x)))
 
   # calculate the one-sided p-values for each experiment
-  p.values <- pnorm(meanExpression, sd = sqrt(varExpression/num_observations))
-  p.values[p.values > 0.5] <- 1 - p.values[p.values > 0.5]
+  p_values <- pnorm(meanExpression, sd = sqrt(varExpression/num_observations))
+  p_values[p_values > 0.5] <- 1 - p_values[p_values > 0.5]
 
   # Find the experiments where the system was significantly up
   # or down regulated at the 0.05 level
-  UpConditions <- which(meanExpression > 0 & p.values < 0.05)
-  DownConditions <- which(meanExpression < 0 & p.values < 0.05)
+  UpConditions <- which(meanExpression > 0 & p_values < 0.05)
+  DownConditions <- which(meanExpression < 0 & p_values < 0.05)
 
   experiments <- rownames(expressions)
   # Package results into list for export
