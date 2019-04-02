@@ -40,7 +40,7 @@ ignored. One of \code{c('sum', 'product', 'minimum', 'maximum')}.}
 diagrams representing the set overlap of the output should be printed when
 the function is called. Default is TRUE.}
 
-\item{k}{Optional integer. The number of clusters. Default is length(systems)
+\item{k}{Optional integer. The number of clusters. Default is \code{length(systems)}
 if no value provided.}
 }
 \value{
@@ -60,8 +60,8 @@ Jaccard index greater than those observed by choosing a random cluster
 of the same size from the set of input genes.
 }
 \description{
-\code{ClusterSystems} Input a list of n biological systems and re-cluster
-the genes into n clusters on an input variable of interest. Set overlap
+\code{ClusterSystems} inputs a list of biological systems and re-clusters
+the genes on an input variable of interest. Set overlap
 between the output clusters and clusters defined by input system
 membership is measured.
 }
@@ -71,7 +71,7 @@ of interest using PAM (partition around medoids) clustering. The
 similarity between input and output sets is measured using the Jaccard
 index of set overlap. P values for the observed Jaccard Indexes are
 calculated by measuring the Jaccard index of 1000 clusters randomly
-sampled from the output genes.
+sampled from the input genes.
 }
 \section{Distance metrics }{
 
@@ -141,8 +141,7 @@ GEO <- fetchData("GEOprofiles")
 clusterSystems(systems,
                distances = NULL,
                customDistanceFn = list(expr_dist),
-               dataSources = list(GEO),
-               combineMatrices = NULL)
+               dataSources = list(GEO))
 
 
 
