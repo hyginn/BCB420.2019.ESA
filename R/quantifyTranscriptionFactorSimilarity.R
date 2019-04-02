@@ -49,9 +49,7 @@ getSysGenes <- function(filepath) {
 #' }
 getSysTFdata <- function(sysHGNC) {
    # From Steipe, 2019 ESA readMe
-   myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                  "geneList-2019-03-13.RData")
-  load(url(myURL))  # loads GTRD geneList object
+  geneList <- fetchData("GTRDgeneTFs")
   # Only take elements from loaded data relevant to system
   sysTF <- geneList[sysHGNC]
   sysTF <- sysTF[lapply(sysTF,length)>0] #remove nulls

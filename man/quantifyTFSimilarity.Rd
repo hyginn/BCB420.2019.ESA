@@ -2,19 +2,21 @@
 % Please edit documentation in R/quantifyTranscriptionFactorSimilarity.R
 \name{quantifyTFSimilarity}
 \alias{quantifyTFSimilarity}
-\title{Main controller function for this file. Effects all other functions.}
+\title{quantifyTFSimilarity
+Main controller function for this file. Effects all other functions.}
 \usage{
 quantifyTFSimilarity(filepath)
 }
 \arguments{
-\item{filepath}{to system excel file
+\item{filepath}{{string} to system excel file
 Makes distance matrix, and cluster of shared TF presence for proteins in
 the filepath denoted by system}
 }
 \value{
-dendrogram of TF
+{null} writes dendrogram of TF to plots
 }
 \description{
+quantifyTFSimilarity
 Main controller function for this file. Effects all other functions.
 }
 \examples{

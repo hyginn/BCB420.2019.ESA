@@ -2,18 +2,20 @@
 % Please edit documentation in R/quantifyTranscriptionFactorSimilarity.R
 \name{getSysGenes}
 \alias{getSysGenes}
-\title{Helper Function: Read system data from excel}
+\title{getSysGenes
+Helper Function: Read system data from excel}
 \usage{
 getSysGenes(filepath)
 }
 \arguments{
-\item{filepath}{to system excel sheet
+\item{filepath}{{string} to system excel sheet
 Helper function to read in system data from excel}
 }
 \value{
-sysHGNC. A list of genes in the system
+sysHGNC {list} A list of genes in the system
 }
 \description{
+getSysGenes
 Helper Function: Read system data from excel
 }
 \examples{

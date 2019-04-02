@@ -28,9 +28,10 @@ package on GitHub and
 <!-- TOCbelow -->
 1. About this package:<br/>
 2. Data ...<br/>
-3. Notes<br/>
-4. References and Further reading<br/>
-5. Acknowledgements<br/>
+3. Functions ... <br />
+4. Notes<br/>
+5. References and Further reading<br/>
+6. Acknowledgements<br/>
 <!-- TOCabove -->
 
 ----
@@ -217,58 +218,180 @@ Distribution of expression correlations between 10,000 randomly chosen gene pair
 
 &nbsp;
 
-#### 2.5 Systems:
+#### 2.5 InterPro domain annotations:
 
-This is in progress. Here is a function stub that returns a set of gene symbols for a system name:
+Interpro domain annotations were parsed from the 50 GB annotation source of InterPro v. 73.0 and mapped to HGNC symbols (details to follow).
 
 ```R
+# load the gene-annotations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "genesIPR.rds")
+genesIPR <- readRDS(url(myURL))  # reads and assigns genesIPR list
 
-fetchComponents <- function(sys) {
-  # returns a fixed set of symbols.
-  # Function stub for development purposes only.
- if (sys == "PHALY") {
-    s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2", 
-           "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7", 
-           "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP", 
-           "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM", 
-           "KXD1", "LAMP1", "LAMP2", "LAMP3", "LAMP5", "MAP1LC3A", "MAP1LC3B", 
-           "MAP1LC3C", "MGRN1", "MYO1C", "MYO6", "NAPA", "NSF", "OPTN", 
-           "OSBPL1A", "PI4K2A", "PIK3C3", "PLEKHM1", "PSEN1", "RAB20", "RAB21", 
-           "RAB29", "RAB34", "RAB39A", "RAB7A", "RAB7B", "RPTOR", "RUBCN", 
-           "RUBCNL", "SNAP29", "SNAP47", "SNAPIN", "SPG11", "STX17", "STX6", 
-           "SYT7", "TARDBP", "TFEB", "TGM2", "TIFA", "TMEM175", "TOM1", 
-           "TPCN1", "TPCN2", "TPPP", "TXNIP", "UVRAG", "VAMP3", "VAMP7", 
-           "VAMP8", "VAPA", "VPS11", "VPS16", "VPS18", "VPS33A", "VPS39", 
-           "VPS41", "VTI1B", "YKT6")
- } else {
-   s <- ""
- }
-  return(s)
-}
+str(genesIPR, list.len = 5)
+# List of 19174
+#  $ NUDT4B     : chr [1:3] "IPR000086" "IPR015797" "IPR020084"
+#  $ IGLV4-69   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV8-61   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV4-60   : chr [1:5] "IPR003599" "IPR007110" "IPR013106" "IPR013783" ...
+#  $ IGLV10-54  : chr [1:4] "IPR007110" "IPR013106" "IPR013783" "IPR036179"
+#   [list output truncated]
 
-fetchComponents("PHALY")
-#   [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"   
-#   [6] "BECN1"     "BECN2"     "BIRC6"     "BLOC1S1"   "BLOC1S2"  
-#  [11] "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"  
 
-fetchComponents("NONSUCH")
-#  [1] ""
+# load the IPR_domain-locations list:
+myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
+                "IPRgenes.rds")
+IPRgenes <- readRDS(url(myURL))  # reads and assigns IPRgenes list
+
+str(IPRgenes, list.len = 5)
+# List of 16178
+#  $ IPR000086: chr [1:27] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR015797: chr [1:28] "NUDT4B" "NUDT19" "NUDT21" "TRPM2" ...
+#  $ IPR020084: chr [1:13] "NUDT4B" "NUDT3" "NUDT1" "NUDT2" ...
+#  $ IPR003599: chr [1:456] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV7-46" ...
+#  $ IPR007110: chr [1:674] "IGLV4-69" "IGLV8-61" "IGLV4-60" "IGLV10-54" ...
+#   [list output truncated]
+
+```
+
+
+&nbsp;
+
+#### 2.6 Systems:
+
+A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <sys>)[[1]]` to access all gene symbols for a single system (or subsystem). Use `unlist(SyDBgetSysSymbols(myDB, SyDBgetRootSysIDs(myDB)), use.names = FALSE)` to access all genes in the database.
+
+```R
+myDB <- fetchData("SysDB")
+
+
+SyDBgetRootSysIDs(myDB)
+#                                        PHALY                                       SLIGR 
+#  "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                        NLRIN                                       HVGCR 
+#  "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
+names(SyDBgetRootSysIDs(myDB))
+# [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
+
+
+SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
+# $HVGCR
+#  [1] "ADCY9"    "ADRB2"    "AKAP7"    "CACNA1C"  "CACNA2D1" "CACNA2D3" "CACNB1"   "CACNB3"  
+#  [9] "CACNB4"   "CACNG1"   "CACNG6"   "CALM1"    "CALM2"    "CALM3"    "GNAS"     "PRKACA"  
+# [17] "PRKACB"   "PRKAR1A"  "PRKAR1B"  "PRKAR2A"  "PRKAR2B" 
+
+```
+&nbsp;
+
+The old function stub `fetchComponents()` still works but is deprecated:
+
+```R
+> fetchComponents("PHALY")
+Note: fetchComponents(...) is deprecated. Use SyDBgetSysSymbols(<database>, <system code>) instead.
+
+ [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"    "BECN1"     "BECN2"     "BIRC6"    
+ [9] "BLOC1S1"   "BLOC1S2"   "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"   "CALCOCO2" 
+ ...
+ 
+```
+
+&nbsp;
+
+## 3 Functions
+
+&nbsp;
+
+#### 3.1 Fetching data
+
+See:
+```R
+?fetchData 
+fetchData()
+```
+&nbsp;
+
+#### 3.2 Systems database utilities
+
+
+'./R/SyDButils.R' contains a number of exported functions to support work with a systems database:
+
+* `SyDBgetRootSysIDs()` - returns a named vector with the IDs of all root systems in a systems database;
+* `SyDBgetSysSymbols()` - returns a list of the same length as the input vector with HGNC symbols of each system in the input vector;
+* `SyDBgetIDforKey()` - returns a vector of IDs for key(s) in a column of a table;
+* `SyDBgetValforID()` - returns a vector of values in a column of a table where the ID matches the input;
+* `SyDBinvalid()` - checks whether its database argument is a valid, current, system database;
+* `SyDBTree()` - returns a tree representation of the hierarchical structure of a system or systems in the database.
+
+Examples:
+```R
+mySDB <- fetchData("SysDB")
+
+SyDBgetRootSysIDs(mySDB)
+#                                       PHALY                                       SLIGR 
+# "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                       NLRIN                                       HVGCR 
+# "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
+names(SyDBgetRootSysIDs(mySDB))
+# [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
+
+
+SyDBgetIDforKey("HOPS complex", "code", "component", mySDB)
+# [1] "flip.face-782-d729-9622-299c-073fb8f2ec94"
+
+
+SyDBgetSysSymbols(mySDB, "HOPS complex")
+# $`HOPS complex`
+# [1] "VPS11"  "VPS16"  "VPS18"  "VPS33A" "VPS39"  "VPS41" 
+
+
+cat(SyDBTree("NLRIN", mySDB, MAX = 3), sep = "\n")
+# 
+#   --NLRIN
+#     |___NLRP3 activation signal
+#         |___Common activating signal
+#         |___NLRP3
+#         |___NLRP3 activation
+#     |___NLRIN regulation
+#         |___NLRIN positive regulation
+#         |___NLRIN negative regulation
+#     |___NLRP3 priming signal
+#         |___IL-beta priming signal
+#         |___TNF priming signal
+#         |___TLR priming signal
+#     |___NOT IN NLRIN
+#         |___NLRP7
+#         |___NLRC4
+#         |___AIM2
+#         |___NLRP14
+#         |___NLRP6
+#         |___NLRP12
+#         |___NLRP2
+#         |___NLRP9b
+#         |___NLRP1b
 
 
 ```
 
 &nbsp;
 
-## 3 Notes
 
+## 4 Notes
+
+... in progress
 &nbsp;
 
 ## 4 References and Further Reading
 
+... in progress
 &nbsp;
 
 ## 5 Acknowledgements
 
+... in progress
 &nbsp;
 
 <!-- [END] -->

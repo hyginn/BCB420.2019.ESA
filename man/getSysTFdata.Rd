@@ -2,18 +2,20 @@
 % Please edit documentation in R/quantifyTranscriptionFactorSimilarity.R
 \name{getSysTFdata}
 \alias{getSysTFdata}
-\title{Helper Function: get TF data only for genes in system}
+\title{getSysTFdata
+Helper Function: get TF data only for genes in system}
 \usage{
 getSysTFdata(sysHGNC)
 }
 \arguments{
-\item{sysHGNC}{list of genes from system
+\item{sysHGNC}{{list of string} list of genes from system
 Accesses loaded TF data and filters for genes present in system}
 }
 \value{
-sysTF. A smaller TF geneList with only genes in system.
+sysTF {list} A smaller TF geneList with only genes in system.
 }
 \description{
+getSysTFdata
 Helper Function: get TF data only for genes in system
 }
 \examples{
