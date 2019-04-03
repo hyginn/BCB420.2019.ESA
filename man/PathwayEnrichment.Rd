@@ -7,14 +7,17 @@ Return a barplot that show the enriched pathway and its p value(fisher test) tha
 the ajusted p value. The null hypothesis for each fisher test: the pathway
 is not enriched in the given gene set.}
 \usage{
-PathwayEnrichment(geneSet, method)
+PathwayEnrichment(geneSet, method, reactInfo)
 }
 \arguments{
 \item{geneSet}{A list of gene symbol in the system that you want to perform pathway
 enrichment analysis.}
 
 \item{method}{method of cutoff that the visualization plot method can be BH or 
-bonferroni.}
+bonferroni.
+reactInfo}
+
+\item{reactInfo}{a dataframe map the reactome pathway id to the reference gene symbol}
 }
 \value{
 a barplot that show the enriched pathway and its p value(fisher test) 
@@ -30,7 +33,8 @@ is not enriched in the given gene set.
 # Picking sample gene list to find the pathway enrichment and p value
 # Call the symComp helper function to generate list
 sampleGeneList<-c("CREBBP","NR1H3","RORA","SREBF1","SMARCD3")
-result <- PathwayEnrichment(sampleGeneList,"BH")
+reactInfo<- fetchData("ReactomeSym")
+result <- PathwayEnrichment(sampleGeneList,"BH",reactInfo)
 
 }
 \author{
