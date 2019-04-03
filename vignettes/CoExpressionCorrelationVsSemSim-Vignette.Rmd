@@ -1,63 +1,94 @@
 ---
-title: "Co-Expression Correlation And GOSemSim  Correlation ToolVignette"
+title: "Co-Expression Correlation And GOSemSim  Correlation Tool-Vignette"
 author:
 - name: Denitsa Vasileva
   affiliation: 
   - http://orcid.org/0000-0002-8778-6442
   - University of Toronto
   email: denitsa.vasileva@mail.utoronto.ca
-date: "`r Sys.Date()`"
-output: html_document
-abstract: The _Co-Expression Correlation And GOSemSim Correlation Tool_ is an exploratory system analysis tool which provides visualizations of the   co-expression correlation and function correlation (i.e. Semantic Similarity of GO terms)  between pairs of genes in a specified input biosystem. This document provides an introduction to the important comcepts that form the basis of this tool. In addition, an example that demonstrates the capabilities of the tool is also featured. 
+date: ```r Sys.Date()```
+output:
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8} 
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA' 
+abstract:  The _Co-Expression Correlation And GOSemSim Correlation Tool_ is an exploratory system analysis tool which provides visualizations of the   co-expression correlation and function correlation (i.e. Semantic Similarity of GO terms)  between pairs of genes in a specified input biosystem. This document provides an introduction to the important concepts that form the basis of this tool. In addition, an example that demonstrates the capabilities of the tool is also featured. 
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 ---
 ## Fundamental Concepts Predicating the Tool
 
 In order to explain the biological significance and necessity of this tool it is necessary to explain a few basic biological concepts that underpine it.
 ---
-* Co-expression correlation:
-    * Measure of how similar the expression profiles between genes are.
-    * Paiwise co-expression correlation is a measure of similarity between the expression profiles of a pair of genes
-    * The correlation is on a real number scale of -1 to 1 where number numbers close to -1 or 1 indicate a strong correlation
-    * The pairwise co-espression correlation for every pair of genes is calculated as the Pearson rank correlation coefficient 
-    * This only displays the likelihood of co-expression between pairs of genes and not the type of relaationshio between the genes
+* Co-expression correlation (Obayashi,2018):
+    * Measure of how similar the expression profiles between genes are (Obayashi,2018).
+    * Paiwise co-expression correlation is a measure of similarity between the expression profiles of a pair of genes (Obayashi,2018)
+    * The correlation is on a real number scale of -1 to 1 where number numbers close to -1 or 1 indicate a strong correlation (Obayashi,2018)
+    * The pairwise co-espression correlation for every pair of genes is calculated as the Pearson rank correlation coefficient (Obayashi,2018)
+    * This only displays the likelihood of co-expression between pairs of genes and not the type of relationship between the genes(Obayashi,2018)
+    *Co-expression correlation calculated as coef<- cor(prf1, prf2, use = "pairwise.complete.obs") function where prf1 represents the profile of gene #1 in the pair, prf#2 is the profile of gene #2 in the pair,  "pairwise.complete.obs"= any expression profiles which contain na values are removed and coef is a real numeric value between -1 and 1
 
-* Semantic Similarity:
-    * Defined as the distance between a set of terms where diatnce is defined as a measure of likeness of meaning or semnatics 
-    * In the context of this tool, Semantic Similarity is defined as the distance between GO terms
-    * GO- (Gene Ontology)- is a universally agreed-upon, pre-defined set of terms used to define the function of genes.
-    * GO terms form hierarchies
-    * Semantic Similarity is a computational measure of similarity between GO terms
-    * There are multiple ways to calculate 
-    * It is calculated by the GOSemSim package in the Bioconductor repository in R 
-    * 
+* Semantic Similarity (Yu 2010):
+    * Defined as the distance between a set of terms where distance is defined as a measure of likeness of meaning or semnatics (Yu 2010)
+    * In the context of this tool, Semantic Similarity is defined as the distance between GO terms (Yu 2010)
+    * GO- (Gene Ontology)- is a universally agreed-upon, pre-defined set of terms used to define the function of genes. (Ashburn 2000)
+    * GO terms form hierarchies (Ashburn 2000)
+    * Semantic Similarity is a computational measure of similarity between GO terms rms where distance is defined as a measure of likeness of meaning or semnatics (Yu 2010)
+    * There are multiple ways to calculate terms where distance is defined as a measure of likeness of meaning or semnatics (Yu 2010)
+    * It is calculated by the GOSemSim package in the Bioconductor repository in R  where distance is defined as a measure of likeness of meaning or semnatics (Yu 2010)
+    *This package takes GO terms from the GO Annotation database  from an R package callled org.Hs.eg.db (Carlson 2018)
+   
+## How to Use Tool:
+The main exported function in this tool is **plotCorrelations()**.<br>
+There are two modes in which this package can run- each with a slightly different type of output - based on the types of input the function **plotCorrelations()** receives. 
+In both cases, the function needs a bioSys - the five-letter code of a curated Biological sytem **bioSys** as input.
+So far, the tool can only accept NLRIN, PHALY and SLIGR biosystems- since these are the manually curated databases whose components were provided.
 ---
+From here there are two options:
+* Option #1 **plotCorrelations(bioSys)**:
+    * Input is only the 5- letter code of the curated biological system - either  NLRIN, PHALY or SLIGR
+    * Output: None. Three plots will be printed on screen with the user pressing a key to move from one plot to the next.
+    * This option is preferred for higher quality of graphs.
+* Option #2 **plotCorrelations(bioSys, coExpFile = NULL, semSimFile = NULL,coExpVsSemFile = NULL, pShape = 16)**:
+  Input: the 5- letter code of the curated biological system - either  NLRIN, PHALY or SLIGR; three file paths- each for specifying the location of a file a graph should be saved to, numeric shape of plotted graph points
+  Output: A list of three files containing one plot each.
+
+
+## Plots Generated by Tool: 
 * Heat Maps of Pairwise Co-expression Correlation:
-    * Diagrams which use colours to represent correlation coefficient values
-    * List of genes on each axis
-    * Colours represent the strength and direction of the pairwise co-expressiom correlation between the pair of genes specified
+    * Diagram which uses colours to represent co-expression correlation coefficient values
+    * List of bioSys components (i.e. HGNC gene symbols) on each axis
+    * Colours represent the strength and direction of the pairwise co-expressiom correlation between the pair of genes
+    specified
+    * Generated by corrplot::corrplot function (Wei 2017)
 * Heat Map of Pairwise Semantic Similarity Correlation:
     * diagrams which use colours to represent correlation coefficient values
     * List of genes on each axis
     * Colours represent the strength and direction of the pairwise Semnatic Similarity correlation between the pair of genes specified
----
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+* Graph of Orthogonaly relationship between Pair-wise Co-Expression Correlation and Semantic Similarity Correlation
+    * x -axis= Pairiwse Semantic Similarity coeeficient generated as describes above
+    * y- axis= Pairwise co_expression Coefficient generated as described above
+    * points= Pairs of genes in curated systems
+    * grey points= Pairs of genes for the two non-input systems
+    * green points= Pairs of genes belonging to input system bioSys
+    
+## Session Info:
+```{r, echo=TRUE}
+sessionInfo()
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## References
+### G Yu, F Li, Y Qin, X Bo, Y Wu, S Wang. GOSemSim: an R package for measuring semantic similarity among GO terms and gene products. Bioinformatics 2010, 26(7):976-978. doi: 10.1093/bioinformatics/btq064.
+### Taiyun Wei and Viliam Simko (2017). R package "corrplot": Visualization of a Correlation Matrix (Version 0.84). Available from https://github.com/taiyun/corrplot
+### Carlson M (2018). org.Hs.eg.db: Genome wide annotation for Human. R package version 3.7.0.
+### Obayashi T, Kagaya Y, Aoki Y, Tadaka S, Kinoshita K. (2018) COXPRESdb v7: a gene coexpression database for 11 animal species supported by 23 coexpression platforms for technical evaluation and evolutionary inference. Nucleic Acids Res. in pres
+### Ashburner et al. Gene ontology: tool for the unification of biology. Nat Genet. May 2000;25(1):25-9.
