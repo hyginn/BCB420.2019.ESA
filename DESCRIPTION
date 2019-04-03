@@ -31,7 +31,6 @@ Imports:
     BiocManager,
     Biostrings,
     GOSim,
-    org.Hs.eg.db,
     AnnotationDbi,
     GOSemSim,
     cluster,
