@@ -69,7 +69,7 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 # About this Vignette
 
-This Vignette explains the input and output of the EDA tool 
+This Vignette explains the input and output of the EDA tool for expression and Go term analysis
 
 ## Input 
 
