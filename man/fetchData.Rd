@@ -10,14 +10,41 @@ fetchData(set)
 \item{set}{(character)  name of the requested dataset}
 }
 \value{
-a dataset
+a dataset, usually either a \code{list} or a \code{data frame}, or
+        \code{NULL} (invisibly) if no dataset was specified or the requested
+        dataset is not in the list of available datasets.
 }
 \description{
-\code{fetchData} documentation forthcoming.
+\code{fetchData} loads and returns datasets from a data repository. When
+                 invoked without parameters, a list of available datasets is
+                 printed. When invoked with a parameter \code{set}, the
+                 intended dataset is fetched with \code{\link[base]{readRDS}}
+                 and returned.
 }
-\details{
-For the BioGRID dataset, see details in the \href{../doc/dataDetails-BioGRID.html}{ BioGRID data vignette} (or load the vignette with \code{vignette("dataDetails-BioGRID", package = "BCB420.2019.ESA")}).
+\section{Details}{
+
+\itemize{
+  \item For the \code{HGNCreference} dataset, see ...
+  \item For the GTRD derived transcription factor datasets
+          \code{GTRDgeneTFs} and \code{GTRDTFgenes}, see ...
+  \item For the BioGRID protein-protein interaction dataset, see details in
+            the \href{../doc/dataDetails-BioGRID.html}{BioGRID data vignette}
+           (or load the vignette with \code{vignette("dataDetails-BioGRID",
+           package = "BCB420.2019.ESA")}).
+  \item For the  STRING database derived datasets \code{STRINGedges0.9},
+           \code{STRINGedges0.8}, and \code{STRINGactions}, see ...
+  \item For the InterPro database datasets \code{genesIPR}, and
+           \code{IPRgenes} dataset, see ...
+  \item For the expression profiles dataset \code{GEOprofiles}, see ...
+  \item For the systems database dataset \code{SysDB}, see ...
+  \item The Reactome dataset \code{ReactomeSym} is currently undocumented.
+  \item There are two CORUM datasets: \code{complexSymbol} and
+         \code{symbolComplex}. These are lists of CORUM IDs and the genes
+         the complexes contain, and vice versa. Creation details are
+         currently undocumented.
 }
+}
+
 \examples{
 fetchData()                         # prints available datasets
 HGNC <- fetchData("HGNCreference")  # assigns the HGNC reference dataset
