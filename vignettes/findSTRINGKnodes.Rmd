@@ -73,7 +73,7 @@ where `sys` is a 5-character system code corresponding to a system collected in 
 
 ## K node calculation
 
-The `findSTRINGKnodes()` function uses the network of protein associations at a confidence of p >= 0.9 curated by asdsdasd to calculate strength of association to a given system of genes available through the "SysDB" dataset. A graph is constructed from the STRING edges, and the vertex representing genes which are in the system have a weight of 1. All other vertices have a weight of 0. 
+The `findSTRINGKnodes()` function uses the network of protein associations at a confidence of p >= 0.9 curated by @steipe-STRING to calculate strength of association to a given system of genes available through the "SysDB" dataset. A graph is constructed from the STRING edges, and the vertex representing genes which are in the system have a weight of 1. All other vertices have a weight of 0. 
 
 Then, the modified Ripley's K-statistic is calculated through:
 
@@ -83,11 +83,11 @@ where $p_j$ is the weight of vertex $j$, $\bar{p}$ is the mean vertex weight acr
 
 ## Visualization
 
-The resulting Knode values are plotted in a labelled scatterplot using `ggplot2`. Only the number of genes equal to the number of genes in the input system are plotted. Genes that are part of the input system are labelled in green, and those that are not are labelled in red.
+The resulting Knode values are plotted in a labelled scatterplot using `ggplot2`. Only the number of genes equal to the size of the input system is plotted. Genes that are part of the input system are labelled in green, and those that are not are labelled in red.
 
 ## Example
 
-```{r echo=TRUE}
+```{r eval=FALSE, include=FALSE}
 knodes <- findSTRINGKnodes("PHALY")
 ```
 
