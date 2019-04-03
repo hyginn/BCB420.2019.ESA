@@ -2,8 +2,9 @@
 % Please edit documentation in R/ESA.R
 \name{systemAnalysis}
 \alias{systemAnalysis}
-\title{\code{systemAnalysis()} Investigates genes from a biological system
-and produces plots with gene network data}
+\title{\code{systemAnalysis} Takes in a biological system and a gene from that system
+picked by the user and and produces a histogram for the node degree distribution
+of the system and a network plot for the gene from the system.}
 \usage{
 systemAnalysis(gene, sys)
 }
@@ -12,18 +13,15 @@ systemAnalysis(gene, sys)
 
 \item{sys}{A Biological system}
 }
-\value{
-a histogram for the node degree distribution of the system gene network
-and a network plot for a gene from the biological system
-}
 \description{
-\code{systemAnalysis()} Investigates genes from a biological system
-and produces plots with gene network data
+\code{systemAnalysis} Takes in a biological system and a gene from that system
+picked by the user and and produces a histogram for the node degree distribution
+of the system and a network plot for the gene from the system.
 }
 \examples{
 \dontrun{
 # Retrieve a histogram for the node degrees of the PHALY gene network and
-# get the network plot of thr AMBRA1 gene from the PHALY system
+# get the network plot of the AMBRA1 gene from the PHALY system
 systemAnalysis("AMBRA1", "PHALY")
 }
 

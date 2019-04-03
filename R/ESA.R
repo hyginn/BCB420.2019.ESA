@@ -11,9 +11,6 @@
 #
 
 # ====  FUNCTIONS  =============================================================
-# Load STRINGedges
-STRINGedges <- fetchData("STRINGedges0.9")
-myDB <- fetchData("SysDB")
 
 #'
 #' \code{systemAnalysis} Takes in a biological system and a gene from that system
@@ -43,6 +40,9 @@ systemAnalysis <- function(gene, sys) {
   # (forked directory, master repo can be accessed at
   # https://github.com/hyginn/BCB420.2019.ESA)
 
+  # Load STRINGedges
+  STRINGedges <- fetchData("STRINGedges0.9")
+  myDB <- fetchData("SysDB")
   set <- SyDBgetSysSymbols(myDB, sys)
 
   # functionality adapted from Dr. Steipe's BCB420.2019.STRING package
