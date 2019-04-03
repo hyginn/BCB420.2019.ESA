@@ -21,7 +21,13 @@ Imports:
     Biostrings,
     BiocManager,
     devtools,
-    msa
+    msa,
+    VennDiagram,
+    cluster,
+    ggplot2,
+    igraph,
+    tibble,
+    tidyr
 Suggests:
     testthat,
     BiocStyle,
