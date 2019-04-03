@@ -33,6 +33,11 @@ Imports:
     BiocManager,
     GOSemSim,
     org.Hs.eg.db
+    Biostrings,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
