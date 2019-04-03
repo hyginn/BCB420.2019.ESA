@@ -6,7 +6,7 @@ author:
   - http://orcid.org/0000-0002-8778-6442
   - University of Toronto
   email: denitsa.vasileva@mail.utoronto.ca
-date: ```r Sys.Date()```
+date: "`r Sys.Date()`"
 output:
 vignette: >
   %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
@@ -25,7 +25,7 @@ abstract:  The _Co-Expression Correlation And GOSemSim Correlation Tool_ is an e
 ---
 
 
----
+
 ## Fundamental Concepts Predicating the Tool
 
 In order to explain the biological significance and necessity of this tool it is necessary to explain a few basic biological concepts that underpine it.
