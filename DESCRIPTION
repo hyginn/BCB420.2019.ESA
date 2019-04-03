@@ -11,6 +11,7 @@ Authors@R: c(
                     email = "helennn.zhang@utoronto.ca", 
                     role = c("aut", "cre"),
                     comment = c(ORCID = "0000-0002-1145-9578")),
+                    role = c("aut", "cre")),
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
              Biology), Winter 2019 - a required course in the Specialist
