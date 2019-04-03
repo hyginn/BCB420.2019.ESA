@@ -12,6 +12,10 @@ Authors@R: c(
                     role = c("aut"),
                     comment = c(ORCID="0000-0003-1784-0922")
                     )
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -31,6 +35,10 @@ Imports:
     doParallel,
     foreach,
     seqinr
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
