@@ -10,56 +10,67 @@ vignette: >
 ---
 
 ## Background 
-STRING is a database of functional interactions. STRING interactions are inferred from a variety of different experimental and conputational categories, score with a confidence score and made avaliable as network edges where notdes are ENSEMBL protein IDs.The dataframe of STRING data used in my function are normalized and mapped to HGNC symbols, the database doesn't contain duplicates are complete.(no NA values for score column)[https://github.com/hyginn/BCB420.2019.STRING]
-In this function, I use STRING score as an indicator of "related",if edges between two symbols does not exist in our database, we will ignore it and doesn't count in the averaging process.
+STRING is a database of functional interactions. STRING interactions are inferred from a variety of different experimental and computational categories, scored with a confidence score and made available as network edges where the nodes are ENSEMBL protein IDs. The dataframe (STRINGedges) used in this package contains edges of the STRING database mapped to HGNC symbols. [https://github.com/hyginn/BCB420.2019.STRING]
+In this function, I use STRING score as an indicator of "connection". If edge between two symbols does not exist in our STRINGedges dataframe, I will count the score as 0.
+
 
 ## Input Info
-Our input is just the curated systems information, a usable STRING database and a gene name (HGNC) of interest.
+1. components of each system from systems data
+2. STRINGedges dataframe which contains edges of the STRING database mapped to HGNC symbols
+3. HGNC symbol of interest,our function will output the most system related to this HGNC symbol
 
-## Function description
-1. Sum up the total score between each component gene in current system and the gene of interest
-2. Devide the total score with the number of components in each system to get final score
-3. Print information gained in each system
-4. Return the system with the highest final score among all systems
-
-There are several situations I considered: 
-
-* If there is no or very rare interaction between any component and the input gene, the final score should be (around) 0.
-* If System A and B have the same total number of components and most components in System A have higher interaction score than components in B, function should output system A.
-* If system A have lots of component, but only small portion of them have interactions with gene in interest, System B have a smaller amount of component, but with higher portion of genes which have interactions,(but smaller in absolute number). I want the function to output system B instead of system A
-
-So I choose to use [finalscore = totalscore/ #of components in the system] to capture the situations above.
 
 ## Function Usage
 ```
 #load data
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "STRINGedges-2019-03-14.RData")
-load(url(myURL))
+STRINGedges <- fetchData("STRINGedges0.9")
 myDB <- fetchData("SysDB")
+
 #use the function
-mostRelSys(myDB,"CFTR")
-#> mostRelSys(myDB,"CFTR")
-#total interaction found in system  PHALY is  4 with final score of  56.23077 .
-#total interaction found in system  SLIGR is  0 with final score of  0 .
-#total interaction found in system  NLRIN is  0 with final score of  0 .
-#total interaction found in system  HVGCR is  6 with final score of  263.9048 .
-#[1] "HVGCR"
+> RelSys(myDB,"CFTR")
+  SystemName Components Interactions     Score
+4      HVGCR         21            6 263.90476
+1      PHALY         65            4  56.23077
+2      SLIGR         60            0   0.00000
+3      NLRIN         49            0   0.00000
+> mostRelSys(myDB,"CFTR")
+[1] "HVGCR"
 ```
 
-## Function Insight
-I was trying to use this function to build a hierarchy between systems; suppose A is a subsystem of B,which means (almost) all components in A are in B,then for each gene A and B in common, most gene should give system A as an result of this function. 
-This function is more useful to generate hypothesis of the hierarchy, instead of a definitive answer, since the result describe above doesn't imply they have a subset relationship. But we can use it to filter some information out.
+## Function description
 
-## Problems
-One problem with this function and the hierachy hypothesis is the Running time, suppose among n system, each with m components, to generate hypothesis about hierarchy, we need to O(n*m)! to get the result, this is just ridiculusly large.
-Even only with the function itself with such small database, we still need noticeable amount of time to run the function.
+There are several situations I considered: 
+
+* If there is no interactions between components in the system and the input gene, the final score should be 0.
+* If System A and B have the same number of components, and components in system A have higher STRING score with input gene than system B, the output should be system A.
+* Input gene is considered more related to system A than B if system A have higher percetage of interactions among all of its components.
+
+So I choose to use [finalscore = sum of STRING score of all components with input gene/ number of components in the system]
+
+The calculation goes as follow:
+
+1. Sum up the STRING scores between each component gene symbol in current system and the input HGNC symbol to get a total score
+2. Devide the total score by the number of components in each system to get final score
+
+The first function "RelSys"" will output a dataframe which contains system names, number of components in each system, number of interactions in each system with the input gene, and a score calculated by above method, orderer by score.
+
+The second function "mostRelSys" will output the name of the system with highest score.
+
+
+
+## Runtime
+For system data with n systems,each with m components:
+Runtime for function mostRelSys: O(mn)
+Runtime for generating all potential hierarchies:O(n!m^2)(n! possible subsystem relationship, each system have m component, each checking using mostRelSys cost O(mn), total is O(n!*m*mn))
+
 ```
 > system.time({mostRelSys(myDB,"CFTR")})
-total interaction found in system  PHALY is  4 with final score of  56.23077 .
-total interaction found in system  SLIGR is  0 with final score of  0 .
-total interaction found in system  NLRIN is  0 with final score of  0 .
-total interaction found in system  HVGCR is  6 with final score of  263.9048 .
   user system   流逝 
-  1.75   0.33   2.08 
+  1.57   0.33   1.89 
 ```
+## Exploration
+
+I want to use "mostRelSys" function to answer the question: is there any hierachy among the system data, that is, suppose A is a subsystem of B,which means (almost) all components in A are in B, can we find a way to detect this relationship. If A is a subsystem of B, then mostRelSys function should output system A for all common gene between system A and B. 
+
+I want to use this function to generate hypothesises of the hierarchy structure among systems by detecting such pattern, note that even we find that all common components between A and B are more related to A, it does not mean that A is a subsystem of B. 
+
