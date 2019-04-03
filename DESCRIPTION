@@ -10,7 +10,7 @@ Authors@R: c(
 	         person("Yin", "Yin", 
                     email = "yin.yin@mail.utoronto.ca", 
                     role = c("ctb"), 
-                    comment = c(ORCID = "0000-0002-8921-6945"))
+                    comment = c(ORCID = "0000-0002-8921-6945")),
              person("Sapir", "Labes",
                     email = "sapir.labes@mail.huji.ac.il",
                     role = c("aut"),
