@@ -25,11 +25,11 @@ expected <- list(
 
 df <- computeCorrelations(TRUE)
 
-calcPHALY <- BCB420.2019.ESA::calcStats(df, "PHALY")
+calcPHALY <- calcStats(df, "PHALY")
 
-calcSLIGR <- BCB420.2019.ESA::calcStats(df, "SLIGR")
+calcSLIGR <- calcStats(df, "SLIGR")
 
-calcNLRIN <- BCB420.2019.ESA::calcStats(df, "NLRIN")
+calcNLRIN <- calcStats(df, "NLRIN")
 
 
 
