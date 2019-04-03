@@ -1,0 +1,131 @@
+---
+title: "BCB420.2019.ESA Predict Regulatory Networks"
+author:
+- name: "Nada Elnour"
+affiliation: 
+  - https://orcid.org/0000-0001-6165-1542
+  - University of Toronto
+  email: nada.elnour@mail.utoronto.ca
+date: ""`r Sys.Date()`"
+abstract: >
+  These tools are for BioGRID-based predictions of regulatory relationships using by integrating genetic and protein-protein interactions (GGI and PPI, respectively).
+output: 
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Predict Regulatory Networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This tool takes as input at least one curated human system name and integrates both of its components' PPI and GGI data to predict regulatory relationships among them. External system\'s PPI data may also be used to predict regulatory relationships. Currently, it only supports human genes and proteins.
+
+# Example and usage
+For a single curated system, for example,
+
+```{r, echo=TRUE}
+# Load the library
+library(BCB420.2019.ESA)
+
+# get curated system "SLIGR"
+mySys <- getSysInteractions(sysName = "SLIGR", criterion = "stringent")
+mySys2 <- getSysInteractions(sysName = "SLIGR", criterion = "relaxed")
+ 
+hypothesize(mySys2, mySys)
+```
+The red nodes are components of SLIGR with both PPI and GGI information. The blue nodes are SLIGR components that with only genetic interaction data.
+
+For multiple curated systems,
+```{r, echo=TRUE}
+# Load the library
+library(BCB420.2019.ESA)
+
+# specify the systems
+systems <- c("PHALY", "SLIGR", "NLRIN", "HVGCR")
+mySys <- getSysInteractions(systems)
+mySys2 <- getSysInteractions(systems, criterion = "relaxed")
+ 
+hypothesize(mySys2, mySys)
+```
+Red nodes denote components in all of the systems for which both PPI and GGI data are available. The blue nodes denote the nodes in all of the systems for which only GGI data are available.
+
+And finally, for an externally defined set of genes, take the TCA cycle's components 
+```{r, echo=TRUE}
+# Load the library
+library(BCB420.2019.ESA)
+library(data.table)
+url <- "http://www.informatics.jax.org/go/report.txt?goID=GO:0006099&results=42&startIndex=0&sort=term&dir="
+myGenes <- fread(url)
+myGenes <- data$`MGI Gene/Marker ID`
+myGenes <- toupper(data)
+PPI <- biogrid[biogrid$type == "physical", ]
+ 
+sel <- PPI$A %in% myGenes & PPI$B %in% myGenes
+mySys <- PPI[sel, ]
+ppi_ggi <- getGeneticInteractome(mySys, "stringent")
+network <- getGeneticInteractome(mySys, "relaxed")
+ 
+hypothesize(network, ppi_ggi)
+
+```
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+
+
+<!-- End -->
