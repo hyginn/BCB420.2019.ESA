@@ -5,9 +5,10 @@
 #'
 #'
 #' @param sys - System Code (e.g., PHALY)
-#' @return (matrix) a matrix of enriched GO terms with semantic similarity values
+#' @return (matrix) a matrix of enriched GO terms with semantic similarity values or null if system does not contain any genes (GOterm x GOterm format for the matrix)
 #'
-#' @author Cathy Cha {aut}
+#' @author \href{https://orcid.org/0000-0003-4609-4965}{Cathy Cha} (aut)
+#' @seealso Documentation of semantic similarity calculations and GO enrichment analysis \code{\link{GOSemSim}}
 #'
 #'
 #' @examples
@@ -19,6 +20,9 @@ semanticSimilarity <- function(sys) {
 
   #Load the HGNC data
   HGNC <- fetchData("HGNCreference")
+  #imports the Genome wide annotation for Human
+  #in separate helper function so that it is only imported when this function is used
+  HuGenAnnotImport()
 
   #org.Hs.eg.db uses entrez gene identifiers - need to annotate the geneset into entrez ID's with HGNC
   geneset <- SyDBgetSysSymbols(HGNC, sys)
@@ -26,13 +30,16 @@ semanticSimilarity <- function(sys) {
   genes <- HGNC[geneset,]$GeneID
   genes <- as.character(genes)
 
+  if (length(genes) == 0) {
+    return(NULL)
+  }
+
   #finding GO term enrichment using our geneset
   GOSim::setEvidenceLevel(evidences = "all",
-                          organism = org.Hs.egORGANISM,
+                          organism = "Homo sapiens",
                           gomap = org.Hs.egGO)
 
   allGenes <- AnnotationDbi::keys(org.Hs.eg.db)
-  GOSim::setOntology("BP", loadIC = FALSE)
 
   #enriched GO Terms from our sample gene set
   myEnr <- GOSim::GOenrichment(genes, allGenes)
