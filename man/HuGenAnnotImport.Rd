@@ -7,6 +7,9 @@ This database will only be imported when the semanticSimilarity.R function is re
 \usage{
 HuGenAnnotImport()
 }
+\value{
+(NULL) NULL
+}
 \description{
 \code{HuGenAnnotImport} imports the org.Hs.eg.db, implemented to reduce import burden of package
 This database will only be imported when the semanticSimilarity.R function is required
