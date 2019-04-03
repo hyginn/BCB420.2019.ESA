@@ -1,12 +1,3 @@
-
-bioSystems <- c("PHALY", "SLIGR", "NLRIN")
-# Dr.Steipe's data file
-geoQNURL <- paste0(
-  "http://steipe.biochemistry.utoronto.ca/abc/assets/",
-  "GEO-QN-profile-2019-03-24.rds"
-)
-dfColNames <- c("gene1", "gene2", "correlation", "goCorrelation")
-
 #' \code{preDraw} Helper function.
 #' Helper function for the co-expression correlation and semantic similarity correllation heat maps
 #' @param fileName (character)     if not NULL - it will use the Cairo package to create a
@@ -61,6 +52,18 @@ postDraw <- function(fileName) {
   return(invisible(NULL))
 }
 
+
+#'
+#' \code{installHumanGenomeAnnotation()} installs Human Genome Annotation
+#' as per Dr. Stipe's email
+#'
+installHumanGenomeAnnotation <- function() {
+  if (! requireNamespace("org.Hs.eg.db")) {
+    BiocManager::install("org.Hs.eg.db")
+  }
+  return(invisible(NULL))
+}
+
 #'
 #' \code{computeCorrelations()} Calculates pairwise Semantic similarity and co-expression correlation
 #' between expression profiles of genes and returns a
@@ -74,10 +77,17 @@ postDraw <- function(fileName) {
 #' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
 computeCorrelations <- function(silent = FALSE) {
   sysDB <- fetchData("SysDB")
+
+  # Dr.Steipe's data file
+  geoQNURL <- paste0(
+    "http://steipe.biochemistry.utoronto.ca/abc/assets/",
+    "GEO-QN-profile-2019-03-24.rds")
+
   geoQNXP <- readRDS(url(geoQNURL))
   if (!silent) {
     cat(sprintf("Loading GO - genome wide annotation for human.\n"))
   }
+  installHumanGenomeAnnotation()
   hsGO <- GOSemSim::godata("org.Hs.eg.db", keytype = "SYMBOL", ont = "MF")
   if (!silent) {
     cat(sprintf("%d rows loaded.\n", nrow(hsGO)))
@@ -87,7 +97,7 @@ computeCorrelations <- function(silent = FALSE) {
   gene2V <- vector(mode = "character", length = 0)
   correlationV <- vector(mode = "numeric", length = 0)
   goCorrelationV <- vector(mode = "numeric", length = 0)
-  for (bioSystem in bioSystems) {
+  for (bioSystem in c("PHALY", "SLIGR", "NLRIN")) {
     systemComponents <- SyDBgetSysSymbols(sysDB, bioSystem)[[1]]
     componentsCount <- length(systemComponents)
     if (!silent) {
@@ -127,7 +137,7 @@ computeCorrelations <- function(silent = FALSE) {
   }
 
   df <- data.frame(systemV, gene1V, gene2V, correlationV, goCorrelationV)
-  colnames(df) <- c("System", dfColNames)
+  colnames(df) <- c("System", c("gene1", "gene2", "correlation", "goCorrelation"))
   return(df)
 }
 

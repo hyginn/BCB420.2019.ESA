@@ -32,7 +32,6 @@ Imports:
     ggplot2,
     BiocManager,
     GOSemSim,
-    org.Hs.eg.db,
     Biostrings,
     cluster,
     grid,
