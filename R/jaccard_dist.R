@@ -16,7 +16,7 @@
 #'
 #'
 #' @author \href{https://orcid.org/0000-0001-5724-2252}{Rachel Silverstein} (aut)
-#'
+#' @import igraph
 #'
 #' @examples
 #'
@@ -39,7 +39,7 @@ jaccard_dist <- function(gene1, gene2, graph) {
   if (gene1 == gene2) {
     sim <- 1
   } else { # compute Jaccard similarity normally
-    sim <- igraph::similarity(graph, vids = c(gene1, gene2) , method = "jaccard")
+    sim <- similarity(graph, vids = c(gene1, gene2) , method = "jaccard")
     sim <- sim[1, 2]
   }
   distance <- 1 - sim

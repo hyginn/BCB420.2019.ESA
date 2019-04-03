@@ -12,6 +12,19 @@ Authors@R: c(
                     role = c("aut", "ctb"), 
                     comment = c(ORCID = "0000-0001-6165-1542"))
                     )
+             person("Sapir", "Labes",
+                    email = "sapir.labes@mail.huji.ac.il",
+                    role = c("aut"),
+                    comment = c(ORCID = "0000-0002-9478-5974")),
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252")),
+             person("Xindi", "Zhang", 
+                    email = "xindi.zhang@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0002-7114-0567"))
+    )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
              Biology), Winter 2019 - a required course in the Specialist
@@ -25,7 +38,14 @@ biocViews: Software, Infrastructure
 Imports:
     Biostrings,
     visNetwork,
-    dplyr
+    dplyr,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram,
+    ggplot2,
+    tibble,
+    tidyr
 Suggests:
     testthat,
     BiocStyle,
