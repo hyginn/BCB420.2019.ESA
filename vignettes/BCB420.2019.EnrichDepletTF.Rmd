@@ -1,0 +1,325 @@
+---
+title: "EnrichDepletTF: querying for enrichement or depletion of TF-binding genes"
+author:
+- name: Sapir Labes
+  affiliation: 
+  - http://orcid.org/0000-0002-9478-5974
+  - University of Toronto
+  - The Hebrew University of Jerusalem
+  email: sapir.labes@mail.huji.ac.il
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette demonstrates how to query enrichment and depletion of TF-binding genes among significantly correlated pairs of genes of a chosen system.
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# The following two lines should load the library of our package
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+```
+
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This Vignette explains and demonstrates how to use the function `EnrichDepletTF()` of the package `BCB420.2019.ESA`, and how to interprete its results.
+
+This function uses an in-built helper function to find pairs of genes within the chosen system that their expression profiles significantly correlate (negatively or positively).
+Then, this function queries for enrichment or depletion in TF-binding-genes among the significantly correlated set of gene, with respect to the entire set of genes of the chosen system.
+
+Finding specific transcription factors that are enriched or depleted for a system, implies on a regulatory relationship between the TF and the binding genes, that could be evaluated and defined in consecutive research. 
+
+
+# Using the function
+
+As a first step, the user must choose a system to analyse.
+
+
+Presenting the available systems:
+```{r echo=TRUE}
+names(SyDBgetRootSysIDs(fetchData("SysDB")))
+```
+
+
+
+Inserting one system's name into `EnrichDepletTF()`
+For instance, typing this code into your console:
+```{r echo=TRUE}
+NLRIN <- EnrichDepletTF(sys = "NLRIN", nUpMost = 10)
+
+head(NLRIN)
+```
+
+
+
+
+This queries for enrichment and depletion of TFs among the 10 most positively correlated genes of the "NLRIN" system.
+
+As inferred from the output, the transcription factors that are significantly enriched for this set of positively correlated genes are the TFs that their `Enrichment_P_value` are smaller than either the corresponding `BH_enrichment` cutoff value or than the `Bonferroni` cutoff value. The choise of cutoff value is the user's.
+
+Similarly, the transcription factors that are significantly depleted are the TFs that their `Depletion_P_value` are smaller than either the corresponding `BH_depletion` cutoff value or than the `Bonferroni` cutoff value.
+
+
+As shown by this example, only one of the queried transcription factors were found to be enriched for the 10 most positively correlated pairs of genes of the "NLRIN" system.
+
+```{r echo=TRUE}
+#For BH cutoff
+NLRIN[NLRIN$Enrichment_P_value < NLRIN$BH_enrichment, ]
+
+#For bonferroni cutoff
+NLRIN[NLRIN$Enrichment_P_value < NLRIN$Bonferroni, ]
+```
+
+
+
+Please notice that `EnrichDepletTF()` has several parameters that are set to specific values as default, but can be modified by the user. The parameters are fully documented within the function documentation page. 
+
+
+# Validating the function
+
+Creating a small synthetic database of genes and transcription factors that relate to an hypothetical system, and using it as an input to the function for validation.
+
+The original `EnrichDepletTF()` function nests several helper functions that fetch and clean the required databases for the analysis. That way, users are only required to choose the system that they want to analyze by stating its name, and the parameters of the analysis they are interested of (e.g. whether the genes that they enrichment / depletion is evaluated are the positively correlated or negatively correlated genes, the value of alpha, etc...)
+
+In order to analyze synthetic datasets for enrichment / depletion using the function, some code adjustments must be done.
+For that reason, the simulation function `EnrichDepSim()` was created. Although the part of which the databases are loaded into the function was altered, the enrichment / depletion analysis part of the code is identical to the original function `EnrichDepletTF()`.
+
+```{r include=FALSE}
+EnrichDepSim <- function(sysGenes,
+                         CorGenes,
+                         GenesToTfs,
+                         alpha = 0.05){
+  
+  #Naming the databases according to the named variables in the original function
+  GeneSym <- sysGenes
+  upCorGenes <- CorGenes
+  GTRDtf <- GenesToTfs
+  TfSym <- names(GTRDtf)
+  
+  
+  if (sum( ! is.na(upCorGenes)) >= 3) { #3 or more correlated genes.
+    #calculating enrichment and depletion:
+    numRow <- length(TfSym)
+    corEnrichDep<-  data.frame(TF = rep(NA, numRow),
+                               Enrichment = rep(NA, numRow),
+                               Enrichment_P_value = rep(NA, numRow),
+                               Depletion = rep(NA, numRow),
+                               Depletion_P_value = rep(NA, numRow),
+                               BH_enrichment = rep(NA, numRow),
+                               BH_depletion = rep(NA, numRow),
+                               Bonferroni = rep(NA, numRow),
+                               stringsAsFactors = F)
+    corEnrichDep$TF <- TfSym
+
+    for (i in seq_along(TfSym)){
+      #Calculating enrichment and p value
+      GenesBindTf <- GTRDtf[[TfSym[i]]]
+      CorGenesBindTf <- upCorGenes[which(upCorGenes %in% GenesBindTf)]
+      a <- length(CorGenesBindTf) #Correlates and binds TF
+      b <- length(GenesBindTf) - a #not correlates and binds TF
+      c <- length(upCorGenes) - a #Correlates and don't bind
+      d <- (length(GeneSym) - length(upCorGenes)) - b #Not correlates and not binds
+
+      tmpFisher <- stats::fisher.test(matrix(c(a, b, c, d), nrow = 2),
+                                      alternative = "greater")
+      corEnrichDep$Enrichment[i] <- tmpFisher$estimate
+      corEnrichDep$Enrichment_P_value[i] <- tmpFisher$p.value
+
+      #Calculating depletion. and p value
+      tmpFisher <- stats::fisher.test(matrix(c(c, d, a, b), nrow = 2),
+                                      alternative = "greater")
+      corEnrichDep$Depletion[i] <- tmpFisher$estimate
+      corEnrichDep$Depletion_P_value[i] <- tmpFisher$p.value
+    }
+
+    #Calculating the cutoffs for each multi-test correction approach
+    nExperiments <- length(TfSym)
+    corEnrichDep <- corEnrichDep[order(corEnrichDep$Enrichment_P_value,
+                                         decreasing = FALSE),] #order according to
+                                                               #increasing p values
+    corEnrichDep$BH_enrichment <- (order(corEnrichDep$Enrichment_P_value,
+                                          decreasing = FALSE) / nExperiments) * alpha
+    corEnrichDep <- corEnrichDep[order(corEnrichDep$Depletion_P_value,
+                                         decreasing = FALSE),] #order according to
+                                                               #increasing P values
+    corEnrichDep$BH_depletion <- (order(corEnrichDep$Depletion_P_value,
+                                         decreasing = FALSE) / nExperiments) * alpha
+    corEnrichDep$Bonferroni <- alpha / nExperiments #Bonferroni cutoff value.
+
+    return(corEnrichDep)
+
+  } else { #Less then 3 correlated genes.
+    return(message(NaN))
+  }
+}
+```
+
+
+##Generating the synthetic databases
+
+```{r}
+#The genes of the system
+sysGenes <- c("AAA", "BBB", "CCC", "DDD", "EEE", "FFF", "GGG", "HHH", "III", "JJJ")
+
+#The genes of the system that were found to be correlated positively
+CorGenes <- c("AAA", "BBB", "EEE", "GGG", "III")
+
+#A list of transcription factors (ZZ, YY) and the genes of the system that they can bind to.
+GenesToTfs <- list(ZZ = c("AAA", "BBB", "EEE", "FFF", "GGG", "III"),
+                   YY = c("BBB", "CCC", "DDD", "FFF", "HHH"))
+```
+
+
+##Creating the Contingency tables and calculating the enrichment and depletion
+
+Presenting the contingency tables and fisher's exact test for both transcription factors, as a reference for the scores produced by the simulation function.
+
+###Contingency table for ZZ 
+```{r echo=TRUE}
+nCorAndbind <- sum(GenesToTfs$ZZ %in% CorGenes) #5
+nNoCorAndbind <- sum( ! (GenesToTfs$ZZ %in% CorGenes)) #1
+nCorNoBind <- sum( ! (CorGenes %in% GenesToTfs$ZZ)) #0
+nNoCorNoBind <- sum(! (sysGenes[! (sysGenes %in% CorGenes)] %in%  GenesToTfs$ZZ)) #4
+
+matrix(data = c(nCorAndbind, nNoCorAndbind, nCorNoBind, nNoCorNoBind), nrow = 2, ncol = 2)
+```
+
+###Fisher's exact test for ZZ:
+
+Enrichment
+```{r echo=TRUE}
+fisher.test(x = matrix(c(nCorAndbind,
+                         nNoCorAndbind,
+                         nCorNoBind,
+                         nNoCorNoBind),
+                       nrow = 2),
+            alternative = "greater")
+```
+
+
+Depletion
+```{r echo=TRUE}
+fisher.test(x = matrix(c(nCorNoBind,
+                         nNoCorNoBind,
+                         nCorAndbind, 
+                         nNoCorAndbind),
+                       nrow = 2),
+            alternative = "greater")
+```
+
+
+###Contingency table for YY
+```{r echo=TRUE}
+nCorAndbind <- sum(GenesToTfs$YY %in% CorGenes) #1
+nNoCorAndbind <- sum( ! (GenesToTfs$YY %in% CorGenes)) #4
+nCorNoBind <- sum( ! (CorGenes %in% GenesToTfs$YY)) #4
+nNoCorNoBind <- sum(! (sysGenes[! (sysGenes %in% CorGenes)] %in%  GenesToTfs$YY)) #1
+
+matrix(data = c(nCorAndbind, nNoCorAndbind, nCorNoBind, nNoCorNoBind), nrow = 2, ncol = 2)
+```
+
+###Fisher's exact test for YY:
+
+Enrichment
+```{r echo=TRUE}
+fisher.test(x = matrix(c(nCorAndbind,
+                         nNoCorAndbind,
+                         nCorNoBind,
+                         nNoCorNoBind),
+                       nrow = 2),
+            alternative = "greater")
+```
+
+
+Depletion
+```{r echo=TRUE}
+fisher.test(x = matrix(c(nCorNoBind,
+                         nNoCorNoBind,
+                         nCorAndbind, 
+                         nNoCorAndbind),
+                       nrow = 2),
+            alternative = "greater")
+```
+
+
+##Using the simulation function on the synthetic data
+```{r echo=TRUE}
+EnrichDepSim(sysGenes = sysGenes,
+             CorGenes = CorGenes,
+             GenesToTfs = GenesToTfs)
+```
+
+
+# Further reading
+<a name="a1"></a>
+
+- Which 'systems' does this function refer to: Read about the available systems and their notation https://github.com/hyginn/BCB420.2019.ESA.
+- How were these systems curated: a link to the wiki page of the BCB420H1 course that the systems were curated during http://steipe.biochemistry.utoronto.ca/abc/index.php/Computational_Systems_Biology_Main_Page#Part_II:_Biocuration
+- Calculating P value by using fisher exact test: https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/
+- Cutoff for significance: https://www.pathwaycommons.org/guide/primers/statistics/multiple_testing/
+
+
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+- `SyDBgetRootSysIDs()`: Written by Boris Steipe, published at  https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/SyDButils.R
+- `fetchData()`: Written by Boris Steipe, published at  https://github.com/hyginn/BCB420.2019.ESA/blob/master/R/fetchData.R
+- `cor.test()`: Used for calculating pearson's correlation.
+- `fisher.test()`: Used for computing fisher exact test and calculating the p values for depletion and enrichment.
+- https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/
+- https://www.pathwaycommons.org/guide/primers/statistics/multiple_testing/
+
+
+<!-- End -->
