@@ -4,7 +4,6 @@ import pcreode
 import pandas as pd
 # numpy is very common package for handling arrays and matrices
 import numpy as np
-from sklearn.decomposition import PCA as _PCA
 from sklearn.metrics import pairwise_distances
 from igraph import *
 import matplotlib
@@ -28,12 +27,13 @@ density_1 = dens.get_density( radius=guess)
 
 noise = 8.0
 target = 25.0
+num_runs = 3
 
 downed, downed_ind = pcreode.Down_Sample( pca_reduced_data, density_1, noise, target)
 out_graph, out_ids = pcreode.pCreode( data=pca_reduced_data, density=density_1, noise=noise,
-                                      target=target, file_path="./data/temp/", num_runs=10)
+                                      target=target, file_path="./data/temp/", num_runs=num_runs)
 
-graph_ranks = pcreode.pCreode_Scoring( data=pca_reduced_data, file_path="./data/temp/", num_graphs=10)
+graph_ranks = pcreode.pCreode_Scoring( data=pca_reduced_data, file_path="./data/temp/", num_graphs=num_runs)
 
 gid = graph_ranks[0]
 

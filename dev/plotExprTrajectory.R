@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' # Loads the Myeloid Differentiation Flow Cyt. Dataset, and plots the CAR2 gene expression
-#' plotExprTrajectory("./data/rna_seq_myeloid.fcs", "CAR2")
+#' plotExprTrajectory("./inst/extdata/rna_seq_myeloid.fcs", "CAR2")
 #'
 #' @export
 
@@ -30,7 +30,7 @@ plotExprTrajectory <- function (filename, overlayName) {
     BiocManager::install("flowCore", version = "3.8")
   pre_data <- flowCore::read.FCS(filename)
   write.csv(data.frame(pre_data@exprs), "./data/temp/temp.csv", row.names=F)
-  system(paste("/usr/local/bin/python ./dev/plotExprTrajectory.py ./data/temp/temp.csv ", overlayName, sep="", collapse = NULL))
+  system(paste("python ./dev/plotExprTrajectory.py ./data/temp/temp.csv ", overlayName, sep="", collapse = NULL))
 
   m <- as.matrix(read.table("./data/temp/weights.txt"))
   dens <- as.matrix(read.table("./data/temp/density.txt"))
