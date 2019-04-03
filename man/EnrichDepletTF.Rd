@@ -79,6 +79,8 @@ pairs of genes. The Default is 0.05.}
                   Enrichment and depletion calculation were inspired by "Pathway
                   Guide" \href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
                   and by Devon Ryan \href{https://www.biostars.org/p/102946/}{Depletion}
+                  Note: I am not sure if the depletion calculation is mathematically
+                  correct.
 }
 
 \examples{

@@ -11,8 +11,6 @@
 #' @export
 
 HuGenAnnotImport <- function() {
-  if (! requireNamespace("org.Hs.eg.db")) {
-    BiocManager::install("org.Hs.eg.db")
-  }
+  BiocManager::install("org.Hs.eg.db")
   return(invisible(NULL))
 }
