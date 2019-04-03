@@ -2,38 +2,35 @@
 % Please edit documentation in R/pathwayEnrich.R
 \name{PathwayEnrichment}
 \alias{PathwayEnrichment}
-\title{\code{PathwayEnrichment} a function that perform a pathway enrichment analysis 
-Return a barplot that show the enriched pathway and its p value(fisher test) that is smaller than 
+\title{\code{PathwayEnrichment} a function that perform a pathway enrichment analysis
+Return a barplot that show the enriched pathway and its p value(fisher test) that is smaller than
 the ajusted p value. The null hypothesis for each fisher test: the pathway
 is not enriched in the given gene set.}
 \usage{
-PathwayEnrichment(geneSet, method, reactInfo)
+PathwayEnrichment(geneSet, reactInfo)
 }
 \arguments{
 \item{geneSet}{A list of gene symbol in the system that you want to perform pathway
 enrichment analysis.}
 
-\item{method}{method of cutoff that the visualization plot method can be BH or 
-bonferroni.}
-
 \item{reactInfo}{a dataframe map the reactome pathway id to the reference gene symbol}
 }
 \value{
-a barplot that show the enriched pathway and its p value(fisher test) 
-that is smaller than the ajusted p value.
+a dataframe that show the enriched pathway, adjusted pa value using
+Bonferroni and Benjamini-Hochberg methods,and its p value(fisher test).
 }
 \description{
-\code{PathwayEnrichment} a function that perform a pathway enrichment analysis 
-Return a barplot that show the enriched pathway and its p value(fisher test) that is smaller than 
+\code{PathwayEnrichment} a function that perform a pathway enrichment analysis
+Return a barplot that show the enriched pathway and its p value(fisher test) that is smaller than
 the ajusted p value. The null hypothesis for each fisher test: the pathway
 is not enriched in the given gene set.
 }
 \examples{
 # Picking sample gene list to find the pathway enrichment and p value
 # Call the symComp helper function to generate list
-sampleGeneList<-c("CREBBP","NR1H3","RORA","SREBF1","SMARCD3")
-reactInfo<- fetchData("ReactomeSym")
-result <- PathwayEnrichment(sampleGeneList,"BH",reactInfo)
+sampleGeneList <- c("CREBBP","NR1H3","RORA","SREBF1","SMARCD3")
+reactInfo <- fetchData("ReactomeSym")
+result <- PathwayEnrichment(sampleGeneList,reactInfo)
 
 }
 \author{
