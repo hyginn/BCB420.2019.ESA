@@ -10,7 +10,7 @@ Authors@R: c(
                     comment = c(ORCID = "0000-0002-1134-6758")),
              person("Cathy", "Cha",
                     email = "cathy.cha@mail.utoronto.ca", 
-                    role = c("ctb"), 
+                    role = c("aut"), 
                     comment = c(ORCID = "0000-0003-4609-4965")), 
              person("Rachel", "Silverstein", 
                     email = "rachel.silverstein@mail.utoronto.ca", 
@@ -29,10 +29,15 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     BiocManager,
+    Biostrings,
     GOSim,
     org.Hs.eg.db,
     AnnotationDbi,
-    GOSemSim
+    GOSemSim,
+    cluster,
+    grid,
+    igraph,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,

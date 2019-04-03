@@ -23,5 +23,5 @@ semanticSimilarity("PHALY")
 }
 }
 \author{
-\href{https://orcid.org/0000-0002-1134-6758}{Boris Steipe} (aut)
+Cathy Cha {aut}
 }

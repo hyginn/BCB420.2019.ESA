@@ -7,7 +7,7 @@
 #' @param sys - System Code (e.g., PHALY)
 #' @return (matrix) a matrix of enriched GO terms with semantic similarity values
 #'
-#' @author \href{https://orcid.org/0000-0002-1134-6758}{Boris Steipe} (aut)
+#' @author Cathy Cha {aut}
 #'
 #'
 #' @examples
