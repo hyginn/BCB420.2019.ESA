@@ -11,7 +11,7 @@
 #'  
 #' @param method method of cutoff that the visualization plot method can be BH or 
 #' bonferroni.
-#' reactInfo
+#' 
 #' @param reactInfo a dataframe map the reactome pathway id to the reference gene symbol 
 #' 
 #' @return a barplot that show the enriched pathway and its p value(fisher test) 

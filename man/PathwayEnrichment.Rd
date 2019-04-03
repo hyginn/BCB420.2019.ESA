@@ -14,8 +14,7 @@ PathwayEnrichment(geneSet, method, reactInfo)
 enrichment analysis.}
 
 \item{method}{method of cutoff that the visualization plot method can be BH or 
-bonferroni.
-reactInfo}
+bonferroni.}
 
 \item{reactInfo}{a dataframe map the reactome pathway id to the reference gene symbol}
 }
