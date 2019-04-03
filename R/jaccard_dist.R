@@ -25,9 +25,10 @@
 #' if (requireNamespace("igraph")) {
 #'     STRINGgraph <- igraph::graph_from_edgelist(as.matrix(STRING[,1:2]))
 #' } else {
-#'     cat("igraph is required for this example)}
+#'     cat("igraph is required for this example")
+#' }
 #'
-#' # calcualte the Jaccard network distance between "BRCA1" and "BRCA2"
+#' # calculate the Jaccard network distance between "BRCA1" and "BRCA2"
 #' jaccard_dist("BRCA1", "BRCA2", STRINGgraph)
 #'
 #' @export
