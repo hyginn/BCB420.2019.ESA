@@ -55,7 +55,8 @@ postDraw <- function(fileName) {
 
 #'
 #' \code{installHumanGenomeAnnotation()} installs Human Genome Annotation
-#' as per Dr. Stipe's email
+#' as per Dr. Stipe's email and
+#' https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html
 #'
 installHumanGenomeAnnotation <- function() {
   if (!requireNamespace("BiocManager", quietly = TRUE)) {
