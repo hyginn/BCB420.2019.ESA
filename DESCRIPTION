@@ -14,7 +14,7 @@ Authors@R: c(
               person("Yufei", "Yang", 
                     email = "faye.yang@utoronto.ca", 
                     role = c( "ctb"), 
-                    comment = c(ORCID = "0000-0002-1821-2947")))
+                    comment = c(ORCID = "0000-0002-1821-2947"))),
              person("Sapir", "Labes",
                     email = "sapir.labes@mail.huji.ac.il",
                     role = c("aut"),
