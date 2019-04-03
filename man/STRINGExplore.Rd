@@ -4,10 +4,10 @@
 \alias{STRINGExplore}
 \title{STRINGExplore}
 \usage{
-STRINGExplore(genes)
+STRINGExplore(systemName)
 }
 \arguments{
-\item{genes}{(str) A 5 character string representing the name of
+\item{systemName}{(str) A 5 character string representing the name of
 the desired curated gene system user would like to build a
 high-confidence interaction network for.}
 }
