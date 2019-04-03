@@ -125,9 +125,9 @@ corGenes <- function(A, B, prf) {
     }
     corM[is.na(corM)] <- 0
     heatmap1 <- ggcorrplot::ggcorrplot(corM, hc.order = TRUE, type = "lower",
-                           outline.col = "white", lab = TRUE)
+                           outline.col = "white", lab = TRUE,title = "Expression Correlation")
     heatmap2 <- ggcorrplot::ggcorrplot(goM, hc.order = TRUE, type = "lower",
-                           outline.col = "white", lab = TRUE)
+                           outline.col = "white", lab = TRUE, title = "GO Term Similarity")
     #print(heatmap1)
     #print(heatmap2)
       pairFrame <- geneDataFrame[which(geneDataFrame$GeneB != geneDataFrame$GeneA),]
