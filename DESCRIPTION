@@ -7,6 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252")),
              person("Gabriela", "Morgenshtern",
                     email = "g.morgenshtern@mail.utoronto.ca",
                     role = c("aut"),
@@ -31,7 +35,10 @@ Imports:
     BiocCheck,
     readr,
     stats,
-    igraph
+    igraph,
+    cluster,
+    grid,
+    VennDiagram
 Suggests:
     testthat,
     BiocStyle,
