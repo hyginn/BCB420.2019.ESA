@@ -7,6 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+             person("Deus", "Bajaj", 
+                    email = "deus.bajaj@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0003-1870-712X")),
              person("Sapir", "Labes",
                     email = "sapir.labes@mail.huji.ac.il",
                     role = c("aut"),
@@ -18,11 +22,7 @@ Authors@R: c(
              person("Xindi", "Zhang", 
                     email = "xindi.zhang@mail.utoronto.ca", 
                     role = c("ctb"), 
-                    comment = c(ORCID = "0000-0002-7114-0567")),
-             person("Deus", "Bajaj", 
-                    email = "deus.bajaj@mail.utoronto.ca", 
-                    role = c("ctb"), 
-                    comment = c(ORCID = "0000-0003-1870-712X"))
+                    comment = c(ORCID = "0000-0002-7114-0567"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
