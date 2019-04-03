@@ -417,36 +417,31 @@ Note: fetchComponents(...) is deprecated. Use SyDBgetSysSymbols(<database>, <sys
 
 &nbsp;
 
-<<<<<<< HEAD
 ## 3 Sample Data Analysis
 
 ```R
-source('./R/GGI_PPI_Integrator.R', echo=TRUE)
  
-myKey <- getKey("Nada Elnour", "nada.elnour@mail.utoronto.ca", "SLIGRESA")
- 
-mySys <- getSysInteractions(sysName = "SLIGR", key = myKey, criterion = "stringent")
+mySys <- getSysInteractions(sysName = "SLIGR", criterion = "stringent")
 
 hypothesize(mySys)
 ```
 ![ppi_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
 =======
 ## 3 Functions
->>>>>>> upstream/master
+
 
 ```R
-mySys <- getSysInteractions(sysName = "SLIGR", key = myKey, criterion = "relaxed")
+mySys2 <- getSysInteractions(sysName = "SLIGR", criterion = "relaxed")
 hypothesize(mySys2, mySys)
 ```
 ![all_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/network.png?raw=true)
 &nbsp;
 
-<<<<<<< HEAD
 To look at several systems of interest at a time,
 ```R
 systems <- systems <- c("PHALY", "SLIGR", "NLRIN", "HVGCR")
-mySys <- getSysInteractions(systems, key = myKey)
-mySys2 <- getSysInteractions(systems, key = myKey, criterion = "relaxed")
+mySys <- getSysInteractions(systems)
+mySys2 <- getSysInteractions(systems, criterion = "relaxed")
 
 hypothesize(mySys)
 hypothesize(mySys2, mySys)
@@ -454,7 +449,6 @@ hypothesize(mySys2, mySys)
 
 ![.](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/multiSystemPPIGGI.png?raw=true)
 ![..](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/multiSystemAllGGI.png?raw=true)
-=======
 #### 3.1 Fetching data
 
 See:
