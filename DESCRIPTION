@@ -7,12 +7,24 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+
             person("Yoonsik", "Park", 
                     email = "yoonsik.park@mail.utoronto.ca" ,
                     role = "ctb",
                     comment = ""
                     )
-              )
+              ),
+
+             person("Rachel", "Silverstein", 
+                    email = "rachel.silverstein@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-5724-2252")),
+             person("Xindi", "Zhang", 
+                    email = "xindi.zhang@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0002-7114-0567"))
+    )
+
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
              Biology), Winter 2019 - a required course in the Specialist
@@ -27,6 +39,13 @@ Imports:
     Biostrings,
     igraph,
     flowCore
+    cluster,
+    grid,
+    igraph,
+    VennDiagram,
+    ggplot2,
+    tibble,
+    tidyr
 Suggests:
     testthat,
     BiocStyle,
