@@ -90,26 +90,6 @@ mySys2 <- getSysInteractions(systems, criterion = "relaxed")
 hypothesize(mySys2, mySys)
 ```
 Red nodes denote components in all of the systems for which both PPI and GGI data are available. The blue nodes denote the nodes in all of the systems for which only GGI data are available.
-
-And finally, for an externally defined set of genes, take the TCA cycle's components 
-```{r, echo=TRUE}
-library(data.table)
-
-biogrid <- fetchData("BioGRID")
-url <- "http://www.informatics.jax.org/go/report.txt?goID=GO:0006099&results=42&startIndex=0&sort=term&dir="
-myGenes <- fread(url)
-myGenes <- myGenes$`MGI Gene/Marker ID`
-myGenes <- toupper(myGenes)
-PPI <- biogrid[biogrid$type == "physical", ]
- 
-sel <- PPI$A %in% myGenes & PPI$B %in% myGenes
-mySys <- PPI[sel, ]
-ppi_ggi <- getGeneticInteractome(mySys, "stringent")
-network <- getGeneticInteractome(mySys, "relaxed")
- 
-hypothesize(network, ppi_ggi)
-
-```
 # Session Info
 
 This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
