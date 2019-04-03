@@ -72,9 +72,6 @@ This tool takes as input at least one curated human system name and integrates b
 For a single curated system, for example,
 
 ```{r, echo=TRUE}
-# Load the library
-library(BCB420.2019.ESA)
-
 # get curated system "SLIGR"
 mySys <- getSysInteractions(sysName = "SLIGR", criterion = "stringent")
 mySys2 <- getSysInteractions(sysName = "SLIGR", criterion = "relaxed")
@@ -85,9 +82,6 @@ The red nodes are components of SLIGR with both PPI and GGI information. The blu
 
 For multiple curated systems,
 ```{r, echo=TRUE}
-# Load the library
-library(BCB420.2019.ESA)
-
 # specify the systems
 systems <- c("PHALY", "SLIGR", "NLRIN", "HVGCR")
 mySys <- getSysInteractions(systems)
@@ -99,13 +93,13 @@ Red nodes denote components in all of the systems for which both PPI and GGI dat
 
 And finally, for an externally defined set of genes, take the TCA cycle's components 
 ```{r, echo=TRUE}
-# Load the library
-library(BCB420.2019.ESA)
 library(data.table)
+
+biogrid <- fetchData("BioGRID")
 url <- "http://www.informatics.jax.org/go/report.txt?goID=GO:0006099&results=42&startIndex=0&sort=term&dir="
 myGenes <- fread(url)
-myGenes <- data$`MGI Gene/Marker ID`
-myGenes <- toupper(data)
+myGenes <- myGenes$`MGI Gene/Marker ID`
+myGenes <- toupper(myGenes)
 PPI <- biogrid[biogrid$type == "physical", ]
  
 sel <- PPI$A %in% myGenes & PPI$B %in% myGenes

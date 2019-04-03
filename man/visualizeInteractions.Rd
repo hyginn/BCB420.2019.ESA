@@ -7,13 +7,16 @@
 visualizeInteractions(network, emap, ppi_ggi, gmap)
 }
 \arguments{
-\item{network}{A dataframe of physically-interacting system components with
-their genetic interactions and}
+\item{network}{(dataframe) 3-column dataframe of physically-interacting
+system components with their genetic interactions. The first two columns
+denote the interacting pair; the third is the type of genetic interaction.}
 
 \item{emap}{The dataframe obtained from \code{makeEMAP}.}
 
-\item{ppi_ggi}{An optional dataframe to specify subset of \code{mySys} for
-which both PPI and GGI data is available}
+\item{ppi_ggi}{(dataframe) An optional 3-column dataframe to specify subset
+of \code{mySys} for which both PPI and GGI data is available. The first two
+columns denote the interacting pair; the third is the type of genetic
+interaction.}
 
 \item{gmap}{The dataframe obtained from \code{makeGMAP}.}
 }

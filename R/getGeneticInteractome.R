@@ -5,14 +5,32 @@
 #' \code{getGeneticInteractome} augments systems with BioGRID genetic
 #' interaction annotations
 #'
-#' @param mySys The dataframe of PPI between system's components
-#' @param criterion A string, either "stringent" or "relaxed", specifying
+#' @param mySys (dataframe) A 2-column dataframe of PPI between system's
+#' components.
+#' @param criterion (string) Either "stringent" or "relaxed", specifying
 #' whether only GGI between physical interactors should be selected.
 #'
-#' @return The dataframe of system components and either their GGI between
-#' physical interactors should be selected (iff \code{criterion} == "stringent")
-#' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @return (dataframe) A 3-column dataframe of PPIs and either
+#' the GGIs between them (iff \code{criterion} == "stringent") or
+#' all GGIs that implicate them (iff \code{relaxed} == "stringent"). The first
+#' two columns denote the interacting pair; the third is the type of genetic
+#' interaction.
 #'
+#' @examples
+#' \dontrun{
+#' library(data.table)
+#' biogrid <- fetchData("BioGRID")
+#' url <- "http://www.informatics.jax.org/go/report.txt?goID=GO:0006099&results=42&startIndex=0&sort=term&dir="
+#' myGenes <- fread(url)
+#' myGenes <- myGenes$`MGI Gene/Marker ID`
+#' myGenes <- toupper(myGenes)
+#' PPI <- biogrid[biogrid$type == "physical", ]
+#' sel <- PPI$A %in% myGenes & PPI$B %in% myGenes
+#' mySys <- PPI[sel, ]
+#' ppi_ggi <- getGeneticInteractome(mySys, "stringent")
+#' network <- getGeneticInteractome(mySys, "relaxed")
+#' hypothesize(network, ppi_ggi)
+#' }
 #' @export
 getGeneticInteractome <- function(mySys, criterion){
   # load BioGRID fetched GGI

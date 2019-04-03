@@ -7,21 +7,24 @@
 getSysInteractions(sysName, criterion = "stringent")
 }
 \arguments{
-\item{sysName}{A string specifying the full path to the excel sheet
-containing the system's components}
+\item{sysName}{(string|vector of strings) Specifies the systems of interest}
 
-\item{criterion}{A string, either "stringent" or "relaxed", specifying if
+\item{criterion}{(string) Either "stringent" or "relaxed", specifying if
 only GGI between physical interactors should be selected.}
 }
 \value{
-A dataframe of system components and either their GGI between
-physical interactors should be selected (iff \code{criterion} == "stringent")
-or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+(dataframe) A 3-column dataframe of system components and either
+their GGI between physical interactors should be selected
+(iff \code{criterion} == "stringent") or all GGI of physical interactors
+(iff \code{relaxed} == "stringent"). The first two columns denote the
+interacting pair; the third is the type of genetic interaction.
 }
 \description{
 getSysInteractions
 }
 \examples{
+# Get SLIGR physical interactors and return the genetic interactions between
+# them
 mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 
 }

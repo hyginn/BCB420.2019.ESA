@@ -1,28 +1,28 @@
-# predictDirectedNetworks.R
-
-source('./R/fetchData.R', echo=TRUE)
-source('./R/SyDButils.R', echo=TRUE)
-# ==============================================================================
+# predictDirectedNetworks
+#
 #' @title getSysInteractions
 #' @author Nada Elnour, \email{nada.elnour@@mail.utoronto.ca}
 #'
 #' \code{getSysInteractions} filter system by physically-interacting components
 #' and return their genetic interactions
 #'
-#' @param sysName A string specifying the full path to the excel sheet
-#' containing the system's components
-#' @param criterion A string, either "stringent" or "relaxed", specifying if
+#' @param sysName (string|vector of strings) Specifies the systems of interest
+#' @param criterion (string) Either "stringent" or "relaxed", specifying if
 #' only GGI between physical interactors should be selected.
 #'
-#' @return A dataframe of system components and either their GGI between
-#' physical interactors should be selected (iff \code{criterion} == "stringent")
-#' or all GGI of physical interactors (iff \code{relaxed} == "stringent")
+#' @return (dataframe) A 3-column dataframe of system components and either
+#' their GGI between physical interactors should be selected
+#' (iff \code{criterion} == "stringent") or all GGI of physical interactors
+#' (iff \code{relaxed} == "stringent"). The first two columns denote the
+#' interacting pair; the third is the type of genetic interaction.
 #'
 #' @importFrom dplyr filter
 #' @import utils
 #' @include SyDButils.R fetchData.R
 #' @importFrom stats complete.cases
 #' @examples
+#' # Get SLIGR physical interactors and return the genetic interactions between
+#' # them
 #' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 #'
 #' @export

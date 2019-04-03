@@ -28,14 +28,8 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings,
-    utils,
-    stats,
     visNetwork,
-    dplyr,
-    cluster,
-    grid,
-    igraph,
-    VennDiagram
+    dplyr
 Suggests:
     testthat,
     BiocStyle,

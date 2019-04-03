@@ -426,7 +426,7 @@ mySys <- getSysInteractions(sysName = "SLIGR", criterion = "stringent")
 hypothesize(mySys)
 ```
 ![ppi_ggi](https://github.com/NElnour/BCB420.2019.ESA/blob/master/inst/extdata/exosc6.png?raw=true)
-=======
+
 ## 3 Functions
 
 
@@ -530,7 +530,6 @@ cat(SyDBTree("NLRIN", mySDB, MAX = 3), sep = "\n")
 ... in progress
 &nbsp;
 
->>>>>>> upstream/master
 ## 4 References and Further Reading
 
 ... in progress

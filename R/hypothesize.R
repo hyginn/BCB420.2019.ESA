@@ -6,18 +6,23 @@
 #' components of \code{mySys} and edges are GGI interpretations in either
 #' \code{EMAP} or \code{GMAP}
 #'
-#' @param network A dataframe of physically-interacting system components with
-#' their genetic interactions and
-#' @param ppi_ggi An optional dataframe to specify subset of \code{mySys} for
-#' which both PPI and GGI data is available
+#' @param network (dataframe) 3-column dataframe of physically-interacting
+#' system components with their genetic interactions. The first two columns
+#' denote the interacting pair; the third is the type of genetic interaction.
+#' @param ppi_ggi (dataframe) An optional 3-column dataframe to specify subset
+#' of \code{mySys} for which both PPI and GGI data is available. The first two
+#' columns denote the interacting pair; the third is the type of genetic
+#' interaction.
+#' @return (NULL) The function plots the graph of system components.
 #'
 #' @importFrom dplyr inner_join
 #' @import visNetwork
 #' @examples
+#' # Plot the graph of SLIGR components under stringent and relaxed conditions
 #' mySys <- getSysInteractions("SLIGR", criterion = "stringent")
 #' mySys2 <- getSysInteractions("SLIGR", criterion = "relaxed")
-#' hypothesize(mySys)
-#' hypothesize(mySys2, mySys)
+#' hypothesize(mySys) # draws hypothesis graph(s)
+#' hypothesize(mySys2, mySys) # draws hypothesis graph(s)
 #'
 #' @export
 hypothesize <- function(network, ppi_ggi = NULL) {
