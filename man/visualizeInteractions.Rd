@@ -11,14 +11,20 @@ visualizeInteractions(network, emap, ppi_ggi, gmap)
 system components with their genetic interactions. The first two columns
 denote the interacting pair; the third is the type of genetic interaction.}
 
-\item{emap}{The dataframe obtained from \code{makeEMAP}.}
+\item{emap}{T(dataframe) An 11-by-3 dataframe mapping BioGrid GGI tag to its
+interpretation assuming that the system's components also interact
+physically. The first column contains the official BioGRID GGI tags; the
+second contains interpreted relationships under the assumption; the third
+ contains notes on interpretation.}
 
 \item{ppi_ggi}{(dataframe) An optional 3-column dataframe to specify subset
 of \code{mySys} for which both PPI and GGI data is available. The first two
 columns denote the interacting pair; the third is the type of genetic
 interaction.}
 
-\item{gmap}{The dataframe obtained from \code{makeGMAP}.}
+\item{gmap}{(dataframe) An 11-by-2 dataframe mapping BioGrid GGI tag to its
+interpretation. The first column contains the official BioGRID GGI tags; the
+second contains interpreted relationships.}
 }
 \description{
 visualizeInteractions

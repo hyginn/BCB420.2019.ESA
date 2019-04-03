@@ -24,6 +24,8 @@ is significantly up and down regulated respectively.
 \code{System_Expression} Provides the mean expression level for each experiment
 present in the dataset. As well, displays which conditions are up and down
 regulted significantly.
+
+For further information, see details in the \href{../doc/BCB420.2019.ESA-Vignette_McNeil.html}{ System Expression vignette} (or load the vignette with \code{vignette("BCB420.2019.ESA-Vignette_McNeil", package = "BCB420.2019.ESA")}).
 }
 \author{
 \href{https://orcid.org/0000-0002-2821-6204}{Matthew McNei;} (aut)

@@ -3,11 +3,11 @@
 #' Generate the genetic interpretation map of BioGrid GGI tags of system's
 #'  physical interactions.
 #'
-#' @return An 11-by-3 dataframe mapping BioGrid GGI tag to its interpretation
-#'  assuming that the system's components also interact physically. The first
-#'  column contains the official BioGRID GGI tags; the second contains
-#'  interpreted relationships under the assumption; the third contains notes on
-#'  interpretation.
+#' @return (dataframe) An 11-by-3 dataframe mapping BioGrid GGI tag to its
+#'  interpretation assuming that the system's components also interact
+#'  physically. The first column contains the official BioGRID GGI tags; the
+#'  second contains interpreted relationships under the assumption; the third
+#'   contains notes on interpretation.
 #'
 #' @examples
 #' EMAP <- makeEMAP() # generates and loads the EMAP
@@ -70,7 +70,7 @@ makeEMAP <- function() {
 
 #' Generate the genetic interpretation map of BioGrid GGI tags.
 #'
-#' @return (datafram) An 11-by-2 dataframe mapping BioGrid GGI tag to its
+#' @return (dataframe) An 11-by-2 dataframe mapping BioGrid GGI tag to its
 #' interpretation. The first
 #'  column contains the official BioGRID GGI tags; the second contains
 #'  interpreted relationships.

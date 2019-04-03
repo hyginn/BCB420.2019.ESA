@@ -7,7 +7,7 @@
 makeGMAP()
 }
 \value{
-(datafram) An 11-by-2 dataframe mapping BioGrid GGI tag to its
+(dataframe) An 11-by-2 dataframe mapping BioGrid GGI tag to its
 interpretation. The first
  column contains the official BioGRID GGI tags; the second contains
  interpreted relationships.
