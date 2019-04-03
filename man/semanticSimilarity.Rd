@@ -11,7 +11,7 @@ semanticSimilarity(sys)
 \item{sys}{- System Code (e.g., PHALY)}
 }
 \value{
-(matrix) a matrix of enriched GO terms with semantic similarity values
+(matrix) a matrix of enriched GO terms with semantic similarity values or null if system does not contain any genes (GOterm x GOterm format for the matrix)
 }
 \description{
 \code{semanticSimilarity} gets semantic similarity matrix of enriched
@@ -22,6 +22,9 @@ GO terms for a systems gene set
 semanticSimilarity("PHALY")
 }
 }
+\seealso{
+Documentation of semantic similarity calculations and GO enrichment analysis \code{\link{GOSemSim}}
+}
 \author{
-Cathy Cha {aut}
+\href{https://orcid.org/0000-0003-4609-4965}{Cathy Cha} (aut)
 }
