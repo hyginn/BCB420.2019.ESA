@@ -67,13 +67,11 @@ postDraw <- function(fileName) {
 #' data frame
 #'
 #' @author \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
-#' @seealso \code{\link{<fetchData>}}
 #' @param silent = FALSE suppresses all messages when TRUE
 #' @return (data frame)           containing gene A, gene B, correlation between them and
 #'                                GOSemSim correlation
 #' [GOSemSim package](http://bioconductor.org/packages/release/bioc/html/GOSemSim.html)
 #' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
-#' @export
 computeCorrelations <- function(silent = FALSE) {
   sysDB <- fetchData("SysDB")
   geoQNXP <- readRDS(url(geoQNURL))

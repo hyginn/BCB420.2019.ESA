@@ -22,9 +22,6 @@ computeCorrelations(silent = FALSE)
 between expression profiles of genes and returns a
 data frame
 }
-\seealso{
-\code{\link{<fetchData>}}
-}
 \author{
 \href{https://orcid.org/0000-0002-8778-6442}{Denitsa Vasileva} (aut)
 }
