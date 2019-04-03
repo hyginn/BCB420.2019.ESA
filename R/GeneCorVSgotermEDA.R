@@ -11,7 +11,7 @@
 # Output: heatmap of co-expression correlation, heatmap of GO semantic similarity of each pair of genes
 # in the set. A scatterplot of correlation vs similarity and a fitted line within confidence level.
 #
-# Dependencies: devtools,ggplot,ggcorrplot, GOSemSim
+# Dependencies: devtools,ggplot,ggcorrplot, GOSemSim,org.Hs.eg.db
 #
 
 # ====  FUNCTIONS  =============================================================
@@ -30,39 +30,29 @@ corGenes <- function(A, B, prf) {
 }
 
 
-# ====  PACKAGES  ==============================================================
-# Load all required packages.
-#
-# Use non-standard libraries with  package::function() idiom if possible.
-
-
-#BiocManager::install("GOSemSim", version = "3.8")
-#BiocManager::install("org.Hs.eg.db", version = "3.8")
-#install.packages("ggcorrplot")
-# packages for calculating GO similarity
-
-
-
 
 #'
-#' \code{myPlot()}
+#' \code{myScatterPlot()}
 #' Investigates relationship of expression correlation and semantic similarity of input genes
 #' and produces plots and summary of model info
 #'
 #' @param geneSet A set of genes of interest to investigate
-#' @return A heatmap of co-expression correlation of each pair of genes in the geneSet,
-#' A heatmap of semantic similarity of each pair of genes
-#' A scatterplot of correlation vs Go similarity
-#' summary of linear model built by correlation vs Go similarity
+#' @return (list) list of graphs containing A heatmap of co-expression correlation of each pair of genes in the geneSet,
+#'                  A heatmap of semantic similarity of each pair of genes,and
+#'                  A scatterplot of correlation vs Go similarity with summary of linear model built by correlation vs Go similarity
+#'
+#' [GOSemSim package](http://bioconductor.org/packages/release/bioc/html/GOSemSim.html)
+#' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
+
 #'
 #' @author {Yuhan Zhang} (aut)
 #'
 #' @examples
 #' geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
-#' myPlot(geneSet)
+#' myScatterPlot(geneSet)
 #'
 #' @export
-  myPlot <- function(geneSet) {
+  myScatterPlot <- function(geneSet) {
     # Purpose:
     #     Collecting gene correlations and GO semantic similarity and build relationship model
     #     for each pair of genes to prove the hypothesis
@@ -73,12 +63,9 @@ corGenes <- function(A, B, prf) {
 
     # code ...
     # Loading necessary data
-    myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                    "GEO-QN-profile-2019-03-24.rds")
-    myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
-    myURL <- paste0("https://github.com/hyginn/",
-                    "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-    load(url(myURL))  # loads HGNC data frame
+
+    myQNXP <- fetchData("GEOprofiles")  # loads quantile-normalized expression data
+    HGNC <- fetchData("HGNCreference")
     hsGO2 <- GOSemSim::godata('org.Hs.eg.db', keytype = "SYMBOL", ont="MF", computeIC=FALSE)
     GeneA <- vector(mode = "character", length = 0)
     GeneB <- vector(mode = "character", length = 0)
@@ -109,31 +96,31 @@ corGenes <- function(A, B, prf) {
       }
     }
 
-    mydata <- data.frame(GeneA, GeneB, CorGene,scoGO)
+    geneDataFrame <- data.frame(GeneA, GeneB, CorGene,scoGO)
     corM <- matrix(nrow = len, ncol = len)
     goM <- matrix(nrow = len,ncol = len)
 
-    colnames(corM) <- unique(mydata$GeneB)
-    rownames(corM) <- unique(mydata$GeneA)
-    colnames(goM) <- unique(mydata$GeneB)
-    rownames(goM) <- unique(mydata$GeneA)
+    colnames(corM) <- unique(geneDataFrame$GeneB)
+    rownames(corM) <- unique(geneDataFrame$GeneA)
+    colnames(goM) <- unique(geneDataFrame$GeneB)
+    rownames(goM) <- unique(geneDataFrame$GeneA)
 
-    for (i in 1:nrow(mydata)) {
+    for (i in 1:nrow(geneDataFrame)) {
       corM[
-        mydata$GeneA[i],
-        mydata$GeneB[i]
+        geneDataFrame$GeneA[i],
+        geneDataFrame$GeneB[i]
         ] <- CorGene[i]
       corM[
-        mydata$GeneB[i],
-        mydata$GeneA[i]
+        geneDataFrame$GeneB[i],
+        geneDataFrame$GeneA[i]
         ] <- CorGene[i]
       goM[
-        mydata$GeneA[i],
-        mydata$GeneB[i]
+        geneDataFrame$GeneA[i],
+        geneDataFrame$GeneB[i]
         ] <- scoGO[i]
       goM[
-        mydata$GeneB[i],
-        mydata$GeneA[i]
+        geneDataFrame$GeneB[i],
+        geneDataFrame$GeneA[i]
         ] <- scoGO[i]
     }
     corM[is.na(corM)] <- 0
@@ -141,9 +128,9 @@ corGenes <- function(A, B, prf) {
                            outline.col = "white", lab = TRUE)
     heatmap2 <- ggcorrplot::ggcorrplot(goM, hc.order = TRUE, type = "lower",
                            outline.col = "white", lab = TRUE)
-    print(heatmap1)
-    print(heatmap2)
-      pairFrame <- mydata[which(mydata$GeneB != mydata$GeneA),]
+    #print(heatmap1)
+    #print(heatmap2)
+      pairFrame <- geneDataFrame[which(geneDataFrame$GeneB != geneDataFrame$GeneA),]
       Correlation <- pairFrame$CorGene
       goSimilarity <- pairFrame$scoGO
       model <- lm(goSimilarity~Correlation)
@@ -154,15 +141,15 @@ corGenes <- function(A, B, prf) {
         ggplot2::theme_bw() +
         ggplot2::scale_x_continuous(name = "Semantic Similarity") +
         ggplot2::scale_y_continuous(name = "Co-expression Correlation")
-     print(lmplot)
+     #print(lmplot)
     print(summary(model))
+    result <- list(heatmap1, heatmap2,lmplot)
 
-
-    return(mydata)
+    return(result)
   }
 
 #geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
-#myPlot(geneSet)
+#myScatterPlot(geneSet)
 
 
 # [END]

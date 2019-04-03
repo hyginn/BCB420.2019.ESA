@@ -77,11 +77,12 @@ This tool takes the input of a set of genes of interest in HGNC symbols
 
 ## Underlying process defined in the function 
 
-Taking the genes in the geneSet and calculating their pairwise correlations and Go term semantic similarities and plot heatmaps and scatterolot of them to visulaize the relationship between correlation vs similarity.
+Taking the genes in the geneSet and calculating their pairwise gene expression correlations and pairwise Go term semantic similarities.
+Ploting heatmaps of the correlation and semantic similarities respectively as well as the scatterolot of correlation vs similarity to visulaize the relationship between them.
 
 ##Output 
 
-The final output is a data frame of pairwise genes in the geneSet with their expression correlation and GO term similarities. Also it output two heatmaps of correlation and GO similarity, respectively. And a scatterplot of correlation vs semantic similarity.
+The final output is list of graphs containing A heatmap of co-expression correlation of each pair of genes in the geneSet,A heatmap of semantic similarity of each pair of genes,and A scatterplot of correlation vs Go similarity with summary of linear model built by correlation vs Go similarity
 
 
 
