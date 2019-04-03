@@ -11,7 +11,7 @@ Authors@R: c(
              person("Gabriela", "Morgenshtern",
                     email = "g.morgenshtern@mail.utoronto.ca",
                     role = c("aut"),
-                    comment = c(ORCID = "0000-0003-4762-8797"))
+                    comment = c(ORCID = "0000-0003-4762-8797")),
 
              person("Rachel", "Silverstein", 
                     email = "rachel.silverstein@mail.utoronto.ca", 
@@ -24,6 +24,7 @@ Description: Student-built tools and data submitted for an ESA (Exploratory
              Biology), Winter 2019 - a required course in the Specialist
              Program for Bioinformatics and Computational Biology at the
              University of Toronto.
+            
 URL: https://github.com/hyginn/BCB420.2019.ESA
 License: file LICENSE
 Encoding: UTF-8
@@ -31,7 +32,6 @@ LazyData: true
 biocViews: Software, Infrastructure
 Imports:
     Biostrings,
-
     magrittr,
     visNetwork,
     biomaRt,
@@ -39,8 +39,7 @@ Imports:
     BiocCheck,
     readr,
     stats,
-    igraph
-
+    igraph,
     cluster,
     grid,
     igraph,
