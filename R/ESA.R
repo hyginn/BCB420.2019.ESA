@@ -7,29 +7,29 @@
 # Author: Deus Bajaj (deus.bajaj@mail.utoronto.ca)
 # License: MIT
 #
-# Input: A biological system and a gene the user picks from the system
-# Output: A histogram for the node degree distribution of the system gene network
-# and a network plot for a gene from the biological system
-# Dependencies: devtools, iGraph
+# Dependencies: iGraph
 #
 
 # ====  FUNCTIONS  =============================================================
+# Load STRINGedges
+STRINGedges <- fetchData("STRINGedges0.9")
+myDB <- fetchData("SysDB")
 
 #'
-#' \code{systemAnalysis()} Investigates genes from a biological system
-#' and produces plots with gene network data
+#' \code{systemAnalysis} Takes in a biological system and a gene from that system
+#' picked by the user and and produces a histogram for the node degree distribution
+#' of the system and a network plot for the gene from the system.
 #'
 #' @param gene A gene from a Biological system
 #' @param sys A Biological system
-#' @return a histogram for the node degree distribution of the system gene network
-#' and a network plot for a gene from the biological system
+#' @return NULL
 #'
 #' @author {Deus Bajaj} (aut)
 #'
 #' @examples
 #' \dontrun{
 #' # Retrieve a histogram for the node degrees of the PHALY gene network and
-#' # get the network plot of thr AMBRA1 gene from the PHALY system
+#' # get the network plot of the AMBRA1 gene from the PHALY system
 #' systemAnalysis("AMBRA1", "PHALY")
 #' }
 #'
@@ -43,10 +43,6 @@ systemAnalysis <- function(gene, sys) {
   # (forked directory, master repo can be accessed at
   # https://github.com/hyginn/BCB420.2019.ESA)
 
-  # Load STRINGedges
-  STRINGedges <- fetchData("STRINGedges0.9")
-
-  myDB <- fetchData("SysDB")
   set <- SyDBgetSysSymbols(myDB, sys)
 
   # functionality adapted from Dr. Steipe's BCB420.2019.STRING package
@@ -59,12 +55,8 @@ systemAnalysis <- function(gene, sys) {
   # degree distribution
   dg <- igraph::degree(sXGene)
   #Getting a histogram for the node degree distribution of the gene network
-  x <- hist(dg, main = "Node degrees of the gene network",
+  hist(dg, col = "#A5CCF5", main = "Node degrees of the gene network",
        xlab = "Degree", ylab = "Counts")
-
-  plot(x, col = "#A5CCF5", main = paste("Node degrees of the gene network"),
-       sub = NULL, xlab = "Degree", ylab = "Counts")
-
 
   gNet = STRINGedges[STRINGedges$a == gene|STRINGedges$b == gene ,]
 
@@ -80,6 +72,8 @@ systemAnalysis <- function(gene, sys) {
        vertex.label = igraph::V(sXG)$name,
        vertex.label.family = "sans",
        vertex.label.cex = 0.9)
+
+  return()
 }
 
 # [END]
