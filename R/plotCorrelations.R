@@ -58,9 +58,10 @@ postDraw <- function(fileName) {
 #' as per Dr. Stipe's email
 #'
 installHumanGenomeAnnotation <- function() {
-  if (! requireNamespace("org.Hs.eg.db")) {
-    BiocManager::install("org.Hs.eg.db")
+  if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
   }
+  BiocManager::install("org.Hs.eg.db", version = "3.8")
   return(invisible(NULL))
 }
 
