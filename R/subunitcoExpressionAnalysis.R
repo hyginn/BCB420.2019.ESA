@@ -198,10 +198,11 @@ getCoExpProfile <- function(complex){
 #' @importFrom stats sd pnorm
 #'
 #' @examples
+#' \dontrun{
 #' simulationCorr <- c(-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5)
 #' myGenePairCorr <- 0.1
 #' getpValue(simulationCorr, myGenePairCorr) # 0.7630246
-#'
+#' }
 getpValue <- function(simulationCorr, myGenePairCorr){
   # calculate the standard deviation
   s <- stats::sd(simulationCorr, na.rm = TRUE)
