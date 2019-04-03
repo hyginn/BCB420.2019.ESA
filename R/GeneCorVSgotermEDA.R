@@ -66,6 +66,7 @@ corGenes <- function(A, B, prf) {
 
     myQNXP <- fetchData("GEOprofiles")  # loads quantile-normalized expression data
     HGNC <- fetchData("HGNCreference")
+    installHumanGenomeAnnotation()
     hsGO2 <- GOSemSim::godata('org.Hs.eg.db', keytype = "SYMBOL", ont="MF", computeIC=FALSE)
     GeneA <- vector(mode = "character", length = 0)
     GeneB <- vector(mode = "character", length = 0)
