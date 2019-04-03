@@ -91,9 +91,9 @@ Inserting one system's gene into `PathwayEnrichment()`. The function uses Bonfer
 ```{r}
 source("../R/fetchData.R")
 source("../R/fetchComponents.R")
-geneSet<-fetchComponents("PHALY")
-reactomeInfo<- fetchData("ReactomeSym")
-enrichment<- PathwayEnrichment(geneSet,reactomeInfo)
+geneSet <- fetchComponents("PHALY")
+reactomeInfo <- fetchData("ReactomeSym")
+enrichment <- PathwayEnrichment(geneSet,reactomeInfo)
 
 #apply Multiple test correction
 library(ggplot2)
