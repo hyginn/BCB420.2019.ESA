@@ -267,6 +267,8 @@ sysCorGenes <- function(exProfS,
 #'                   Enrichment and depletion calculation were inspired by "Pathway
 #'                   Guide" \href{https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/}{Fishers Exact Test}
 #'                   and by Devon Ryan \href{https://www.biostars.org/p/102946/}{Depletion}
+#'                   Note: I am not sure if the depletion calculation is mathematically
+#'                   correct.
 #'
 #' @param sys (character) A vector of 1L length, of 5 uppercase lettered word that
 #'                        corresponds to a biological system curated during the
@@ -388,7 +390,7 @@ EnrichDepletTF <- function(sys,
       corEnrichDep$Enrichment[i] <- tmpFisher$estimate
       corEnrichDep$Enrichment_P_value[i] <- tmpFisher$p.value
 
-      #Calculating depletion. and p value
+      #Calculating depletion and p value
       tmpFisher <- stats::fisher.test(matrix(c(c, d, a, b), nrow = 2),
                                       alternative = "greater")
       corEnrichDep$Depletion[i] <- tmpFisher$estimate
@@ -421,15 +423,7 @@ EnrichDepletTF <- function(sys,
 ##sysCorGenes()
 ##After creating the columns of the pairs of genes, checking that no pair is duplicated:
 #if (sum(duplicated(expCor[,1:2])) != 0){
-#  print("Error! Duplicated pairs of genes")
-#}
-
-##Testing whether the genes that appears in the output list of sysGTRDtf are
-##the exact same genes that were given as the input in GeneSym
-#if (! identical(sort(unique(unlist(GTRDtf, use.names = FALSE))) ,sort(GeneSym))){
-#  stop(sprintf("%s is not identical to the genes that bind 'TfSym'.", "'GeneSym'"))
-#}
-#return(GTRDtf)
+#  stop(sprintf("Duplicated pairs of genes"))
 #}
 
 
