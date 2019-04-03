@@ -29,11 +29,8 @@ noise = 8.0
 target = 25.0
 num_runs = 3
 
-downed, downed_ind = pcreode.Down_Sample( pca_reduced_data, density_1, noise, target)
-out_graph, out_ids = pcreode.pCreode( data=pca_reduced_data, density=density_1, noise=noise,
-                                      target=target, file_path="./data/temp/", num_runs=num_runs)
 
-graph_ranks = pcreode.pCreode_Scoring( data=pca_reduced_data, file_path="./data/temp/", num_graphs=num_runs)
+graph_ranks = pcreode.pCreode_Scoring( data=pca_reduced_data, file_path="./data/temp/", num_graphs=3)
 
 gid = graph_ranks[0]
 
@@ -46,12 +43,6 @@ seed = 1
 
 upper_range=3
 node_label_size=0
-
-w_adj = pcreode.return_weighted_adj( pca_reduced_data, "./data/temp/", gid)
-
-np.savetxt("./data/temp/weights.txt", w_adj)
-np.savetxt("./data/temp/density.txt", dens)
-np.savetxt("./data/temp/nodes.txt", analysis.node_data_indices)
 
 norm_ana = preprocessing.MinMaxScaler(feature_range=(0, upper_range))
 norm_ana.fit(overlay[analysis._density > analysis._noise].values.astype(np.float).reshape(-1, 1))

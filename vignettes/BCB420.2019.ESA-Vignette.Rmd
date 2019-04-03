@@ -71,6 +71,14 @@ ambiguous, inaccurate, outdated, incomplete, or broken, please
 
 This sample Vignette explains the BCB420.2019.ESA package. See the `rptPlus` package vignette for details of using .Rmd for vignettes and vignette formatting.
 
+# Usage of pcreode wrapper
+First, initialize the graphs by creating the expression trajectory for a given flow cytometry file. This flow cytometry file should be given in .fcs format. Then, the expression plot can be graphed according to a specific protein/gene, by plotting with `plotExprTrajectory`.
+```{r, echo=TRUE}
+createExprTrajectory("./inst/extdata/rna_seq_myeloid.fcs")
+plotExprTrajectory("CAR2")
+
+```
+
 
 # Further reading
 <a name="a1"></a>

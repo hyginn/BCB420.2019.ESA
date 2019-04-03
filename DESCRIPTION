@@ -6,8 +6,13 @@ Authors@R: c(
              person("Boris", "Steipe", 
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
-                    comment = c(ORCID = "0000-0002-1134-6758"))
-    )
+                    comment = c(ORCID = "0000-0002-1134-6758")),
+            person("Yoonsik", "Park", 
+                    email = "yoonsik.park@mail.utoronto.ca" ,
+                    role = "ctb",
+                    comment = ""
+                    )
+              )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
              Biology), Winter 2019 - a required course in the Specialist
@@ -19,7 +24,9 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    Biostrings
+    Biostrings,
+    igraph,
+    flowCore
 Suggests:
     testthat,
     BiocStyle,
