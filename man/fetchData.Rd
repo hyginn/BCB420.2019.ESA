@@ -11,7 +11,8 @@ fetchData(set)
 }
 \value{
 a dataset, usually either a \code{list} or a \code{data frame}, or
-        \code{NULL} (invisibly) if no dataset was specified.
+        \code{NULL} (invisibly) if no dataset was specified or the requested
+        dataset is not in the list of available datasets.
 }
 \description{
 \code{fetchData} loads and returns datasets from a data repository. When
@@ -37,6 +38,10 @@ a dataset, usually either a \code{list} or a \code{data frame}, or
   \item For the expression profiles dataset \code{GEOprofiles}, see ...
   \item For the systems database dataset \code{SysDB}, see ...
   \item The Reactome dataset \code{ReactomeSym} is currently undocumented.
+  \item There are two CORUM datasets: \code{complexSymbol} and
+         \code{symbolComplex}. These are lists of CORUM IDs and the genes
+         the complexes contain, and vice versa. Creation details are
+         currently undocumented.
 }
 }
 
