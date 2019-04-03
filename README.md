@@ -439,7 +439,7 @@ hypothesize(mySys2, mySys)
 
 To look at several systems of interest at a time,
 ```R
-systems <- systems <- c("PHALY", "SLIGR", "NLRIN", "HVGCR")
+systems <- c("PHALY", "SLIGR", "NLRIN", "HVGCR")
 mySys <- getSysInteractions(systems)
 mySys2 <- getSysInteractions(systems, criterion = "relaxed")
 
