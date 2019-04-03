@@ -34,7 +34,7 @@ Imports:
     protr,
     doParallel,
     foreach,
-    seqinr
+    seqinr,
     cluster,
     grid,
     igraph,
