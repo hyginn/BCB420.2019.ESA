@@ -24,13 +24,18 @@
 #'   \item For the expression profiles dataset \code{GEOprofiles}, see ...
 #'   \item For the systems database dataset \code{SysDB}, see ...
 #'   \item The Reactome dataset \code{ReactomeSym} is currently undocumented.
+#'   \item There are two CORUM datasets: \code{complexSymbol} and
+#'          \code{symbolComplex}. These are lists of CORUM IDs and the genes
+#'          the complexes contain, and vice versa. Creation details are
+#'          currently undocumented.
 #' }
 #'
 #'
 #' @param set (character)  name of the requested dataset
 #'
 #' @return a dataset, usually either a \code{list} or a \code{data frame}, or
-#'         \code{NULL} (invisibly) if no dataset was specified.
+#'         \code{NULL} (invisibly) if no dataset was specified or the requested
+#'         dataset is not in the list of available datasets.
 #' @examples
 #' fetchData()                         # prints available datasets
 #' HGNC <- fetchData("HGNCreference")  # assigns the HGNC reference dataset
@@ -51,7 +56,9 @@ fetchData <- function(set) {
                                   "IPRgenes",
                                   "GEOprofiles",
                                   "SysDB",
-                                  "ReactomeSym"),
+                                  "ReactomeSym",
+                                  "complexSymbol",
+                                  "symbolComplex"),
                          desc = c("HGNC symbols and crossreferences",
                                   "Genes and their TFs by ChIP-seq from GTRD",
                                   "TFs and their genes by ChIP-seq from GTRD",
@@ -63,7 +70,9 @@ fetchData <- function(set) {
                                   "InterPro domains and the genes they are found in",
                                   "GEO expression profiles, quantile normalized",
                                   "A systems database",
-                                  "A tibble of Reactome IDs and HGNC symbols"),
+                                  "A tibble of Reactome IDs and HGNC symbols",
+                                  "A list of CORUM complexes and their genes",
+                                  "A list of HGNC symbols and their CORUM complexes"),
                          FN   = c("HGNCreference.rds",
                                   "GTRDgeneTFs-2019-03-13.rds",
                                   "GTRDTFgenes-2019-03-13.rds",
@@ -75,13 +84,17 @@ fetchData <- function(set) {
                                   "IPRgenes-V.73.rds",
                                   "GEO-QN-profile-2019-03-24.rds",
                                   "systemsDB-2018-03-28.rds",
-                                  "ReactomeSym.rds"),
+                                  "ReactomeSym.rds",
+                                  "complexSymbol.rds",
+                                  "symbolComplex.rds"),
                          stringsAsFactors = FALSE)
   rownames(availDat) <- availDat$sets
 
   if (missing(set)) {
     print(availDat[ , c("sets", "desc")])
   } else {
+    stopifnot(length(set) == 1)
+    stopifnot( ! is.na(availDat[set, "FN"]))
     x <- readRDS(url(paste0(baseURL, availDat[set, "FN"])))
     return(x)
   }
