@@ -12,7 +12,7 @@ myScatterPlot(geneSet)
 \item{geneSet}{A set of genes of interest to investigate}
 }
 \value{
-(list)   list of graphs containing A heatmap of co-expression correlation of each pair of genes in the geneSet,
+(list) list of graphs containing A heatmap of co-expression correlation of each pair of genes in the geneSet,
                  A heatmap of semantic similarity of each pair of genes,and
                  A scatterplot of correlation vs Go similarity with summary of linear model built by correlation vs Go similarity
 
