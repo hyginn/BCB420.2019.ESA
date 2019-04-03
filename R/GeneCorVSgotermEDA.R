@@ -17,7 +17,23 @@
 # ====  FUNCTIONS  =============================================================
 
 
+#' \code{installHumanGenomeAnnotation} install Human genome Annotation when necessary.
+#'
 
+#' @return (NULL)
+#' #' @author {Yuhan Zhang} (aut)
+#' @examples
+#' \dontrun{
+#' installHumanGenomeAnnotation()
+#' }
+#' @export
+installHumanGenomeAnnotation <- function() {
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install("org.Hs.eg.db", version = "3.8")
+return(invisible(NULL))
+}
 
 # function stub taken from Dr. Steipe's BCB420.2019.ESA package (https://github.com/hyginn/BCB420.2019.ESA)
 corGenes <- function(A, B, prf) {

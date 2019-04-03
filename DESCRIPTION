@@ -7,7 +7,7 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
-                    person("Yuhan", "Zhang", 
+              person("Yuhan", "Zhang", 
                     email = "yuhan.zhang@mail.utoronto.ca", 
                     role = c("ctb"), 
                     comment = c(ORCID = "0000-0003-1275-7951")),
@@ -23,8 +23,6 @@ Authors@R: c(
                     email = "xindi.zhang@mail.utoronto.ca", 
                     role = c("ctb"), 
                     comment = c(ORCID = "0000-0002-7114-0567"))
-            
-
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -37,17 +35,17 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    ggplot2,
     BiocManager,
     GOSemSim,
     Biostrings,
     cluster,
     grid,
     igraph,
-    VennDiagram,
     ggplot2,
+    VennDiagram,
     tibble,
-    tidyr
+    tidyr,
+    ggcorrplot
 Suggests:
     testthat,
     BiocStyle,
