@@ -28,9 +28,10 @@ package on GitHub and
 <!-- TOCbelow -->
 1. About this package:<br/>
 2. Data ...<br/>
-3. Notes<br/>
-4. References and Further reading<br/>
-5. Acknowledgements<br/>
+3. Functions ... <br />
+4. Notes<br/>
+5. References and Further reading<br/>
+6. Acknowledgements<br/>
 <!-- TOCabove -->
 
 ----
@@ -53,9 +54,7 @@ Suporting resources include curated systems data and other data resources:
 Load the `HGNC` object in the following way:
 
 ```R
-myURL <- paste0("https://github.com/hyginn/",
-                "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-load(url(myURL))  # loads HGNC data frame
+HGNC <- fetchData("HGNCreference")                # assigns the HGNC data object
 
 str(HGNC)
 # 'data.frame':	27087 obs. of  14 variables:
@@ -80,15 +79,14 @@ str(HGNC)
 
 #### 2.2 Transcription factors from GTRD:
 
-`geneList` list contains transcription factors that have been found to bind to the upstream regulatory regions of genes in ChIP-seq experiments; the data is compiled by the GTRD database.
-Load `geneList` in the following way:
+The `GTRDgeneTFs` list contains data which transcription factors (TF) that have been found to bind to the upstream regulatory regions of genes in ChIP-seq experiments bind to what genes; the data is compiled by the GTRD database. This is a list in which list-elements are named with gene symbols, and the elements are a vector of TF gene symbols.
+
+Load `geneTFs` in the following way:
 
 ```R
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "geneList-2019-03-13.RData")
-load(url(myURL))  # loads GTRD geneList object
+geneTFs <- fetchData("GTRDgeneTFs")       # assigns genes and their binding TFs
 
-str(geneList)
+str(geneTFs)
 # List of 17864
 #  $ HES4        : chr [1:82] "AR" "ATF2" "ATF3" "ATF4" ...
 #  $ PUSL1       : chr [1:64] "AR" "BHLHE40" "CEBPA" "CEBPB" ...
@@ -96,7 +94,23 @@ str(geneList)
 #  $ ATAD3B      : chr [1:110] "AR" "ASCL2" "ATF2" "ATF3" ...
 #  $ ATAD3A      : chr [1:128] "ARID4B" "ASCL2" "ATF1" "ATF3" ...
 #   [list output truncated]
+```
 
+The `GTRDTFgenes` data object is the inverse of `GTRDgeneTFs` - list-elements are named with TF gene symbols, and the elements are a vector of gene symbols which the TFs bind to.
+
+Load `TFgenes` in the following way:
+
+```R
+TFgenes <- fetchData("GTRDTFgenes")       # assigns genes and their binding TFs
+
+str(TFgenes)
+List of 635
+#  $ E2F8    : chr [1:758] "AATF" "ABCB6" "ABT1" "ACAP3" ...
+#  $ FEZF1   : chr [1:1009] "AAR2" "AARS2" "ABRAXAS2" "ABTB2" ...
+#  $ ZNF320  : chr [1:183] "AASDHPPT" "ABHD14A" "AFMID" "ALDH16A1" ...
+#  $ ZNF316  : chr [1:209] "AKAP13" "AKR1B10" "AMBRA1" "ANO5" ...
+#  $ ZSCAN5B : chr [1:33] "AGBL5" "ALOXE3" "ANG" "B4GAT1" ...
+#   [list output truncated]
 ```
 
 &nbsp;
@@ -108,9 +122,7 @@ Load `STRINGedges` in the following way:
 
 ```R
 
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "STRINGedges-2019-03-14.RData")
-load(url(myURL))  # loads STRING edges object
+STRINGedges <- fetchData("STRINGedges0.9") # assigns the STRINGedges data object
 
 str(STRINGedges)
 #  Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	319997 obs. of  3 variables:
@@ -129,9 +141,7 @@ Expression profiles were compiled from 52 microarray experiments downloaded from
 ```R
 
 # Load the expression profiles:
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "GEO-QN-profile-2019-03-24.rds")
-myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
+myQNXP <- fetchData("GEOprofiles")  # loads quantile-normalized expression data
 
 str(myQNXP)
 #  num [1:27087, 1:52] 29.4 199.9 34.3 947.4 2249.2 ...
@@ -258,56 +268,139 @@ str(IPRgenes, list.len = 5)
 
 #### 2.6 Systems:
 
-This is in progress. Here is a function stub that returns a set of gene symbols for a system name:
+A systems database (of currently four systems) can be loaded with `fetchData()`. Several utility functions have been added to the package (in `./R/SyDButils.R`). Use `SyDBgetSysSymbols(<database>, <sys>)[[1]]` to access all gene symbols for a single system (or subsystem). Use `unlist(SyDBgetSysSymbols(myDB, SyDBgetRootSysIDs(myDB)), use.names = FALSE)` to access all genes in the database.
 
 ```R
+myDB <- fetchData("SysDB")
 
-fetchComponents <- function(sys) {
-  # returns a fixed set of symbols.
-  # Function stub for development purposes only.
- if (sys == "PHALY") {
-    s <- c("AMBRA1", "ATG14", "ATP2A1", "ATP2A2", "ATP2A3", "BECN1", "BECN2", 
-           "BIRC6", "BLOC1S1", "BLOC1S2", "BORCS5", "BORCS6", "BORCS7", 
-           "BORCS8", "CACNA1A", "CALCOCO2", "CTTN", "DCTN1", "EPG5", "GABARAP", 
-           "GABARAPL1", "GABARAPL2", "HDAC6", "HSPB8", "INPP5E", "IRGM", 
-           "KXD1", "LAMP1", "LAMP2", "LAMP3", "LAMP5", "MAP1LC3A", "MAP1LC3B", 
-           "MAP1LC3C", "MGRN1", "MYO1C", "MYO6", "NAPA", "NSF", "OPTN", 
-           "OSBPL1A", "PI4K2A", "PIK3C3", "PLEKHM1", "PSEN1", "RAB20", "RAB21", 
-           "RAB29", "RAB34", "RAB39A", "RAB7A", "RAB7B", "RPTOR", "RUBCN", 
-           "RUBCNL", "SNAP29", "SNAP47", "SNAPIN", "SPG11", "STX17", "STX6", 
-           "SYT7", "TARDBP", "TFEB", "TGM2", "TIFA", "TMEM175", "TOM1", 
-           "TPCN1", "TPCN2", "TPPP", "TXNIP", "UVRAG", "VAMP3", "VAMP7", 
-           "VAMP8", "VAPA", "VPS11", "VPS16", "VPS18", "VPS33A", "VPS39", 
-           "VPS41", "VTI1B", "YKT6")
- } else {
-   s <- ""
- }
-  return(s)
-}
 
-fetchComponents("PHALY")
-#   [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"   
-#   [6] "BECN1"     "BECN2"     "BIRC6"     "BLOC1S1"   "BLOC1S2"  
-#  [11] "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"  
+SyDBgetRootSysIDs(myDB)
+#                                        PHALY                                       SLIGR 
+#  "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                        NLRIN                                       HVGCR 
+#  "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
 
-fetchComponents("NONSUCH")
-#  [1] ""
+
+names(SyDBgetRootSysIDs(myDB))
+# [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
+
+
+SyDBgetSysSymbols(myDB, "HVGCR")  # Note: returns a list.
+# $HVGCR
+#  [1] "ADCY9"    "ADRB2"    "AKAP7"    "CACNA1C"  "CACNA2D1" "CACNA2D3" "CACNB1"   "CACNB3"  
+#  [9] "CACNB4"   "CACNG1"   "CACNG6"   "CALM1"    "CALM2"    "CALM3"    "GNAS"     "PRKACA"  
+# [17] "PRKACB"   "PRKAR1A"  "PRKAR1B"  "PRKAR2A"  "PRKAR2B" 
+
+```
+&nbsp;
+
+The old function stub `fetchComponents()` still works but is deprecated:
+
+```R
+> fetchComponents("PHALY")
+Note: fetchComponents(...) is deprecated. Use SyDBgetSysSymbols(<database>, <system code>) instead.
+
+ [1] "AMBRA1"    "ATG14"     "ATP2A1"    "ATP2A2"    "ATP2A3"    "BECN1"     "BECN2"     "BIRC6"    
+ [9] "BLOC1S1"   "BLOC1S2"   "BORCS5"    "BORCS6"    "BORCS7"    "BORCS8"    "CACNA1A"   "CALCOCO2" 
+ ...
+ 
+```
+
+&nbsp;
+
+## 3 Functions
+
+&nbsp;
+
+#### 3.1 Fetching data
+
+See:
+```R
+?fetchData 
+fetchData()
+```
+&nbsp;
+
+#### 3.2 Systems database utilities
+
+
+'./R/SyDButils.R' contains a number of exported functions to support work with a systems database:
+
+* `SyDBgetRootSysIDs()` - returns a named vector with the IDs of all root systems in a systems database;
+* `SyDBgetSysSymbols()` - returns a list of the same length as the input vector with HGNC symbols of each system in the input vector;
+* `SyDBgetIDforKey()` - returns a vector of IDs for key(s) in a column of a table;
+* `SyDBgetValforID()` - returns a vector of values in a column of a table where the ID matches the input;
+* `SyDBinvalid()` - checks whether its database argument is a valid, current, system database;
+* `SyDBTree()` - returns a tree representation of the hierarchical structure of a system or systems in the database.
+
+Examples:
+```R
+mySDB <- fetchData("SysDB")
+
+SyDBgetRootSysIDs(mySDB)
+#                                       PHALY                                       SLIGR 
+# "give.jams-1d8-648b-1e12-6a9f-65421424affe" "cast.rear-5f1-56ef-1cd2-1ae3-54a5556d59ff" 
+#                                       NLRIN                                       HVGCR 
+# "scar.blur-9bc-29cf-31f2-1981-4d92edf4d0e6" "help.mink-f96-e98b-9e12-ab41-8217a3ecb0cd" 
+
+
+names(SyDBgetRootSysIDs(mySDB))
+# [1] "PHALY" "SLIGR" "NLRIN" "HVGCR"
+
+
+SyDBgetIDforKey("HOPS complex", "code", "component", mySDB)
+# [1] "flip.face-782-d729-9622-299c-073fb8f2ec94"
+
+
+SyDBgetSysSymbols(mySDB, "HOPS complex")
+# $`HOPS complex`
+# [1] "VPS11"  "VPS16"  "VPS18"  "VPS33A" "VPS39"  "VPS41" 
+
+
+cat(SyDBTree("NLRIN", mySDB, MAX = 3), sep = "\n")
+# 
+#   --NLRIN
+#     |___NLRP3 activation signal
+#         |___Common activating signal
+#         |___NLRP3
+#         |___NLRP3 activation
+#     |___NLRIN regulation
+#         |___NLRIN positive regulation
+#         |___NLRIN negative regulation
+#     |___NLRP3 priming signal
+#         |___IL-beta priming signal
+#         |___TNF priming signal
+#         |___TLR priming signal
+#     |___NOT IN NLRIN
+#         |___NLRP7
+#         |___NLRC4
+#         |___AIM2
+#         |___NLRP14
+#         |___NLRP6
+#         |___NLRP12
+#         |___NLRP2
+#         |___NLRP9b
+#         |___NLRP1b
 
 
 ```
 
 &nbsp;
 
-## 3 Notes
 
+## 4 Notes
+
+... in progress
 &nbsp;
 
 ## 4 References and Further Reading
 
+... in progress
 &nbsp;
 
 ## 5 Acknowledgements
 
+... in progress
 &nbsp;
 
 <!-- [END] -->
