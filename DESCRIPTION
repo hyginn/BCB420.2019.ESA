@@ -13,7 +13,7 @@ Authors@R: c(
                     comment = c(ORCID = "0000-0001-5724-2252")),
              person("Edward", "Ho", 
                     email = "emc.ho@mail.utoronto.ca", 
-                    role = c("aut"), 
+                    role = c("ctb"), 
                     comment = c(ORCID = "0000-0002-1360-0086"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
