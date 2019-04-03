@@ -1,0 +1,129 @@
+---
+title: "STRINGExplore: Interactive Gene and Protein Action Network"
+author:
+- name: Gabriela Morgenshtern
+  affiliation: 
+  - http://orcid.org/0000-0003-4762-8797
+  - University of Toronto
+  email: g.morgenshtern@mail.utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network from high confidence STRING scores of a curated gene system.
+output:
+  BiocStyle::html_document:
+    toc: true
+    toc_float: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{BCB420.2019.STRINGExplore}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this Vignette
+
+This sample Vignette explains the BCB420.2019.STRINGExplore package. It aims to provide an instructive tutorial on the practical uses of the STRINGExplore tool and discuss applications and the interpretation of results.
+
+The purpose of STRINGExplore is in the name-- it is exploratory. It aims to coordinate information available on disparate parts of the STRING database in a way that is visually pleasing and descriptive. These aims are achieved through the generation of a high-confidence gene interaction network and the leveraging of this visualization's tooltip system.
+
+At its core, the aims of the descriptiveness of the system are as follows:
+1. To inspire interaction
+2. To develop the end-user's intuition for future hypotheses 
+3. To be easy to understand and navigate
+4. To ameliorate the current state of hard-to-parse publication images of networks {IMAGE}
+
+## What's wrong with igraph?
+
+STRINGExplore was created out of frustration about the complicated nature of setting up an igraph network in a visually pleasing and easy-to-process way. In regards to explorations of protein-protein interaction, igraph requires the user to be aware of the nature of their data before plotting it. With STRINGExplore, the nature of discovering the existence of high-confidence protein-protein actions is easier. Edges in network exist only if STRING computed for them a combined score >80% confidence, and the hover-over protein actions are listed in a human-readable way. On top of this, the tool outputs an object with this information in table form, for easy future analysis by the end-user.
+
+# Example usage
+
+```R
+# Call the STRINGExplore tool
+network <- STRINGExplore("PHALY")
+
+# Table of nodes and their betweenness centrality scores, corresponding to the genes that are part of at # least 1 high-confidence edge:
+network$nodes
+
+# List of edges in network, representing STRING scores >=800
+network$edges
+
+# Visual output: interactive network (also plotted during tool's analysis)
+network$network
+```
+=======
+
+# FUTURE WORK: Saving and publishing your network
+Add functionality for STRINGExplore.save() using the [visSave package](https://rdrr.io/cran/visNetwork/man/visSave.html)
+- this saves the HTML of the network and all the dependencies of this analysis. Use this HTML on your research site for some snazzy interactive visualization axn
+
+
+# Session Info
+
+This release of the `BCB420.2019.STRINGExplore` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+DataStorm (2017). [visNetwork, an R package for interactive network visualization.](https://datastorm-open.github.io/visNetwork/options.html)
+Ognyanova, Katherine (2017). [Network visualization with R.](http://kateto.net/wp-content/uploads/2017/06/Polnet%202017%20R%20Network%20Visualization%20Workshop.pdf)
+
+Morgenshtern, Gabriela (2018). 2018-10-17_Graphs-and-Networks_v01 (BCH441 Submission). [Github repository](https://github.com/gabmorg/bch411-2018/blob/master/2018-10-17_Graphs-and-Networks_v01.R)
+
+Wade, Mary Wade (2016). Network Analysis in R: In-Degree Centrality. [visNetwork Code Example](https://rstudio-pubs-static.s3.amazonaws.com/157501_93a72a58ec614946901e10edf78c1384.html)
+
+Steipe, Boris (2019). BCB420.2019.STRING (STRING data annotatation of human genes). [R package  Github repository](https://github.com/hyginn/BCB420.2019.STRING)
+
+
+
+<!-- End -->

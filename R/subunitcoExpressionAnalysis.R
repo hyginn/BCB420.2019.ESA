@@ -17,14 +17,14 @@
 #'
 #' \code{processmyQNXP} The expression profiles were compiled and normalized by
 #' using GEO data containing 52 microarray experiments.
-#' For details see \code{\link{<fetchData>}. The expression profiles were then
+#' For details see \code{\link{fetchData}}. The expression profiles were then
 #' processed to eliminate genes with no data (row with NAs cross all experiments)
 #'
 #' @return (matrix) A matrix with 21063 rows representing genes in HGNC symbols
 #' and 52 columns representing the 52 microarray experiments. Each cell of the matrix
 #' contains the corresponded expression values
 #'
-#' @seealso \code{\link{<fetchData>}
+#' @seealso \code{\link{fetchData}}
 #'
 #' @examples
 #' \dontrun{
@@ -44,7 +44,7 @@ processmyQNXP <- function(){
 #'
 #' \code{getComplexmyQNXP} The processed expression profile from GEO is extracted
 #'  for complex subunits in both CORUM database and GEO. For details of CORUM data
-#'  fetch see \code{\link{<fetchData>}.
+#'  fetch see \code{\link{fetchData}}.
 #'
 #' @param complex (char)  name of the complex
 #'
@@ -52,7 +52,7 @@ processmyQNXP <- function(){
 #' and 52 columns representing the 52 microarray experiments. Each cell of the matrix
 #' contains the corresponded expression values
 #'
-#' @seealso \code{\link{<fetchData>}
+#' @seealso \code{\link{fetchData}}
 #'
 #' @examples
 #' \dontrun{
@@ -134,7 +134,7 @@ complexExpHeatmap <- function(complex){
 #' \code{getCoExpProfile} Generate a coexpression profile with all possible pairs of
 #' genes in the complex and their Pearson Correlation Coefficients represent how
 #' coexpressed the gene pairs are. This function also displays a histogram to show the
-#' distribution of the coexpression correlation. See \code{\link{<EnrichDepletTF>} for
+#' distribution of the coexpression correlation. See \code{\link{EnrichDepletTF}} for
 #' expProfile generate (line 149-154)
 #'
 #' @param complex (char)  name of the complex
@@ -145,7 +145,7 @@ complexExpHeatmap <- function(complex){
 #' @importFrom stats cor
 #' @import graphics
 #'
-#' @seealso \code{\link{<EnrichDepletTF>}
+#' @seealso \code{\link{EnrichDepletTF}}
 #'
 #' @examples
 #' complex <- "MDC1-MRN-ATM-FANCD2 complex"
@@ -322,3 +322,6 @@ pairExpHist <- function(expProfile){
     return(expProfile)
   }
 }
+
+# [END]
+

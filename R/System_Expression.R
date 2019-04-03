@@ -32,7 +32,7 @@ System_Expression<- function(sysname, myQNXP){
 
   # Find the means and variance of the expression changes caused by each condition
   meanExpression <- rowMeans(expressions, na.rm = T)
-  varExpression <- apply(expressions, 1, var, na.rm = T)
+  varExpression <- apply(expressions, 1, stats::var, na.rm = T)
   num_observations <- apply(expressions, 1, function(x) sum(!is.na(x)))
 
   # calculate the one-sided p-values for each experiment

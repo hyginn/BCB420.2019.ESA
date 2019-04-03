@@ -15,7 +15,9 @@ and 52 columns representing the 52 microarray experiments. Each cell of the matr
 contains the corresponded expression values
 }
 \description{
-\code{getComplexmyQNXP} Extract expression profile for the complex subunits
+\code{getComplexmyQNXP} The processed expression profile from GEO is extracted
+ for complex subunits in both CORUM database and GEO. For details of CORUM data
+ fetch see \code{\link{fetchData}}.
 }
 \examples{
 \dontrun{
@@ -24,4 +26,7 @@ complex <- "MDC1-MRN-ATM-FANCD2 complex"
 myComplexQNXP <- getComplexmyQNXP(complex)
 }
 
+}
+\seealso{
+\code{\link{fetchData}}
 }

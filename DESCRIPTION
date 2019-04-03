@@ -11,6 +11,10 @@ Authors@R: c(
                     email = "sapir.labes@mail.huji.ac.il",
                     role = c("aut"),
                     comment = c(ORCID = "0000-0002-9478-5974")),
+             person("Gabriela", "Morgenshtern",
+                    email = "g.morgenshtern@mail.utoronto.ca",
+                    role = c("ctb"),
+                    comment = c(ORCID = "0000-0003-4762-8797")),
              person("Rachel", "Silverstein", 
                     email = "rachel.silverstein@mail.utoronto.ca", 
                     role = c("ctb"), 
@@ -31,14 +35,20 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
+    BiocManager,
+    BiocCheck,
+    biomaRt,
     Biostrings,
     cluster,
+    ggplot2,
     grid,
     igraph,
-    VennDiagram,
-    ggplot2,
+    magrittr,
+    readr,
     tibble,
-    tidyr
+    tidyr,
+    VennDiagram,
+    visNetwork
 Suggests:
     testthat,
     BiocStyle,
