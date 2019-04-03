@@ -57,9 +57,7 @@ Suporting resources include curated systems data and other data resources:
 Load the `HGNC` object in the following way:
 
 ```R
-myURL <- paste0("https://github.com/hyginn/",
-                "BCB420-2019-resources/blob/master/HGNC.RData?raw=true")
-load(url(myURL))  # loads HGNC data frame
+HGNC <- fetchData("HGNCreference")                # assigns the HGNC data object
 
 str(HGNC)
 # 'data.frame':	27087 obs. of  14 variables:
@@ -84,15 +82,14 @@ str(HGNC)
 
 #### 2.2 Transcription factors from GTRD:
 
-`geneList` list contains transcription factors that have been found to bind to the upstream regulatory regions of genes in ChIP-seq experiments; the data is compiled by the GTRD database.
-Load `geneList` in the following way:
+The `GTRDgeneTFs` list contains data which transcription factors (TF) that have been found to bind to the upstream regulatory regions of genes in ChIP-seq experiments bind to what genes; the data is compiled by the GTRD database. This is a list in which list-elements are named with gene symbols, and the elements are a vector of TF gene symbols.
+
+Load `geneTFs` in the following way:
 
 ```R
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "geneList-2019-03-13.RData")
-load(url(myURL))  # loads GTRD geneList object
+geneTFs <- fetchData("GTRDgeneTFs")       # assigns genes and their binding TFs
 
-str(geneList)
+str(geneTFs)
 # List of 17864
 #  $ HES4        : chr [1:82] "AR" "ATF2" "ATF3" "ATF4" ...
 #  $ PUSL1       : chr [1:64] "AR" "BHLHE40" "CEBPA" "CEBPB" ...
@@ -100,7 +97,23 @@ str(geneList)
 #  $ ATAD3B      : chr [1:110] "AR" "ASCL2" "ATF2" "ATF3" ...
 #  $ ATAD3A      : chr [1:128] "ARID4B" "ASCL2" "ATF1" "ATF3" ...
 #   [list output truncated]
+```
 
+The `GTRDTFgenes` data object is the inverse of `GTRDgeneTFs` - list-elements are named with TF gene symbols, and the elements are a vector of gene symbols which the TFs bind to.
+
+Load `TFgenes` in the following way:
+
+```R
+TFgenes <- fetchData("GTRDTFgenes")       # assigns genes and their binding TFs
+
+str(TFgenes)
+List of 635
+#  $ E2F8    : chr [1:758] "AATF" "ABCB6" "ABT1" "ACAP3" ...
+#  $ FEZF1   : chr [1:1009] "AAR2" "AARS2" "ABRAXAS2" "ABTB2" ...
+#  $ ZNF320  : chr [1:183] "AASDHPPT" "ABHD14A" "AFMID" "ALDH16A1" ...
+#  $ ZNF316  : chr [1:209] "AKAP13" "AKR1B10" "AMBRA1" "ANO5" ...
+#  $ ZSCAN5B : chr [1:33] "AGBL5" "ALOXE3" "ANG" "B4GAT1" ...
+#   [list output truncated]
 ```
 
 &nbsp;
@@ -112,9 +125,7 @@ Load `STRINGedges` in the following way:
 
 ```R
 
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "STRINGedges-2019-03-14.RData")
-load(url(myURL))  # loads STRING edges object
+STRINGedges <- fetchData("STRINGedges0.9") # assigns the STRINGedges data object
 
 str(STRINGedges)
 #  Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	319997 obs. of  3 variables:
@@ -133,9 +144,7 @@ Expression profiles were compiled from 52 microarray experiments downloaded from
 ```R
 
 # Load the expression profiles:
-myURL <- paste0("http://steipe.biochemistry.utoronto.ca/abc/assets/",
-                "GEO-QN-profile-2019-03-24.rds")
-myQNXP <- readRDS(url(myURL))  # loads quantile-normalized expression data
+myQNXP <- fetchData("GEOprofiles")  # loads quantile-normalized expression data
 
 str(myQNXP)
 #  num [1:27087, 1:52] 29.4 199.9 34.3 947.4 2249.2 ...

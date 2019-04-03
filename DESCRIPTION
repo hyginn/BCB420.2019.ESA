@@ -11,10 +11,6 @@ Authors@R: c(
                     email = "nada.elnour@mail.utoronto.ca", 
                     role = c("aut", "ctb"), 
                     comment = c(ORCID = "0000-0001-6165-1542")),
-             person("Rachel", "Silverstein", 
-                    email = "rachel.silverstein@mail.utoronto.ca", 
-                    role = c("ctb"), 
-                    comment = c(ORCID = "0000-0001-5724-2252"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
