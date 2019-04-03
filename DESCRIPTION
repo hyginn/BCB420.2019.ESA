@@ -35,7 +35,7 @@ Imports:
     GOSemSim,
     ggcorrplot,
     ggplot2,
-    org.Hs.eg.db
+    BiocManager
 Suggests:
     testthat,
     BiocStyle,
