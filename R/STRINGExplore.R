@@ -56,7 +56,7 @@ getEdgeInteractions <- function(from, to, sysActions){
 #'  from a curated system it's highly likely that highly-centrality nodes will impart some
 #'  important functionality to the system.
 #'
-#' @param genes (str) A 5 character string representing the name of
+#' @param systemName (str) A 5 character string representing the name of
 #' the desired curated gene system user would like to build a
 #' high-confidence interaction network for.
 
@@ -86,7 +86,7 @@ getEdgeInteractions <- function(from, to, sysActions){
 # it's better to ensure this doesn't rely on internet to run. make the input a gene list,
 # and leverage the exported fn externally (3 inputs: geneSys, STRINGactions, STRINGedges)
 
-STRINGExplore <- function(genes) {
+STRINGExplore <- function(systemName) {
   #### 1. Prepare / Load data:####
   # alternate / future route: add option to create edges from
   # high correlation scored expression data (Pearson rho >80%) and network those
@@ -94,7 +94,7 @@ STRINGExplore <- function(genes) {
   STRINGedges <- fetchData("STRINGedges0.8")
   geneSys <- list()
 
-  dat <- SyDBgetSysSymbols(fetchData("SysDB"), genes)
+  dat <- SyDBgetSysSymbols(fetchData("SysDB"), systemName)
   geneSys <- unlist(dat)
   names(geneSys) <- c()
 
@@ -132,7 +132,7 @@ STRINGExplore <- function(genes) {
   #### 5. Plot visNetwork ####
   network <- visNetwork::visNetwork(nodes, edges, height = "500px", width = "100%") %>%
     visNetwork::visOptions(selectedBy = "betweeness", highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-    visNetwork::visPhysics(stabilization = TRUE, timestep = 0.3)
+    visNetwork::visPhysics(stabilization = TRUE, timestep = 0.4)
 
   #### 6. Return a labeled list for data transparency and future analysis ####
   networkData <- list("nodes" = nodes, "edges" = edges, "network" = network)
