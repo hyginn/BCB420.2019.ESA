@@ -7,6 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+             person("Sapir", "Labes",
+                    email = "sapir.labes@mail.huji.ac.il",
+                    role = c("aut"),
+                    comment = c(ORCID = "0000-0002-9478-5974")),
              person("Rachel", "Silverstein", 
                     email = "rachel.silverstein@mail.utoronto.ca", 
                     role = c("ctb"), 
@@ -15,6 +19,10 @@ Authors@R: c(
                     email = "emc.ho@mail.utoronto.ca", 
                     role = c("ctb"), 
                     comment = c(ORCID = "0000-0002-1360-0086"))
+             person("Xindi", "Zhang", 
+                    email = "xindi.zhang@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0002-7114-0567"))
     )
 Description: Student-built tools and data submitted for an ESA (Exploratory
              Systems Analysis) task, in BCB420 (Computational Sytems
@@ -35,7 +43,10 @@ Imports:
     cluster,
     grid,
     igraph,
-    VennDiagram
+    VennDiagram,
+    ggplot2,
+    tibble,
+    tidyr
 Suggests:
     testthat,
     BiocStyle,
