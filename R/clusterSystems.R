@@ -109,7 +109,7 @@
 #' \code{\link{jaccard_dist}}, and \code{\link{tf_dist}}.
 #'
 #' @examples
-#'
+#' \dontrun{
 #' myDB <- fetchData("SysDB")
 #' rootSysIDs <- SyDBgetRootSysIDs(myDB)
 #' sys_names <- names(rootSysIDs)
@@ -128,7 +128,7 @@
 #'                distances = NULL,
 #'                customDistanceFn = list(expr_dist),
 #'                dataSources = list(GEO))
-#'
+#'}
 #'
 #'
 #' @import cluster

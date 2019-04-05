@@ -24,9 +24,10 @@ function that fetches the GRTDgeneTFs database, see \code{\link{fetchData}}.
 }
 
 \examples{
+\dontrun{
 # Fetching the vector of the transcription factors that bind the gene BCL3.
 # sysGTRDgenes(GeneSym = c("BCL3"))
-
+}
 }
 \seealso{
 \code{\link{fetchData}} Fetches the requested dataset.

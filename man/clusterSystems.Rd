@@ -123,7 +123,7 @@ function.
 }
 
 \examples{
-
+\dontrun{
 myDB <- fetchData("SysDB")
 rootSysIDs <- SyDBgetRootSysIDs(myDB)
 sys_names <- names(rootSysIDs)
@@ -142,7 +142,7 @@ clusterSystems(systems,
                distances = NULL,
                customDistanceFn = list(expr_dist),
                dataSources = list(GEO))
-
+}
 
 
 }

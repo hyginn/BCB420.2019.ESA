@@ -28,9 +28,10 @@
 #' @seealso \code{\link{fetchData}} Fetches the requested dataset.
 #'
 #' @examples
+#' \dontrun{
 #' # Expression profiles for "BRCA1" and "AR" genes.
 #' # sysExProf(GeneSym = c("BRCA1", "AR"))
-#'
+#' }
 
 sysExProf <- function(GeneSym) {
 
@@ -64,9 +65,10 @@ sysExProf <- function(GeneSym) {
 #' @seealso \code{\link{fetchData}} Fetches the requested dataset.
 #'
 #' @examples
+#' \dontrun{
 #' # Fetching the vector of the transcription factors that bind the gene BCL3.
 #' # sysGTRDgenes(GeneSym = c("BCL3"))
-#'
+#' }
 
 sysGTRDgenes <- function(GeneSym){
 

@@ -8,7 +8,9 @@
 #'
 #' @return (character) a vector of HGNC symbols
 #' @examples
+#' \dontrun{
 #' fetchComponents("PHALY")  # all PHALY system proteins
+#' }
 #' @export
 
 fetchComponents <- function(sys) {

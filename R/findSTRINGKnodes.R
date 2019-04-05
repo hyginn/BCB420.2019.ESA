@@ -10,9 +10,10 @@
 
 #' @return (numeric) Knode values
 #' @examples
+#' \dontrun{
 #' # Find the Knodes values for genes in the STRING graph sorted by association to PHALY genes
 #' findSTRINGKnodes("PHALY")
-
+#' }
 #' @export
 findSTRINGKnodes <- function(sys) {
 
