@@ -24,12 +24,13 @@
 #' @seealso \code{\link{SyDBgetSysSymbols}} Get the genes in desired system
 #'
 #' @examples
+#' \dontrun{
 #' # Plot enrichend domains in PHALY system orderd by rich factor
 #' # Plot would separate to two parts if too many domains are enriched
 #' # User can hover around the point on plot to get more info (i.e ID descripton)
 #' system <- "PHALY"
 #' domainEnrichment(system)
-#'
+#' }
 #' @export
 domainEnrichment <- function(system, alpha = 0.05) {
   # 1. Fetch data from Dr. Steipe's BCB420.2019.ESA package

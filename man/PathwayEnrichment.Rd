@@ -26,12 +26,13 @@ the ajusted p value. The null hypothesis for each fisher test: the pathway
 is not enriched in the given gene set.
 }
 \examples{
+\dontrun{
 # Picking sample gene list to find the pathway enrichment and p value
 # Call the symComp helper function to generate list
 sampleGeneList <- c("CREBBP","NR1H3","RORA","SREBF1","SMARCD3")
 reactInfo <- fetchData("ReactomeSym")
 result <- PathwayEnrichment(sampleGeneList,reactInfo)
-
+}
 }
 \author{
 {Yufei Yang} (aut)

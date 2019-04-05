@@ -11,9 +11,12 @@ abstract: >
   The domainEnrichment Vignette is used for function domainEnrichment that is
   a tool to find enriched domains in selectd system.
 output:
-  BiocStyle::html_document:
+  # BiocStyle::html_document:
+  #   toc: true
+  #   toc_float: true
+  #   fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{domainEnrichment Vignette}
