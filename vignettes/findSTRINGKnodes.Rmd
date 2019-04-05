@@ -18,7 +18,7 @@ vignette: >
   %\VignetteIndexEntry{findSTRINGKNodes Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: findSTRINGKnodes.bib
+bibliography: BCB420.2019.ESA-bibliography.bib
 ---
 
 <!--- this inline style supports diff-like highlighting -->
