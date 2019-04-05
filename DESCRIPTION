@@ -7,6 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
+            person("Fan", "Shen", 
+                    email = "van.shen@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-8720-5874")),
              person("Edward", "Ho", 
                     email = "emc.ho@mail.utoronto.ca", 
                     role = c("ctb"), 
@@ -43,11 +47,12 @@ Encoding: UTF-8
 LazyData: true
 biocViews: Software, Infrastructure
 Imports:
-    BiocManager,
     BiocCheck,
+    BiocManager,
     biomaRt,
     Biostrings,
     cluster,
+    ggiraph,
     ggplot2,
     ggrepel,
     grid,
