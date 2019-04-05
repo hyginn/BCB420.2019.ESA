@@ -64,9 +64,10 @@ corGenes <- function(A, B, prf) {
 #' @author {Yuhan Zhang} (aut)
 #'
 #' @examples
+#' \dontrun{
 #' geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
 #' myScatterPlot(geneSet)
-#'
+#' }
 #' @export
   myScatterPlot <- function(geneSet) {
     # Purpose:
