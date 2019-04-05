@@ -10,9 +10,12 @@ date: "`r Sys.Date()`"
 abstract: >
   This Vignette describes and explains the usage of the findSTRINGKnode function.
 output:
-  BiocStyle::html_document:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{findSTRINGKNodes Vignette}

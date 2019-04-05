@@ -10,9 +10,12 @@ date: "`r Sys.Date()`"
 abstract: >
   This Vignette demonstrates how to use the STRINGExplore package to obtain an interactive network from high confidence STRING scores of a curated gene system.
 output:
-  BiocStyle::html_document:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{BCB420.2019.STRINGExplore}

@@ -10,9 +10,12 @@ date: "`r Sys.Date()`"
 abstract: >
   This function will be capable of taking a system 5-letter code and then providing information on its system level expression profiles.
 output:
-  BiocStyle::html_document:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{BCB420.2019.ESA McNeil Vignette}

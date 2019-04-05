@@ -10,9 +10,12 @@ date: "`r Sys.Date()`"
 abstract: >
   Details on the preparation of TBD data for the BCB420.2019.ESA package.
 output:
-  BiocStyle::html_document:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{Data Details - TBD}
