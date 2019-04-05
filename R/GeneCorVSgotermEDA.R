@@ -1,25 +1,7 @@
-# EDAtool.R
-# Purpose: Exploratory Data Analysis tool project for BCB420 2019
-# Version: 2.0.0
-# Version history: 1.0.0
-# Date: 02 April 2019
-# Author: Yuhan Zhang(yuhan.zhang@mail.utoronto.ca)
-# License:
-#MIT
-#
-# Input: set of genes of interest,could be fetched from a 5-letter system code like PHALY
-# Output: heatmap of co-expression correlation, heatmap of GO semantic similarity of each pair of genes
-# in the set. A scatterplot of correlation vs similarity and a fitted line within confidence level.
-#
-# Dependencies: devtools,ggplot,ggcorrplot, GOSemSim,org.Hs.eg.db
-#
-
-# ====  FUNCTIONS  =============================================================
-
+# GeneCorVSgotermEDA.R
 
 #' \code{installHumanGenomeAnnotation} install Human genome Annotation when necessary.
 #'
-
 #' @return (NULL)
 #' #' @author {Yuhan Zhang} (aut)
 #' @examples
@@ -28,11 +10,8 @@
 #' }
 #' @export
 installHumanGenomeAnnotation <- function() {
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
-BiocManager::install("org.Hs.eg.db", version = "3.8")
-return(invisible(NULL))
+  BiocManager::install("org.Hs.eg.db", version = "3.8")
+  return(invisible(NULL))
 }
 
 # function stub taken from Dr. Steipe's BCB420.2019.ESA package (https://github.com/hyginn/BCB420.2019.ESA)
@@ -46,23 +25,18 @@ corGenes <- function(A, B, prf) {
 }
 
 
-
+#' \code{myScatterPlot()} Expression and Semantic Similarity
 #'
-#' \code{myScatterPlot()}
-#' Investigates relationship of expression correlation and semantic similarity of input genes
-#' and produces plots and summary of model info
-#'
+#' \code{myScatterPlot()}  Investigates relationship of expression correlation and semantic similarity of input genes
+#' and produces plots and summary of model info.
+#' [GOSemSim package](http://bioconductor.org/packages/release/bioc/html/GOSemSim.html)
+#' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
+#' 
 #' @param geneSet A set of genes of interest to investigate
 #' @return (list) list of graphs containing A heatmap of co-expression correlation of each pair of genes in the geneSet,
 #'                  A heatmap of semantic similarity of each pair of genes,and
 #'                  A scatterplot of correlation vs Go similarity with summary of linear model built by correlation vs Go similarity
-#'
-#' [GOSemSim package](http://bioconductor.org/packages/release/bioc/html/GOSemSim.html)
-#' [org.Hs.eg.db data package](https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html)
-
-#'
 #' @author {Yuhan Zhang} (aut)
-#'
 #' @examples
 #' \dontrun{
 #' geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
@@ -165,9 +139,5 @@ corGenes <- function(A, B, prf) {
 
     return(result)
   }
-
-#geneSet <- c("AMBRA1","ATG14","ATP2A1","ATP2A2","ATP2A3")
-#myScatterPlot(geneSet)
-
 
 # [END]
