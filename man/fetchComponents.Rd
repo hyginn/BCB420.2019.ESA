@@ -16,5 +16,7 @@ fetchComponents(sys)
 \code{fetchComponents} is deprecated. Use \code{SyDBgetSysSymbols()} instead.
 }
 \examples{
+\dontrun{
 fetchComponents("PHALY")  # all PHALY system proteins
+}
 }

@@ -1,0 +1,136 @@
+---
+title: "The BCB420.2019.ESA Vignette: Pathway Enrichment Analysis"
+author:
+- name: Yufei Yang
+  affiliation: 
+  - University of Toronto
+  email: faye.yang@utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  This Vignette is a placeholder for global package documentation.
+output:
+  # BiocStyle::html_document:
+  #   toc: true
+  #   toc_float: true
+  #   fig_caption: yes
+  BiocStyle::pdf_document:
+    toc: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{PathwayEnrichmentAnalysis Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+references:
+- id: steipe2019
+  title: 'rptPlus: R Package Template - enhanced'
+  author:
+  - family: Steipe
+    given: Boris
+    orcid: 0000-0002-1134-6758
+  container-title: '[R package](https://github.com/hyginn/BCB420.2019.ESA)'
+  URL: 'https://github.com/hyginn/BCB420.2019.ESA'
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# knitr knits in a new session with an empty global workspace after setting its
+# working directory to ./vignettes. To make your package functions available in
+# the vignette, you have to load the library. The following two lines should
+# accomplish this without manual intervention:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+There are many links and references in this document. If you find anything here
+ambiguous, inaccurate, outdated, incomplete, or broken, please
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+
+# About this Vignette
+
+This is a Vignette about PathwayEnrichment() function of `BCB420.2019.ESA` package and explain the output visualization of the PathwayEnrichment
+
+The PathwayEnrichment function load the reactome and HGNC gene reference data from the data using helper function, EnrichmentHelper(). The reactome database provides the pathways that each gene can involve. The PathwayEnrichment funcation calculates the number of time a pathway occurs in the given gene set in a system and in the whole reference genes and return a visualization of enrichment. Counting the occuracne can help analysis the enrichment of each pathway that every given gene involve in the system via fisher exact test then adjusted by the bonferroni and BH method. The null hypothesis of the fisher test is the given pathway is not enriched in the given gene set. And the function also apply multiple test correction to adjust the p value. If the adjusted p value is equal to 1, then this pathway is likely to be unenriched.
+
+The more enriched pathways are more likely to involve the system that the given gene set is in.The bar plot shows all the pathways that is enriched, which determined by fisher exact test. The higher the p-value, the higher probabilty that the pathway is involve in this system.
+
+
+# Instruction of using PathwayEnrichment and EnrichmentHelper function
+First, users must choose a system and get the genes in this system to analyse.
+
+Presenting the available systems:
+```{r}
+source("../R/fetchData.R")
+source("../R/SyDButils.R")
+names(SyDBgetRootSysIDs(fetchData("SysDB")))
+```
+
+Inserting one system's gene into `PathwayEnrichment()`. The function uses Bonferroni Correction and Benjamini-Hochberg control
+
+```{r}
+source("../R/fetchData.R")
+source("../R/fetchComponents.R")
+geneSet <- fetchComponents("PHALY")
+reactomeInfo <- fetchData("ReactomeSym")
+enrichment <- PathwayEnrichment(geneSet,reactomeInfo)
+
+#apply Multiple test correction
+library(ggplot2)
+p <- ggplot(data=enrichment[enrichment$pval<enrichment$adjustedPvalBon, c(1,2)], aes(x=pathway, y=pval)) +
+      geom_bar(stat="identity", fill="steelblue")+
+      theme(legend.direction = "vertical") +
+      theme(axis.text.x = element_text(angle = -90)) +
+      theme(legend.position = "bottom")
+p
+#plot for Bonferroni cut off
+
+p <- ggplot(data=enrichment[enrichment$pval<enrichment$adjustedPvalBH, c(1,2)], aes(x=pathway, y=pval)) +
+      geom_bar(stat="identity", fill="steelblue")+
+      theme(legend.direction = "vertical") +
+      theme(axis.text.x = element_text(angle = -90)) +
+      theme(legend.position = "bottom")
+p
+
+
+```
+
+
+# Further reading
+- Which 'systems' does this function refer to: Read about the available systems and their notation https://github.com/hyginn/BCB420.2019.ESA.
+
+
+<!-- the bibliography appears at the end of the page -->
+# References
+- Calculating P value by using fisher exact test: https://www.pathwaycommons.org/guide/primers/statistics/fishers_exact_test/
+- Significance:
+https://www.pathwaycommons.org/guide/primers/statistics/multiple_testing/
+
+Jüri Reimand, Ruth Isserlin, Veronique Voisin, Mike Kucera, Christian Tannus-Lopes, Asha Rostamianfar, Lina Wadi, Mona Meyer, Jeff Wong, Changjiang Xu, Daniele Merico, Gary D. Bader
+bioRxiv 232835; doi: https://doi.org/10.1101/232835
+
+
+<!-- End -->

@@ -14,9 +14,16 @@ getCoExpProfile(complex)
 and the Pearson Correlation Coefficients for their coexpression
 }
 \description{
-\code{getCoExpProfile} Generate a coexpression profile
+\code{getCoExpProfile} Generate a coexpression profile with all possible pairs of
+genes in the complex and their Pearson Correlation Coefficients represent how
+coexpressed the gene pairs are. This function also displays a histogram to show the
+distribution of the coexpression correlation. See \code{\link{EnrichDepletTF}} for
+expProfile generate (line 149-154)
 }
 \examples{
 complex <- "MDC1-MRN-ATM-FANCD2 complex"
 expProfile <- getCoExpProfile(complex)
+}
+\seealso{
+\code{\link{EnrichDepletTF}}
 }

@@ -31,9 +31,10 @@ function that fetches the database, see \code{\link{fetchData}}.
 }
 
 \examples{
+\dontrun{
 # Expression profiles for "BRCA1" and "AR" genes.
 # sysExProf(GeneSym = c("BRCA1", "AR"))
-
+}
 }
 \seealso{
 \code{\link{fetchData}} Fetches the requested dataset.

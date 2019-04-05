@@ -30,10 +30,11 @@ Distance is returned as 1 (maximum possible) if the expression profile for
 either gene is unavailable.
 }
 \examples{
+\dontrun{
 # Find the distance between the expression profiles of BRCA1 and BRCA2
 GEO <- fetchData("GEOprofiles")
 expr_dist("BRCA1", "BRCA2", GEO)
-
+}
 
 }
 \seealso{

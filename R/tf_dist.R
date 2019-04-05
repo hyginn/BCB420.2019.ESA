@@ -23,9 +23,10 @@
 #'
 #' @examples
 #' # Calculate the transcription factor distance of 2 related genes "BRCA1" and "BRCA2"
+#' \dontrun{
 #' geneList <- fetchData("GTRDgeneTFs")
 #' tf_dist("BRCA1", "BRCA2", geneList)
-#'
+#' }
 #'
 #' @export
 

@@ -19,7 +19,7 @@
 #'
 #'
 #' @examples
-#'
+#' \dontrun{
 #' STRING <- fetchData("STRINGedges0.8")
 #' # convert the STRINGedges object into an igraph object
 #' if (requireNamespace("igraph")) {
@@ -30,7 +30,7 @@
 #'
 #' # calculate the Jaccard network distance between "BRCA1" and "BRCA2"
 #' jaccard_dist("BRCA1", "BRCA2", STRINGgraph)
-#'
+#' }
 #' @export
 
 jaccard_dist <- function(gene1, gene2, graph) {
