@@ -1,5 +1,5 @@
 ---
-title: "The BCB420.2019.ESA Vignette"
+title: "Data Details - TBD"
 author:
 - name: Boris Steipe
   affiliation: 
@@ -8,7 +8,7 @@ author:
   email: boris.steipe@utoronto.ca
 date: "`r Sys.Date()`"
 abstract: >
-  This Vignette is a placeholder for global package documentation.
+  Details on the preparation of TBD data for the BCB420.2019.ESA package.
 output:
 #  BiocStyle::html_document:
 #    toc: true
@@ -18,15 +18,15 @@ output:
     toc: true
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{BCB420.2019.ESA Vignette}
+  %\VignetteIndexEntry{Data Details - TBD}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+references:
 bibliography: BCB420.2019.ESA-bibliography.bib
 ---
 <!-- bibliography that appears in the references, 
 but not as a citation in the body -->
 nocite: @steipe-rptPlus
-
 
 <!--- this inline style supports diff-like highlighting -->
 <style>
@@ -47,10 +47,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-# knitr knits in a new session with an empty global workspace after setting its
-# working directory to ./vignettes. To make your package functions available in
-# the vignette, you have to load the library. The following two lines should
-# accomplish this without manual intervention:
+# load the package itself for knitr:
 pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
 library(pkgName, character.only = TRUE)
 
@@ -59,22 +56,22 @@ library(pkgName, character.only = TRUE)
 &nbsp;
 
 <div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
-There are many links and references in this document. If you find anything here
-ambiguous, inaccurate, outdated, incomplete, or broken, please
+If any of this information is ambiguous, inaccurate, outdated, or incomplete, please check the [most recent version](https://github.com/hyginn/BCB420.2019.ESA) of the package on GitHub and if the problem has not already been addressed, please 
 [file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
 </div>
 
 &nbsp;
+<!-- ======================================================================= -->
 
-# About this Vignette
+# Heading
 
-This sample Vignette explains the BCB420.2019.ESA package. See the `rptPlus` package vignette for details of using .Rmd for vignettes and vignette formatting.
+Text
 
 
-# Further reading
-<a name="a1"></a>
 
-- TBD
+
+
+<!-- ======================================================================= -->
 
 # Session Info
 

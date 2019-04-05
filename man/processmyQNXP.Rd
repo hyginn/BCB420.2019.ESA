@@ -12,7 +12,10 @@ and 52 columns representing the 52 microarray experiments. Each cell of the matr
 contains the corresponded expression values
 }
 \description{
-\code{processmyQNXP} Load and process expression-profiles
+\code{processmyQNXP} The expression profiles were compiled and normalized by
+using GEO data containing 52 microarray experiments.
+For details see \code{\link{fetchData}}. The expression profiles were then
+processed to eliminate genes with no data (row with NAs cross all experiments)
 }
 \examples{
 \dontrun{
@@ -20,4 +23,7 @@ contains the corresponded expression values
 myQNXPProcesed <- processmyQNXP()
 }
 
+}
+\seealso{
+\code{\link{fetchData}}
 }

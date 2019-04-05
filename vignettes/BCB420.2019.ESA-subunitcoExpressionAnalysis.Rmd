@@ -11,9 +11,12 @@ abstract: >
   This Vignette demonstrates complex subunits expression outliers analysis for 
   detection of particular functional roles or anomalies of a complex
 output:
-  BiocStyle::html_document:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
     toc: true
-    toc_float: true
     fig_caption: yes
 vignette: >
   %\VignetteIndexEntry{BCB420.2019.ESA Vignette}

@@ -1,0 +1,200 @@
+---
+title: "Data Details - STRINGedges0.8"
+author:
+- name: Gabriela Morgenshtern
+  affiliation: 
+  - http://orcid.org/0000-0003-4762-8797
+  - University of Toronto
+  email: g.morgenshtern@mail.utoronto.ca
+date: "`r Sys.Date()`"
+abstract: >
+  Details on the preparation of STRINGedges0.8 protein interaction data for the BCB420.2019.ESA package.
+output:
+#  BiocStyle::html_document:
+#    toc: true
+#    toc_float: true
+#    fig_caption: yes
+  BiocStyle::pdf_document:
+    toc: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Data Details - STRINGactions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: BCB420.2019.ESA-bibliography.bib
+---
+
+<!--- this inline style supports diff-like highlighting -->
+<style>
+  .add {
+    color: #22863a;
+    background-color: #f0fff4;
+  }
+  .del {
+    color: #b31d28;
+    background-color: #ffeef0;
+  }
+</style>
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+# load BCB420-2019.ESA itself for knitr:
+pkgName <- trimws(gsub("^Package:", "", readLines("../DESCRIPTION")[1]))
+library(pkgName, character.only = TRUE)
+
+```
+
+&nbsp;
+
+<div style="font-size:90%;border:solid 1px #337ab7;background-color:#FAFBFC;margin-right:0px;">
+If any of this information is ambiguous, inaccurate, outdated, or incomplete, please check the [most recent version](https://github.com/hyginn/BCB420.2019.ESA) of the package on GitHub and if the problem has not already been addressed, please 
+[file an issue](https://github.com/hyginn/BCB420.2019.ESA/issues)!
+</div>
+
+&nbsp;
+
+# About this vignette:
+
+This vignette describes the workflow that was used to prepare the STRINGedges0.8 dataset for the package. Source data is interaction scores for protein links from [STRING](https://string-db.org/).
+
+
+# STRINGedges0.8 Data
+
+STRING is a collection of curated protein-protein interaction scores under different categories calculated and defined by the STRING consortium. STRING protein action data is [licensed under the CC license](https://string-db.org/cgi/access.pl?footer_active_subpage=licensing). This document describes work with [STRING v11.0 protein network data for homo sapiens (2018-11-22)](https://string-db.org/cgi/download.pl?sessionId=GiksVfWc6aQ2&species_text=Homo+sapiens).
+
+&nbsp;
+
+## Data semantics
+
+STRING interaction data is available on the STRING consortium website. 
+
+STRING data comes in only one format, and genes are identified by Ensemble protein IDs (ENSP). We must download this data and process it through the script below to map the ENSPs to HGNCs present a consistent identifier for our package tools to work with. This dataset is further curated during the mapping process by keeping only those rows where combined_score > 800. This allows us to ensure the edges used in our tools' analyses are high-confidence, as well as consistent with the STRINGctions dataset (which is the intended purpose of this dataset). 
+
+We are interested in all the columns contained in the file `9606.protein.links.detailed.v11.0.txt.gz`:
+
+1. Protein 1: The ENSP identifier of the protein action pair
+2. Protein 2: The ENSP identifier of the protein action pair
+10. Combined_score: the [total STRING score](https://string-db.org/cgi/info.pl?footer_active_subpage=scores) computed for the protein action pair (which is in itself a STRING edge). 
+
+&nbsp;
+
+## Data download and processing
+
+1. Navigate to the [download directory of the **STRING** database](https://string-db.org/cgi/download.pl).
+2. Search for "human" or "homo sapiens" in the "Choose an organism" search bar
+3. Download the following data file: 
+* `9606.protein.links.detailed.v11.0.txt.gz` (110.1 Mb);
+3. Uncompress the file and place it into a sister directory of your working directory which is called `data`. (It should be reachable with `file.path("..", "data")`). **Warning:**  `../data/9606.protein.links.detailed.v11.0.txt` is 741 Mb!
+
+&nbsp;
+
+### Preparations: packages, functions, files
+
+To begin processing, we need to make sure the required packages are installed:
+
+**`readr`** provides functions to highly suitable for
+large datasets. These are much faster than the built-in read.X() functions. However, readr functions return "tibbles", not data frames. ([Here's the difference](https://cran.r-project.org/web/packages/tibble/vignettes/tibble.html).)
+```R
+if (! requireNamespace("readr")) {
+  install.packages("readr")
+}
+```
+
+**BCB420.2019.STRING** provides the data required to map ENSP IDs to HGNC symbols (ensp2sym.RData). You can obtain this data by installing Dr. Steipe's BCB420.2019.STRING package
+```R
+if (! requireNamespace("devtools")) {
+  install.packages("devtools")
+  devtools::install_github("hyginn/BCB420.2019.STRING")
+}
+
+```
+
+&nbsp;
+
+
+## Selecting protein-protein interactions
+
+```R
+# Load raw STRING detailed dataset
+tmp <- readr::read_delim(file.path("./data", "9606.protein.links.detailed.v11.0.txt"),
+                         delim = " ",
+                         skip = 1,
+                         col_names = c("protein1", "protein2", "neighborhood", "fusion",
+                                       "cooccurence", "coexpression", "experimental", "database",
+                                       "textmining", "combined_score")) # 11,759,454 rows
+# Keeping col revlevant to our analysis (high coexpression edges)
+tmp <- tmp[,c("protein1", "protein2","coexpression","combined_score")]
+tmp <- tmp[(tmp$combined_score >= 800), ] #should combined_score be included?
+
+# Do all elements have the right tax id?
+all(grepl("^9606\\.", tmp$protein1))  # TRUE
+all(grepl("^9606\\.", tmp$protein2))  # TRUE
+# remove "9606." prefix
+tmp$protein1 <- gsub("^9606\\.", "", tmp$protein1)
+tmp$protein2 <- gsub("^9606\\.", "", tmp$protein2)
+
+# Map ENSP to HGNC symbols: use Dr. Steipe's mapping tool:
+load(file = file.path(".", "data", "ensp2sym.RData"))
+tmp$protein1 <- ensp2sym[tmp$protein1]
+tmp$protein2 <- ensp2sym[tmp$protein2]
+
+# Validate initial mapping
+any(grepl("ENSP", tmp$protein1))  # Nope
+any(grepl("ENSP", tmp$protein2))  # None left here either
+
+# Clean duplicate edges (from Dr. Steipe)
+sPaste <- function(x, collapse = ":") {
+  return(paste(sort(x), collapse = collapse))
+}
+tmp$key <- apply(tmp[ , c("protein1", "protein2")], 1, sPaste) # takes a min
+length(tmp$key) # 35072
+length(unique(tmp$key)) # 17379
+tmp <- tmp[( ! duplicated(tmp$key)),
+           c("protein1", "protein2", "coexpression", "combined_score") ]
+
+# Remove NA nodes
+sum(is.na(tmp$protein1)) # 51
+sum(is.na(tmp$protein2)) # 153
+STRINGedges <- tmp[( ! is.na(tmp$protein1)) & ( ! is.na(tmp$protein2)), ] # 17175
+
+# Save the file
+saveRDS(STRINGedges, file = file.path(".", "data", "STRINGedges.RDS"))
+
+```
+
+&nbsp;
+
+# References
+
+&nbsp;
+
+Steipe, Boris (2019). BCB420.2019.STRING (STRING data annotatation of human genes). [R package  Github repository](https://github.com/hyginn/BCB420.2019.STRING)
+
+Szklarczyk, D., Gable, A.L., Lyon, D., Junge, A., Wyder, S., Huerta-Cepas, J., Simonovic, M., Doncheva, N.T., Morris, J.H., Bork, P., Jensen, L.J., & Mering, C.V. (2018). STRING v11: protein–protein association networks with increased coverage, supporting functional discovery in genome-wide experimental datasets. [Nucleic Acids Research](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6323986/).
+
+&nbsp;
+
+# Acknowledgements
+
+- Thanks to Dr. Boris Steipe's example vignette dataDetails-BioGRID for the BioGrid dataset in this package
+
+&nbsp;
+
+# Session Info
+
+This release of the `BCB420.2019.ESA` package was produced in the following context of supporting packages:
+
+```{r, echo=TRUE}
+sessionInfo()
+```
+
+<!-- the bibliography appears at the end of the page -->
+# References
+
+
+<!-- End -->
