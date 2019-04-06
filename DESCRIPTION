@@ -7,10 +7,10 @@ Authors@R: c(
                     email = "boris.steipe@utoronto.ca", 
                     role = c("aut", "cre"), 
                     comment = c(ORCID = "0000-0002-1134-6758")),
-            person("Fan", "Shen", 
-                    email = "van.shen@mail.utoronto.ca", 
+              person("Nada", "Elnour", 
+                    email = "nada.elnour@mail.utoronto.ca", 
                     role = c("ctb"), 
-                    comment = c(ORCID = "0000-0001-8720-5874")),
+                    comment = c(ORCID = "0000-0001-6165-1542")),
              person("Edward", "Ho", 
                     email = "emc.ho@mail.utoronto.ca", 
                     role = c("ctb"), 
@@ -23,6 +23,10 @@ Authors@R: c(
                     email = "g.morgenshtern@mail.utoronto.ca",
                     role = c("ctb"),
                     comment = c(ORCID = "0000-0003-4762-8797")),
+            person("Fan", "Shen", 
+                    email = "van.shen@mail.utoronto.ca", 
+                    role = c("ctb"), 
+                    comment = c(ORCID = "0000-0001-8720-5874")),
              person("Rachel", "Silverstein", 
                     email = "rachel.silverstein@mail.utoronto.ca", 
                     role = c("ctb"), 
@@ -56,6 +60,7 @@ Imports:
     biomaRt,
     Biostrings,
     cluster,
+    dplyr,
     ggcorrplot,
     ggiraph,
     ggplot2,
@@ -77,3 +82,33 @@ Suggests:
     rmarkdown
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
+Collate: 
+    'EnrichDepletTF.R'
+    'GeneCorVSgotermEDA.R'
+    'STRINGExplore.R'
+    'SyDButils.R'
+    'System_Expression.R'
+    'clusterSystems.R'
+    'combine_distance_matrices.R'
+    'domainEnrichment.R'
+    'exProf.R'
+    'expr_dist.R'
+    'fetchComponents.R'
+    'fetchData.R'
+    'findSTRINGKnodes.R'
+    'getGeneticInteractome.R'
+    'get_best_matches.R'
+    'hypothesize.R'
+    'jaccard_dist.R'
+    'jaccard_index_p_values.R'
+    'makeMaps.R'
+    'makeSeq.R'
+    'make_distance_matrices_list.R'
+    'make_matrix.R'
+    'make_venn_diagram.R'
+    'pathwayEnrich.R'
+    'predictDirectedNetworks.R'
+    'rptGC.R'
+    'subunitcoExpressionAnalysis.R'
+    'tf_dist.R'
+    'zzz.R'

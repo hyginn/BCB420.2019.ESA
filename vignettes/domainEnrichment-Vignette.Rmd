@@ -91,7 +91,7 @@ knitr::kable(x,
              align = "c")
 ```
 
-* where m is numeber of genes in system, n is number of genes output system, k is number of genes that have a specific domain.
+* where m is number of genes in system, n is number of genes output system, k is number of genes that have a specific domain.
 
 &nbsp;
 
@@ -121,9 +121,14 @@ head(exampleOutcome)
 ```
 
 The example outcome looks like this:
+
+(Temporarily removed to reduce vignette size)
+
+<!-- Temporarily remove to reduce vignette size
 ```{r, echo=FALSE}
 knitr::include_graphics("../inst/img/enrichedDomain.png")
 ```
+-->
 
 &nbsp;
 
