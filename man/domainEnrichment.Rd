@@ -25,12 +25,13 @@ For the PHYLA system, see details in the \href{../doc/domainEnrichment-Vignette.
 }
 
 \examples{
+\dontrun{
 # Plot enrichend domains in PHALY system orderd by rich factor
 # Plot would separate to two parts if too many domains are enriched
 # User can hover around the point on plot to get more info (i.e ID descripton)
 system <- "PHALY"
 domainEnrichment(system)
-
+}
 }
 \seealso{
 \code{\link{fetchData}} Fetch data from package
